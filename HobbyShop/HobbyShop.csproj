@@ -80,9 +80,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="JavaScript.js" />
+    <Content Include="jquery.js" />
     <Content Include="Service1.svc" />
+    <Content Include="style\back.jpg" />
+    <Content Include="style\logo.png" />
+    <Content Include="style\styles.css" />
     <Content Include="Web.config" />
-    <Content Include="Run.aspx" />
+    <Content Include="Inventory.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Customer.cs" />
@@ -90,12 +94,12 @@
     <Compile Include="Model.cs" />
     <Compile Include="ModelDBData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Run.aspx.cs">
-      <DependentUpon>Run.aspx</DependentUpon>
+    <Compile Include="Inventory.aspx.cs">
+      <DependentUpon>Inventory.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Run.aspx.designer.cs">
-      <DependentUpon>Run.aspx</DependentUpon>
+    <Compile Include="Inventory.aspx.designer.cs">
+      <DependentUpon>Inventory.aspx</DependentUpon>
     </Compile>
     <Compile Include="SaleItem.cs" />
     <Compile Include="Service1.svc.cs">
