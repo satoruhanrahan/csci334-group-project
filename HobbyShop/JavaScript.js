@@ -25,12 +25,12 @@ function displayInventoryName(names) {
 //Add new item to model table
 function displayAddItem() {
     document.getElementById("detailHeading").innerHTML = "Add New Item";
-    document.getElementById("details").innerHTML = "Name: <input type='text' id='modelName' /> <br />" +
-        "Type: <input type='text' id='modelType' /> <br />" +
-        "Subject area: <input type='text' id='modelArea' /> <br />" +
-        "Current retail price: <input type='text' id='modelPrice' /> <br />" +
-        "Description: <textarea id='modelDes'></textarea> <br />" +
-        "Availability: <input type='text' id='modelAvail' /> <br />" +
+    document.getElementById("details").innerHTML = "Name <input type='text' id='modelName' /> <br />" +
+        "Type <input type='text' id='modelType' /> <br />" +
+        "Subject area <input type='text' id='modelArea' /> <br />" +
+        "Current retail price <input type='text' id='modelPrice' /> <br />" +
+        "Description <textarea id='modelDes'></textarea> <br />" +
+        "Availability <input type='text' id='modelAvail' /> <br />" +
         "<input type='button' value='Add New Item to Model' onclick='addNewItemModel();' />";
 }
 
