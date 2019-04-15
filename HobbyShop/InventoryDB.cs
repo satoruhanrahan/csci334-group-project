@@ -25,10 +25,10 @@ namespace HobbyShop
                 cmd.Connection = con;
                 con.Open();
             }
-               
-            
 
-            string query = "SELECT Models.Name FROM Models INNER JOIN StoreInventory ON Models.ItemNumber = StoreInventory.ItemNumber ORDER BY Models.Name ";
+
+
+            string query = "SELECT Models.Name FROM Models ";
 
             
             string itemName;

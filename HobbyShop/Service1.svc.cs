@@ -38,11 +38,6 @@ namespace HobbyShop
             {
                 return oEx.Message;
             }
-
         }
-        
-
-
-
     }
 }

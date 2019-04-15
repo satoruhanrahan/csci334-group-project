@@ -23,27 +23,28 @@
 		</div>
 		<table id="mainContent">
             <tr style="height:30px;">
-                <td> <span class="heading1"> Inventory </span> </td>
+                <td> 
+                    <span class="heading1"> Inventory </span>
+                </td>
             </tr>
             <tr style="background-color:white; height:30px;">
                 <td> 
                     <span class="heading2"> Items </span> 
-           
                     <div class="dropdown" style="margin: -3px 0px -3px 0px">
-                      <button class="dropbtn">...</button>
-                      <div class="dropdown-content">
-                        <input type='button' class='inputButton' value='Add New Item' onclick='displayAddItem();' />
-                      </div>
+                        <button class="dropbtn">...</button>
+                        <div class="dropdown-content">
+                            <input type='button' class='inputButton' value='Add New Item' onclick='displayAddItem();' />
+                        </div>
                     </div> 
                 </td>
                 <td> <span class="heading2" id="detailHeading">  </span> </td>
             </tr>
             <tr valign="top" id="leftcol" style="background-color:white;">
 				<td>
-                    <div class="scrollable" id="list">
-                    </div>
+                    <div class="scrollable" id="list"></div>
 				</td>
-				<td id="details"></td>
+				<td id="details">
+				</td>
 			</tr>
 		</table>
 		<footer>
