@@ -1,17 +1,14 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Run.aspx.cs" Inherits="HobbyShop.WebForm1" %>
-﻿<!DOCTYPE html>
-<html>
-    <head>
-		
-    </head>
-<!DOCTYPE html>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="InventoryInterface.aspx.cs" Inherits="HobbyShop.InventoryInterface" %>
+﻿<!DOCTYPE>
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-	<meta content="utf-8" http-equiv="encoding">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+	<meta content="utf-8" http-equiv="encoding"/>
     <title> Inventory - Tim's Model Market </title>
-	<link rel="stylesheet" href="style/styles.css">
+
+	<link rel="stylesheet" href="style/styles.css"/>
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="JavaScript.js"></script>
 </head>
@@ -19,7 +16,7 @@
 		<div id="header">
 			<img id="logo" src="style/logo.png"/>
 			Tim's Model Market
-	        <input type="button" class="tab" id="invBut" value="Inventory" onclick="window.open('Inventory.aspx', '_self');"/>
+	        <input type="button" class="tab" id="invBut" value="Inventory" onclick="window.open('InventoryInterface.aspx', '_self');"/>
 		</div>
 		<table id="mainContent">
             <tr style="height:30px;">
@@ -55,7 +52,7 @@
     <form id="form1" runat="server">
         <asp:scriptmanager runat="server">
             <Services>
-               <asp:ServiceReference Path="~/Service1.svc" />
+               <asp:ServiceReference Path="~/CONTROLLER/ModelController.svc" />
             </Services>
         </asp:scriptmanager>
     </form>

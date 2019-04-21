@@ -1,26 +1,35 @@
 ﻿// display all sale items
 $(document).ready(function () {
-    getInventoryName();
+    getAllItems();
 });
-function getInventoryName() {
-    Service1.GetInventoryName(onGetInventoryName);
+
+function getAllItems() {
+    ModelController.ReturnFromDatabase(onGetItems);
 }
 
-function onGetInventoryName(result) {
-    var names = JSON.parse(result);
-    displayInventoryName(names);
+function onGetItems(result) {
+    var items = JSON.parse(result);
+    displayItemNames(items);
 }
 
-
-function displayInventoryName(names) {
-    /* NEEDS IMPLEMENTATION: Get item id (put in ITEMID) and create function (displayItemDetails) which gets item details*/
+function displayItemNames(items) {
     var text = " ";
-    for (var i = names.length - 1; i >= 0; i--) {
-        var name = names[i];
-        text += "<button class='listItem' onclick='displayItemDetails(" + 'ITEMID' + ");'>"+name+"</button><br />";
+    for (var i = items.length - 1; i >= 0; i--) {
+
+       text += "<button class='listItem' onClick='displayItemDetails(" + items[i].Id + ");'>" + items[i].Name + "</button><br />";
+
+       function displayItemDetails(id) {
+            document.getElementById("details").innerHTML = "";
+            var inner = " ";
+            inner += "Name: " + items[i].Name + "<br />"  + "ID: " + items[i].Id + "<br />" + "Type: " + items[i].Type + "<br />" + "Subject Area: " + items[i].SbjArea + "<br />" + "Price :" + items[i].Price + "<br />" + "Description: " + items[i].Description + "<br />" + "Availability: " + items[i].Availability + "<br />" + "Stock Count: " + items[i].StockCount;
+            document.getElementById("details").innerHTML = inner;
+        }
+       displayItemDetails(items[i].Id);
     }
     document.getElementById("list").innerHTML = text;
 }
+
+
 
 //Add new item to model table
 function displayAddItem() {
@@ -30,7 +39,8 @@ function displayAddItem() {
         "Subject area <input type='text' id='modelArea' /> <br />" +
         "Current retail price <input type='text' id='modelPrice' /> <br />" +
         "Description <textarea id='modelDes'></textarea> <br />" +
-        "Availability <input type='text' id='modelAvail' /> <br />" +
+        "Availability <input type='checkbox' id='modelAvail' /> <br />" +
+        "Stock Count <input type='text' id='stockCountModel' /> <br />" +
         "<input type='button' value='Add New Item to Model' onclick='addNewItemModel();' />";
 }
 
@@ -40,9 +50,11 @@ function addNewItemModel() {
     var sbjarea = document.getElementById("modelArea").value;
     var price = document.getElementById("modelPrice").value;
     var des = document.getElementById("modelDes").value;
-    var avail = document.getElementById("modelAvail").value;
-   
-    Service1.AddNewModel(name, type, sbjarea, price, des, avail, onInputNewModel );
+    var avail = document.getElementById("modelAvail").checked;
+    var stockCount = document.getElementById("stockCountModel").value;
+
+
+    ModelController.AddNewModel(name, type, sbjarea, Number(price), des, avail, stockCount, onInputNewModel);
 }
 
 function onInputNewModel(result) {
