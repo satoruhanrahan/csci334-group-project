@@ -9,8 +9,8 @@
     <title> Inventory - Tim's Model Market </title>
 
 	<link rel="stylesheet" href="style/styles.css"/>
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="JavaScript.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/JavaScript.js"></script>
 </head>
 <body>
 		<div id="header">
@@ -44,17 +44,16 @@
 				</td>
 			</tr>
 		</table>
+        <div id="results"></div>
 		<footer>
 			&copy; Team Group 1
 		</footer>
-
-    <div id="results"></div>
-    <form id="form1" runat="server">
-        <asp:scriptmanager runat="server">
-            <Services>
-               <asp:ServiceReference Path="~/CONTROLLER/ModelController.svc" />
-            </Services>
-        </asp:scriptmanager>
-    </form>
-</body>
+        <form id="form1" runat="server">
+            <asp:scriptmanager runat="server">
+                <Services>
+                   <asp:ServiceReference Path="~/CONTROLLER/ModelController.svc" />
+                </Services>
+            </asp:scriptmanager>
+        </form>
+    </body>
 </html>

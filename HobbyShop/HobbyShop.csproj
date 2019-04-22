@@ -81,7 +81,11 @@
   <ItemGroup>
     <Content Include="CONTROLLER\ModelController.svc" />
     <Content Include="InventoryInterface.aspx" />
-    <Content Include="JavaScript.js" />
+    <Content Include="js\JavaScript.js" />
+    <Content Include="js\jquery.js" />
+    <Content Include="style\back.jpg" />
+    <Content Include="style\logo.png" />
+    <Content Include="style\styles.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
