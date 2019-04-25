@@ -24,32 +24,38 @@ function displayItemNames(items) {
 }
 
 // Displays an items details
-function displayItemDetails(id) {
-    document.getElementById("detailHeading").innerHTML = items[id].Name +
+function displayItemDetails(i) {
+    document.getElementById("detailHeading").innerHTML = items[i].Name +
         "<div class='dropdown'>" +
         "<button class='dropbtn'>...</button>" +
         "<div class='dropdown-content'>" +
-        "<input type='button' class='inputButton' value='Edit Details' onclick='editDetails(id);' />" +
-        "<input type='button' class='inputButton' value='Delete Item' onclick='deleteItem(id);' />" +
+        "<input type='button' class='inputButton' value='Edit Details' onclick='editDetails(" + i + ");' />" +
+        "<input type='button' class='inputButton' value='Delete Item' onclick='deleteItem(" + i + ");' />" +
         "</div> </div>";
     var inner = " ";
     var available = " ";
-    if (items[id].Availability == true) {
+    if (items[i].Availability == true) {
         available = "Yes";
     }
     else {
         available = "No";
     }
-    inner = "<table id='detailTable'> <tr> <td style='width:25%;'> Name </td> <td> " + items[id].Name + 
-        "</td> </tr> <tr> <td> ID </td> <td>" + items[id].Id +
-        "</td> </tr> <tr> <td> Type </td> <td>" + items[id].Type +
-        "</td> </tr> <tr> <td> Subject Area </td> <td>" + items[id].SbjArea +
-        "</td> </tr> <tr> <td> Price </td> <td>" + items[id].Price +
-        "</td> </tr> <tr> <td> Description </td> <td>" + items[id].Description +
+    inner = "<table id='detailTable'> <tr> <td style='width:25%;'> Name </td> <td>" + items[i].Name + 
+        "</td> </tr> <tr> <td> ID </td> <td>" + items[i].Id +
+        "</td> </tr> <tr> <td> Type </td> <td>" + items[i].Type +
+        "</td> </tr> <tr> <td> Subject Area </td> <td>" + items[i].SbjArea +
+        "</td> </tr> <tr> <td> Price </td> <td>" + items[i].Price +
+        "</td> </tr> <tr> <td> Description </td> <td>" + items[i].Description +
         "</td> </tr> <tr> <td> Availability </td> <td>" + available +
-        "</td> </tr> <tr> <td> Stock Count </td> <td>" + items[id].StockCount +
+        "</td> </tr> <tr> <td> Stock Count </td> <td>" + items[i].StockCount +
         "</td> </tr>";
     document.getElementById("details").innerHTML = inner;
+}
+
+//Advanced search display
+function displayAdvSearch() {
+    document.getElementById("detailHeading").innerHTML = "Advanced Search";
+    document.getElementById("details").innerHTML = "Here will be filter settings for an advanced search!";
 }
 
 //Add new item to model table
@@ -60,8 +66,6 @@ function displayAddItem() {
         "Subject area <input type='text' id='modelArea' /> <br />" +
         "Current retail price <input type='number' id='modelPrice' /> <br />" +
         "Description <textarea id='modelDes'></textarea> <br />" +
-        // I believe avilability and stock will be defined by the system, and not here. 
-        // If stock is to be modified manually, you can do this is the "edit item" menu.
         "<input type='button' value='Add New Item to Model' onclick='addNewItemModel();' />";
 }
 

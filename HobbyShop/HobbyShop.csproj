@@ -80,7 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CONTROLLER\ModelController.svc" />
-    <Content Include="InventoryInterface.aspx" />
+    <Content Include="ModelsUI.aspx" />
     <Content Include="js\JavaScript.js" />
     <Content Include="js\jquery.js" />
     <Content Include="style\back.jpg" />
@@ -94,12 +94,12 @@
     <Compile Include="CONTROLLER\ModelController.svc.cs">
       <DependentUpon>ModelController.svc</DependentUpon>
     </Compile>
-    <Compile Include="InventoryInterface.aspx.cs">
-      <DependentUpon>InventoryInterface.aspx</DependentUpon>
+    <Compile Include="ModelsUI.aspx.cs">
+      <DependentUpon>ModelsUI.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="InventoryInterface.aspx.designer.cs">
-      <DependentUpon>InventoryInterface.aspx</DependentUpon>
+    <Compile Include="ModelsUI.aspx.designer.cs">
+      <DependentUpon>ModelsUI.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
