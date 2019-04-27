@@ -1,69 +1,64 @@
 body {
-    background-color: #aaaaaa;
-	background-image:url("back.jpg");
+    background-color: white;
 	font-family: "Verdana";
 }
 
 /*Header bar contents*/
-#logo {
-	height:50px;
-	width:50px;
-	position: absolute;
-	left:0px;
-	top:0px;
-}
 #header {
-	margin:-29px -8px 0 0;
-	padding-left:60px;
-	height: 50px;
-	line-height: 50px;
-	background-color: #000000;
-	color: #ffffff;
-	font-size:20px;
-	text-align: center-left;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 50px;
+    line-height: 50px;
+    width:100%;
+    background-color: #00007f;
+    color: #ffffff;
 }
-#header .tab {
-	width:80px;
-	height:30px;
+#header .tab, #header .activeTab {
+	width:90px;
+	height:50px;
+    font-size: 16px;
 	background-color: #00007f;
 	color: #ffffff;
 	border:0px;
-    margin-top:-33px;
+    margin-top:0px;
     margin-right:10px;
 }
 #header .tab:hover {
-	background-color: #0000cc;
+	border-bottom:10px solid #0000ff;
+}
+#header .activeTab {
+    border-bottom:10px solid #000044;
 }
 #models {
     margin-left:30px;
 }   
 
 /* Main table content */
-.heading1 {
-    font-size: 20px;
-    font-weight: bold;
-}
 .heading2 {
     font-size: 18px;
 }
 #mainContent {
-    margin-left: auto;
-    margin-right: auto;
-    width: 70%;
-    height: 90%;
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    width: 100%;
+    height: calc(100% - 50px);
+    border-spacing: 0;
 }
-#mainContent tr, #mainContent td {
-    padding: 10px;
+#mainContent td {
+    border:2px solid black;
 }
 #leftcol {
-    width: 33.3%;
+    width: 25%;
+    height: calc(100% - 6px);
+    position:absolute;
+    display: flex;
+    flex-direction: column;
+    background-color:black;
 }
 #searchHead {
     width:100%;
-}
-#searchHead, #searchHead tr, #searchHead td {
-    padding:0px;
-    margin:0px;
 }
 #searchBar {
     width:100%;
@@ -77,21 +72,36 @@ body {
 #searchBtn:hover {
     background-color: #cccccc;
 }
-.listItem{
-    width:100%;
-    height:50px;
-    font-size:16px;
-    text-align:left;
+#searchDrpdwn {
+    margin-right:2px;
+}
+#searchDrpdwn button {
+    padding: 0px 7px 11px 7px;
+}
+.listItem {
+    width: 100%;
+    font-size: 16px;
+    text-align: left;
+    height: 50px;  
 }
 .scrollable {
-    height:430px;
-    overflow-y: scroll;
+    overflow-y: auto;
+}
+#rightcol {
+    position:absolute;
+    width: calc(75% - 6px);
+    height: calc(100% - 6px);
+    left:25%;
+    background-color:white;
+}
+#detailHeading{
+    margin:5px;
 }
 #details {
-    width:66.7%;
+    margin:10px;
 }
 #details br{
-    margin: 10px 0;
+    margin-top: 10px;
 }
 #details input, #details textarea {
     position: relative;

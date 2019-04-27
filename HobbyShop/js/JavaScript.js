@@ -23,6 +23,12 @@ function displayItemNames(items) {
     document.getElementById("list").innerHTML = text;
 }
 
+function loadPage(page) {
+    document.getElementsByClassName('activeTab').className = 'tab'
+    document.getElementById(page).className = 'activeTab';
+    window.open(page+'UI.aspx', '_self');
+}
+
 // Displays an items details
 function displayItemDetails(i) {
     document.getElementById("detailHeading").innerHTML = items[i].Name +
