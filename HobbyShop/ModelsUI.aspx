@@ -32,12 +32,12 @@
                                 <td>
                                     <input type="text" id="searchbar" placeholder="Search Models..."/> 
                                 </td>
-                                <td style="width:20px;">
-                                    <button id="searchBtn"><img src="style/search.png" width="20" height="20"/></button>
+                                <td class="searchBarBtn">
+                                    <button id="searchBtn" class="smallbtn" title="Search"><img src="style/search.png"/></button>
                                 </td>
-                                <td style="width:20px;">
-                                    <div class="dropdown" id="searchDrpdwn">
-                                        <button class="dropbtn" style="">...</button>
+                                <td class="searchBarBtn">
+                                    <div class="dropdown">
+                                        <button id="searchOpt" class="smallbtn"><img src="style/options.png"/></button>
                                         <div class="dropdown-content">
                                             <input type='button' class='inputButton' value='Advanced Search' onclick='displayAdvSearch();' />
                                             <input type='button' class='inputButton' value='Add New Item' onclick='displayAddItem();' />

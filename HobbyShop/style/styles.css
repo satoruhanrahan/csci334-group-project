@@ -1,6 +1,50 @@
 body {
-    background-color: white;
 	font-family: "Verdana";
+}
+button, input[type="button"]{
+    cursor: pointer;
+}
+.smallbtn {
+    background-color: #444444;
+    border: 1px solid black;
+    padding: 0;
+    color: white;
+}
+.smallbtn:hover {
+    background-color: #666666;
+    border: 1px solid white;
+}
+.smallbtn img {
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+}
+.mediumbtn {
+    width: 100px;
+    padding: 0;
+    padding-bottom:5px;
+    color: white;
+}
+.mediumbtn img {
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+}
+.greenbtn {
+    background-color:green;
+    border:1px solid darkgreen;
+}
+.greenbtn:hover {
+    background-color:darkgreen;
+    border:1px solid green;
+}
+.redbtn {
+    background-color:red;
+    border:1px solid darkred;
+}
+.redbtn:hover {
+    background-color: darkred;
+    border:1px solid red;
 }
 
 /*Header bar contents*/
@@ -58,31 +102,36 @@ body {
     background-color:black;
 }
 #searchHead {
-    width:100%;
+    width: 100%;
+    margin: -3px 0 0 -4px;
 }
 #searchBar {
     width:100%;
     height:30px;
-}
-#searchBtn {
-    background-color: #aaaaaa;
-    padding:5px;
     border:0;
 }
-#searchBtn:hover {
-    background-color: #cccccc;
+.searchBarBtn {
+    width: 25px;
 }
-#searchDrpdwn {
-    margin-right:2px;
+#searchBtn {
+    margin-left: -2px;
+    margin-right: -3px;
 }
-#searchDrpdwn button {
-    padding: 0px 7px 11px 7px;
+#searchOpt {
+    margin-right: -2px; 
 }
 .listItem {
     width: 100%;
-    font-size: 16px;
+    font-family: Verdana;
     text-align: left;
+    background-color:#444444;
+    color:white;
+    border:1px solid black;
     height: 50px;  
+}
+.listItem:hover {
+    background-color:#666666;
+    border:1px solid white;
 }
 .scrollable {
     overflow-y: auto;
@@ -95,26 +144,22 @@ body {
     background-color:white;
 }
 #detailHeading{
-    margin:5px;
+    margin:10px;
 }
 #details {
     margin:10px;
-}
-#details br{
-    margin-top: 10px;
 }
 #details input, #details textarea {
     position: relative;
     display: inline-block;
     width:100%;
-    float:right;
-    margin-bottom:10px;
-    border-radius:3px;
-    border:1px solid grey;
+    font-size:16px;
+    border:0;
 }
 #details textarea {
+    overflow-y:scroll;
+    font-family:Verdana;
     resize:none;
-    overflow-y: scroll;
 }
 #detailTable {
     border-collapse: collapse;
@@ -122,53 +167,56 @@ body {
     border: 1px solid black;
 }
 #detailTable td {
+    vertical-align: top;
     border: 1px solid black;
 }
+#detailOptions {
+    float:right;
+}
 #results {
-    position:absolute;
-    display:none;
-    left:0;
-    right:0;
-    top:100px;
-    margin-left:auto;
-    margin-right:auto;
-    height:50px;
-    width:200px;
-    background-color:white;
-    border:solid black 1px;
-    border-radius:3px;
+    position: absolute;
+    display: none;
+    left: 25%;
+    right: 0;
+    bottom: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    padding:10px;
+    width: 400px;
+    vertical-align: middle;
+    text-align: center;
+    background-color: white;
+    border: solid black 1px;
+    border-radius: 3px;
 }
 
 /* Dropdown menu */
-.dropbtn {
-    background-color: #aaaaaa;
-    color: white;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
 .dropdown {
     position: relative;
     display: inline-block;
-    float: right;
     margin: -3px 0px -3px 0px
 }
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    right:0;
+    left: auto;
+    background-color: black;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
 .dropdown-content input {
-    color: black;
+    background-color:#444444;
     width:100%;
     text-decoration: none;
     display: block;
+    border:1px solid black;
+    color:white;
 }
 .dropdown-content input:hover {
-    background-color: #f1f1f1
+    background-color: #666666;
+    border:1px solid white;
 }
 .dropdown:hover .dropdown-content {
     display: block;
