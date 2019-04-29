@@ -36,12 +36,7 @@
                                     <button id="searchBtn" class="smallbtn" title="Search"><img src="style/search.png"/></button>
                                 </td>
                                 <td class="searchBarBtn">
-                                    <div class="dropdown">
-                                        <button id="searchOpt" class="smallbtn"><img src="style/options.png"/></button>
-                                        <div class="dropdown-content">
-                                            <input type='button' class='inputButton' value='Advanced Search' onclick='displayAdvSearch();' />
-                                        </div>
-                                    </div> 
+                                    <button id="searchOpt" title="Advanced search" onclick='displayAdvSearch()'; class="smallbtn"><img src="style/options.png"/></button>
                                 </td>
                             </tr>
                         </table>
@@ -52,8 +47,10 @@
                     </div>
                 </td>
 				<td id="rightcol">
-                    <h3 id="detailHeading"></h3>
-                    <div id="details"></div>
+                    <div class="scrollable" style="width:100%;">
+                        <h3 id="detailHeading"></h3>
+                        <div id="details"></div>
+                    </div>
 				</td>
             </tr>
 		</table>

@@ -163,6 +163,6 @@ function resultPopup(result, color) {
     results.style.display = "block";
     setTimeout(function () {
         results.style.display = "none";
+        results.style.backgroundColor = "white";
     }, 3000)
-    results.style.backgroundColor = "white";
 }
