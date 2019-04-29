@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ModelsUI.aspx.cs" Inherits="HobbyShop.InventoryInterface" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ModelsUI.aspx.cs" Inherits="HobbyShop.ModelsUI" %>
 ﻿<!DOCTYPE>
 
 
@@ -40,7 +40,6 @@
                                         <button id="searchOpt" class="smallbtn"><img src="style/options.png"/></button>
                                         <div class="dropdown-content">
                                             <input type='button' class='inputButton' value='Advanced Search' onclick='displayAdvSearch();' />
-                                            <input type='button' class='inputButton' value='Add New Item' onclick='displayAddItem();' />
                                         </div>
                                     </div> 
                                 </td>
@@ -48,6 +47,9 @@
                         </table>
                     </div>
                     <div class="scrollable" id="list"></div>
+                    <div>
+                        <button class='smallbtn greenbtn' style="width:100%;" title='Add model' onclick='displayAddItem();'><img src='style/add.png' /></button>
+                    </div>
                 </td>
 				<td id="rightcol">
                     <h3 id="detailHeading"></h3>

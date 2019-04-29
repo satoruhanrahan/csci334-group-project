@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace HobbyShop
 {
-    public partial class InventoryInterface : System.Web.UI.Page
+    public partial class ModelsUI : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

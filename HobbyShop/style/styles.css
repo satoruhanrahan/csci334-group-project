@@ -31,20 +31,21 @@ button, input[type="button"]{
     margin: 5px;
 }
 .greenbtn {
+    background-color:darkgreen;
+    border:1px solid green;
+    
+}
+.greenbtn:hover {
     background-color:green;
     border:1px solid darkgreen;
 }
-.greenbtn:hover {
-    background-color:darkgreen;
-    border:1px solid green;
-}
 .redbtn {
-    background-color:red;
-    border:1px solid darkred;
-}
-.redbtn:hover {
     background-color: darkred;
     border:1px solid red;
+}
+.redbtn:hover {
+    background-color:red;
+    border:1px solid darkred;
 }
 
 /*Header bar contents*/
