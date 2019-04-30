@@ -167,7 +167,7 @@ function displayAddItem() {
         "</td> </tr> <tr> <td> Description </td> <td> <textarea id='modelDes'></textarea>" +
         "</td> </tr> <tr> <td> Availability </td> <td> <input type='checkbox' id='modelAvail' />" +
         "</td> </tr> </table>" +
-        "<button class='smallbtn' title='Add model' style='background-color:green;' onclick='addNewModel();'><img src='style/add.png' /></button>";
+        "<button class='smallbtn greenbtn' title='Add model' onclick='addNewModel();'><img src='style/add.png' /></button>";
 }
 
 // Sends input to controller
@@ -179,21 +179,33 @@ function addNewModel() {
     var des = document.getElementById("modelDes").value;
     var avail = document.getElementById("modelAvail").checked;
     var stockCount = 0;
+    if (avail == "checked") {
+        avail = true;
+    }
+    else {
+        avail = false;
+    }
     
     ModelController.AddNewModel(name, type, sbjarea, Number(price), des, avail, stockCount, onInputNewModel);
 }
 
 function onInputNewModel(result) {
     resultPopup("Successfully added to the database", "green");
+    getAllItems();
 }
 
 function resultPopup(result, color) {
     var results = document.getElementById("results");
+    var bg = "light" + color;
+    if (color == "red") {
+        bg = "indianred";
+    }
     results.innerHTML = result;
     results.style.borderColor = color;
+    results.style.backgroundColor = bg;
     results.style.display = "block";
     setTimeout(function () {
         results.style.display = "none";
-        getAllItems();
+        results.style.backgroundColor = "white";
     }, 3000)
 }

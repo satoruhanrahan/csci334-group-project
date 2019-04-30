@@ -31,20 +31,21 @@ button, input[type="button"]{
     margin: 5px;
 }
 .greenbtn {
+    background-color:darkgreen;
+    border:1px solid green;
+    
+}
+.greenbtn:hover {
     background-color:green;
     border:1px solid darkgreen;
 }
-.greenbtn:hover {
-    background-color:darkgreen;
-    border:1px solid green;
-}
 .redbtn {
-    background-color:red;
-    border:1px solid darkred;
-}
-.redbtn:hover {
     background-color: darkred;
     border:1px solid red;
+}
+.redbtn:hover {
+    background-color:red;
+    border:1px solid darkred;
 }
 
 /*Header bar contents*/
@@ -121,7 +122,7 @@ button, input[type="button"]{
     margin-right: -2px; 
 }
 .listItem {
-    width: 100%;
+    width: calc(100% - 1px);
     font-family: Verdana;
     text-align: left;
     background-color:#444444;
@@ -137,11 +138,12 @@ button, input[type="button"]{
     overflow-y: auto;
 }
 #rightcol {
-    position:absolute;
+    position: absolute;
+    display: flex;
     width: calc(75% - 6px);
     height: calc(100% - 6px);
-    left:25%;
-    background-color:white;
+    left: 25%;
+    background-color: white;
 }
 #detailHeading{
     margin:10px;
@@ -178,7 +180,7 @@ button, input[type="button"]{
     display: none;
     left: 25%;
     right: 0;
-    bottom: 100px;
+    bottom: 20%;
     margin-left: auto;
     margin-right: auto;
     padding:10px;
