@@ -1,10 +1,7 @@
-
-var items;
-var searchedItems;
-
 // display all items
 $(document).ready(function () {
     var items;
+    var searchedItems;
     getAllItems();
 });
 
@@ -27,13 +24,14 @@ function displayItemNames(items) {
         button.setAttribute("class", "listItem");
         button.setAttribute("onclick", "displayModel(" + i + ")");
         button.innerHTML = items[i].Name;
-        $("#list").append(button);
+        $("#list")[0].append(button);
     }
 }
 
 // Displays an items details
 function displayModel(i) {
     $("#detailHeading")[0].innerHTML = items[i].Name;
+    $("#details")[0].innerHTML = "";
 
     var div1 = document.createElement("div");
     div1.setAttribute("id", "detailOptions");
@@ -66,12 +64,11 @@ function displayModel(i) {
     button3.append("Delete Model");
     div2.append(button3);
 
-    var available = " ";
-
+    var available = "";
     if (items[i].Availability == true) {
         available = "Yes";
     }
-    else if (items[i].Availability == false) {
+    else {
         available = "No";
     }
 
@@ -84,6 +81,7 @@ function displayModel(i) {
         tr = document.createElement("tr");
         table.append(tr);
         td1 = document.createElement("td");
+        td1.style.width = "20%";
         td2 = document.createElement("td");
         switch (j) {
             case 0:
@@ -124,7 +122,6 @@ function displayModel(i) {
     }
 }
 
-
 //Display search ( can be fixed to reusable elements)
 function getAllSearchedItems() {
     var searchInput = document.getElementById("searchBar").value;
@@ -146,6 +143,11 @@ function displaySearch(items) {
 }
 
 
+//Advanced search display
+function displayAdvSearch() {
+    document.getElementById("detailHeading").innerHTML = "Advanced Search";
+    document.getElementById("details").innerHTML = "Here will be filter & sort settings for an advanced search!";
+}
 
 // Edit details
 function editModel(i) {
@@ -184,12 +186,11 @@ function updateModel(i) {
     
     //console.log(items[i].Id, avail);
     ModelController.UpdateModelDetails(items[i].Id, name, type, sbjarea, Number(price), des, avail, stockCount, onUpdateModel);
-    
+    displayModel(i);
 }
 function onUpdateModel(result) {
-    resultPopup("Successfully Updated","green");
+    resultPopup("Successfully Updated", "green");
 }
-
 
 //displays the delete model prompt
 function displayDeleteModel(i) {
@@ -204,22 +205,15 @@ function displayDeleteModel(i) {
 function removeModel(i) {
     results.style.display = "none";
     ModelController.DeleteModel(items[i].Id, onDeleteSuccess);
-    
 }
 
 function onDeleteSuccess(result) {
-    resultPopup("Item was removed", "red");
+    resultPopup("Item was successfully removed", "green");
 }
 
 function closeDelete(i) {
     results.style.display = "none";
     displayModel(i);
-}
-
-//Advanced search display
-function displayAdvSearch() {
-    document.getElementById("detailHeading").innerHTML = "Advanced Search";
-    document.getElementById("details").innerHTML = "Here will be filter & sort settings for an advanced search!";
 }
 
 //Add new item to model table
@@ -242,15 +236,8 @@ function addNewModel() {
     var sbjarea = document.getElementById("modelArea").value;
     var price = document.getElementById("modelPrice").value;
     var des = document.getElementById("modelDes").value;
-    var avail = document.getElementById("modelAvail").checked; // already returns true/false
+    var avail = document.getElementById("modelAvail").checked;
     var stockCount = 0;
-   /* if (avail == "checked") {
-        avail = true;
-    }
-    else {
-        avail = false;
-    }
-    */
     
     ModelController.AddNewModel(name, type, sbjarea, Number(price), des, avail, stockCount, onInputNewModel);
 }
@@ -258,20 +245,4 @@ function addNewModel() {
 function onInputNewModel(result) {
     resultPopup("Successfully added to the database", "green");
     getAllItems();
-}
-
-function resultPopup(result, color) {
-    var results = document.getElementById("results");
-    var bg = "light" + color;
-    if (color == "red") {
-        bg = "indianred";
-    }
-    results.innerHTML = result;
-    results.style.borderColor = color;
-    results.style.backgroundColor = bg;
-    results.style.display = "block";
-    setTimeout(function () {
-        results.style.display = "none";
-        results.style.backgroundColor = "white";
-    }, 3000)
 }
