@@ -41,7 +41,7 @@ function displayModel(i) {
         "</div> </div>";
     var inner = " ";
     var available = " ";
-    if (items[i].Availability == "checked") {
+    if (items[i].Availability == true) {
         available = "Yes";
     }
     else {
