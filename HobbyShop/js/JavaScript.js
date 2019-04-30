@@ -1,4 +1,8 @@
-﻿// display all items
+
+var items;
+var searchedItems;
+
+// display all items
 $(document).ready(function () {
     var items;
     getAllItems();
@@ -63,10 +67,12 @@ function displayModel(i) {
     div2.append(button3);
 
     var available = " ";
-    if (items[i].Availability == "checked") {
+    console.log(items[i].Availability);
+
+    if (items[i].Availability == true) {
         available = "Yes";
     }
-    else {
+    else if (items[i].Availability == false) {
         available = "No";
     }
 
@@ -119,23 +125,49 @@ function displayModel(i) {
     }
 }
 
+
+//Display search ( can be fixed to reusable elements)
+function getAllSearchedItems() {
+    var searchInput = document.getElementById("searchBar").value;
+    ModelController.SearchDatabase(searchInput, onSearchItems);
+}
+
+function onSearchItems(result) {
+    items = JSON.parse(result);
+    displaySearch(items);
+}
+
+function displaySearch(items) {
+    var text = " ";
+
+    for (var i = items.length - 1; i >= 0; i--) {
+        text += "<button class='listItem' onClick='displayModel(" + i + ");'>" + items[i].Name + "</button><br />";
+    }
+    document.getElementById("list").innerHTML = text;
+}
+
+
+
+// Edit details
 function editModel(i) {
     document.getElementById("detailHeading").innerHTML = items[i].Name;
     var inner = " ";
     var available = " ";
+    /*
     if (items[i].Availability == true) {
         available = "checked";
     }
     else {
         available = "unchecked";
     }
-    inner = "<table id='detailTable'> <tr> <td style='width:25%;'> Name </td> <td> <input type='text' id='modelName' value='" + items[i].Name + "' />" +
-        "</td> </tr> <tr> <td> Type </td> <td> <input type='text' id='modelType' value='" + items[i].Type + "' />" +
-        "</td> </tr> <tr> <td> Subject Area </td> <td> <input type='text' id='modelArea' value='" + items[i].SbjArea + "' />" +
-        "</td> </tr> <tr> <td> Price </td> <td> <input type='number' id='modelPrice' value='" + items[i].Price + "' />" +
-        "</td> </tr> <tr> <td> Description </td> <td> <textarea id='modelDes'>" + items[i].Description + "</textarea>" +
-        "</td> </tr> <tr> <td> Availability </td> <td> <input type='checkbox' id='modelAvailable' value='" + available + "' />" +
-        "</td> </tr> <tr> <td> Total in Stock </td> <td> <input type='number' id='modelStock' value='" + items[i].StockCount + "' />" +
+    */
+    inner = "<table id='detailTable'> <tr> <td style='width:25%;'> Name </td> <td> <input type='text' id='modelName1' value='" + items[i].Name + "' />" +
+        "</td> </tr> <tr> <td> Type </td> <td> <input type='text' id='modelType1' value='" + items[i].Type + "' />" +
+        "</td> </tr> <tr> <td> Subject Area </td> <td> <input type='text' id='modelArea1' value='" + items[i].SbjArea + "' />" +
+        "</td> </tr> <tr> <td> Price </td> <td> <input type='number' id='modelPrice1' value='" + items[i].Price + "' />" +
+        "</td> </tr> <tr> <td> Description </td> <td> <textarea id='modelDes1'>" + items[i].Description + "</textarea>" +
+        "</td> </tr> <tr> <td> Availability </td> <td> <input type='checkbox' id='modelAvailable1' value='" + available + "' />" +
+        "</td> </tr> <tr> <td> Total in Stock </td> <td> <input type='number' id='modelStock1' value='" + items[i].StockCount + "' />" +
         "</td> </tr> </table>" +
         "<button type='button' title='Save changes' onclick='updateModel(" + i + ");' class='smallbtn greenbtn'> <img src='style/save.png' /></button>" +
         "<button type='button' title='Discard changes' onclick='displayModel(" + i + ");' class='smallbtn redbtn' style='float:right;'> <img src='style/close.png' /></button>";
@@ -143,10 +175,22 @@ function editModel(i) {
 }
 
 function updateModel(i) {
-    resultPopup("Not updated, this is not yet functional", "red");
-    displayModel(i);
-    /*NEEDS IMPLEMENTATION*/
+    var name = document.getElementById("modelName1").value;
+    var type = document.getElementById("modelType1").value;
+    var sbjarea = document.getElementById("modelArea1").value;
+    var price = document.getElementById("modelPrice1").value;
+    var des = document.getElementById("modelDes1").value;
+    var avail = document.getElementById("modelAvailable1").checked;
+    var stockCount = document.getElementById("modelStock1").value;
+    
+    //console.log(items[i].Id, avail);
+    ModelController.UpdateModelDetails(items[i].Id, name, type, sbjarea, Number(price), des, avail, stockCount, onUpdateModel);
+    
 }
+function onUpdateModel(result) {
+    resultPopup("Successfully Updated","green");
+}
+
 
 //displays the delete model prompt
 function displayDeleteModel(i) {
@@ -160,8 +204,12 @@ function displayDeleteModel(i) {
 
 function removeModel(i) {
     results.style.display = "none";
-    /*REQUIRES IMPLEMENTATION*/
-    resultPopup("Item was not removed, This is not functional yet", "red")
+    ModelController.DeleteModel(items[i].Id, onDeleteSuccess);
+    
+}
+
+function onDeleteSuccess(result) {
+    resultPopup("Item was removed", "red");
 }
 
 function closeDelete(i) {
@@ -195,14 +243,15 @@ function addNewModel() {
     var sbjarea = document.getElementById("modelArea").value;
     var price = document.getElementById("modelPrice").value;
     var des = document.getElementById("modelDes").value;
-    var avail = document.getElementById("modelAvail").value;
+    var avail = document.getElementById("modelAvail").checked; // already returns true/false
     var stockCount = 0;
-    if (avail == "checked") {
+   /* if (avail == "checked") {
         avail = true;
     }
     else {
         avail = false;
     }
+    */
     
     ModelController.AddNewModel(name, type, sbjarea, Number(price), des, avail, stockCount, onInputNewModel);
 }

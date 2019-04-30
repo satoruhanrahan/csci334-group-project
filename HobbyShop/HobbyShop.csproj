@@ -84,11 +84,11 @@
     <Content Include="CONTROLLER\ModelController.svc" />
     <Content Include="js\global.js" />
     <Content Include="ModelsView.aspx" />
-    <Content Include="js\models.js" />
+    <Content Include="js\javascript.js" />
     <Content Include="js\jquery.js" />
     <Content Include="style\global.css" />
     <Content Include="style\list.css" />
-    <Content Include="style\models.css" />
+    <Content Include="style\styles.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
