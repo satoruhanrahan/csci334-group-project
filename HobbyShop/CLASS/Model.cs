@@ -8,12 +8,11 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Collections;
 using System.Web.Script.Serialization;
-namespace HobbyShop
 
+namespace HobbyShop
 {
     public class Model
     {
-        
         /* model attributes*/
         private string itemName;
         private int itemNum;
@@ -32,9 +31,7 @@ namespace HobbyShop
         public string Description { get { return itemDes; } set { itemDes = value; } }
         public bool Availability { get { return itemAvail; } set { itemAvail = value; } }
         public int StockCount { get { return stockCount; } set { stockCount = value; } }
-
-
-
+        
         public Model()
         {
 
@@ -49,7 +46,5 @@ namespace HobbyShop
             this.itemAvail = availability;
             this.stockCount = stockCount;
         }
-       
-
     }
 }
