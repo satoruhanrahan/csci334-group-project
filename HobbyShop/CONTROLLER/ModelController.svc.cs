@@ -44,7 +44,7 @@ namespace HobbyShop.CONTROLLER
                 cmd.Parameters.AddWithValue("@area", x.SbjArea);
                 cmd.Parameters.AddWithValue("@price", x.Price);
                 cmd.Parameters.AddWithValue("@des", x.Description);
-                cmd.Parameters.AddWithValue("@avail", x.Availablity);
+                cmd.Parameters.AddWithValue("@avail", x.Availability);
                 cmd.Parameters.AddWithValue("@count", x.StockCount);
 
                 cmd.ExecuteNonQuery();

@@ -1,7 +1,6 @@
-﻿var items;
-
-// display all items
+﻿// display all items
 $(document).ready(function () {
+    var items;
     getAllItems();
 });
 
@@ -16,29 +15,53 @@ function onGetItems(result) {
 
 // Creates and displays a list of buttons used representing items in the inventory. 
 function displayItemNames(items) {
-    var text = " ";
+    $("#list")[0].innerHTML = "";
+    var button;
     for (var i = items.length - 1; i >= 0; i--) {
-       text += "<button class='listItem' onClick='displayModel(" + i + ");'>" + items[i].Name + "</button><br />";
+        button = document.createElement("button");
+        button.setAttribute("type", "button");
+        button.setAttribute("class", "listItem");
+        button.setAttribute("onclick", "displayModel(" + i + ")");
+        button.innerHTML = items[i].Name;
+        $("#list").append(button);
     }
-    document.getElementById("list").innerHTML = text;
-}
-
-function loadPage(page) {
-    document.getElementsByClassName('activeTab').className = 'tab'
-    document.getElementById(page).className = 'activeTab';
-    window.open(page+'UI.aspx', '_self');
 }
 
 // Displays an items details
 function displayModel(i) {
-    document.getElementById("detailHeading").innerHTML = items[i].Name +
-        "<div id='detailOptions' class='dropdown'>" +
-        "<button class='smallbtn'> <img src='style/options.png' /></button>" +
-        "<div class='dropdown-content'>" +
-        "<input type='button' class='inputButton' value='Edit Details' onclick='editModel(" + i + ");' />" +
-        "<input type='button' class='inputButton' value='Delete Item' onclick='displayDeleteModel(" + i + ");' />" +
-        "</div> </div>";
-    var inner = " ";
+    $("#detailHeading")[0].innerHTML = items[i].Name;
+
+    var div1 = document.createElement("div");
+    div1.setAttribute("id", "detailOptions");
+    div1.setAttribute("class", "dropdown");
+    $("#detailHeading").append(div1);
+
+    var img1 = document.createElement("img");
+    img1.src = "style/options.png";
+    var button1 = document.createElement("button");
+    button1.setAttribute("type", "button");
+    button1.setAttribute("class", "smallbtn");
+    button1.append(img1);
+    div1.append(button1);
+    
+    var div2 = document.createElement("div");
+    div2.setAttribute("class", "dropdown-content");
+    div1.append(div2);
+
+    var button2 = document.createElement("button");
+    button2.setAttribute("type", "button");
+    button2.setAttribute("class", "dropdown-button");
+    button2.setAttribute("onclick", "editModel(" + i + ")");
+    button2.append("Edit Details");
+    div2.append(button2);
+
+    var button3 = document.createElement("button");
+    button3.setAttribute("type", "button");
+    button3.setAttribute("class", "dropdown-button");
+    button3.setAttribute("onclick", "displayDeleteModel(" + i + ")");
+    button3.append("Delete Model");
+    div2.append(button3);
+
     var available = " ";
     if (items[i].Availability == "checked") {
         available = "Yes";
@@ -46,16 +69,54 @@ function displayModel(i) {
     else {
         available = "No";
     }
-    inner = "<table id='detailTable'> <tr> <td style='width:25%;'> Name </td> <td>" + items[i].Name + 
-        "</td > </tr > <tr> <td> ID </td> <td>" + items[i].Id +
-        "</td> </tr> <tr> <td> Type </td> <td>" + items[i].Type +
-        "</td> </tr> <tr> <td> Subject Area </td> <td>" + items[i].SbjArea +
-        "</td> </tr> <tr> <td> Price </td> <td>" + items[i].Price +
-        "</td> </tr> <tr> <td> Description </td> <td>" + items[i].Description +
-        "</td> </tr> <tr> <td> Availability </td> <td>" + available +
-        "</td> </tr> <tr> <td> Stock Count </td> <td>" + items[i].StockCount +
-        "</td> </tr> </table>";
-    document.getElementById("details").innerHTML = inner;
+
+    var table = document.createElement("table");
+    table.setAttribute("id", "detailTable"); 
+    $("#details").append(table);
+
+    var tr, td1, td2;
+    for (var j = 0; j < 8; j++) {
+        tr = document.createElement("tr");
+        table.append(tr);
+        td1 = document.createElement("td");
+        td2 = document.createElement("td");
+        switch (j) {
+            case 0:
+                td1.append("Name");
+                td2.append(items[i].Name);
+                break;
+            case 1:
+                td1.append("ID");
+                td2.append(items[i].Id);
+                break;
+            case 2:
+                td1.append("Type");
+                td2.append(items[i].Type);
+                break;
+            case 3:
+                td1.append("Subject Area");
+                td2.append(items[i].SbjArea);
+                break;
+            case 4:
+                td1.append("Price");
+                td2.append(items[i].Price);
+                break;
+            case 5:
+                td1.append("Description");
+                td2.append(items[i].Description);
+                break;
+            case 6:
+                td1.append("Availability");
+                td2.append(available);
+                break;
+            case 7:
+                td1.append("Total Stock");
+                td2.append(items[i].StockCount);
+                break;
+        }
+        tr.append(td1);
+        tr.append(td2);
+    }
 }
 
 function editModel(i) {
@@ -76,8 +137,8 @@ function editModel(i) {
         "</td> </tr> <tr> <td> Availability </td> <td> <input type='checkbox' id='modelAvailable' value='" + available + "' />" +
         "</td> </tr> <tr> <td> Total in Stock </td> <td> <input type='number' id='modelStock' value='" + items[i].StockCount + "' />" +
         "</td> </tr> </table>" +
-        "<button title='Save changes' onclick='updateModel(" + i + ");' class='smallbtn greenbtn'> <img src='style/save.png' /></button>" +
-        "<button title='Discard changes' onclick='displayModel(" + i + ");' class='smallbtn redbtn' style='float:right;'> <img src='style/close.png' /></button>";
+        "<button type='button' title='Save changes' onclick='updateModel(" + i + ");' class='smallbtn greenbtn'> <img src='style/save.png' /></button>" +
+        "<button type='button' title='Discard changes' onclick='displayModel(" + i + ");' class='smallbtn redbtn' style='float:right;'> <img src='style/close.png' /></button>";
     document.getElementById("details").innerHTML = inner;
 }
 
@@ -91,8 +152,8 @@ function updateModel(i) {
 function displayDeleteModel(i) {
     var results = document.getElementById("results");
     results.innerHTML = "Are you sure you want to delete this model <span style='font-weight:bold'>permanently</span> from the database? <br /> <br />" +
-        "<button title='Delete' onclick='removeModel(" + i + ");' class='mediumbtn greenbtn' style='float: left;'> <img src='style/delete.png' /><br/> Delete</button>" +
-        "<button title='Cancel' onclick='closeDelete(" + i + ");' class='mediumbtn redbtn' style='float:right;'> <img src='style/close.png' /><br /> Cancel</button>";
+        "<button type='button' title='Delete' onclick='removeModel(" + i + ");' class='mediumbtn greenbtn' style='float: left;'> <img src='style/delete.png' /><br/> Delete</button>" +
+        "<button type='button' title='Cancel' onclick='closeDelete(" + i + ");' class='mediumbtn redbtn' style='float:right;'> <img src='style/close.png' /><br /> Cancel</button>";
     results.style.borderColor = "red";
     results.style.display = "block";
 }
@@ -115,8 +176,8 @@ function displayAdvSearch() {
 }
 
 //Add new item to model table
-function displayAddItem() {
-    document.getElementById("detailHeading").innerHTML = "Add New Item";
+function displayAddModel() {
+    document.getElementById("detailHeading").innerHTML = "Add New Model";
     document.getElementById("details").innerHTML = "<table id='detailTable'> <tr> <td style='width:25%;'> Name </td> <td> <input type='text' id='modelName' />" +
         "</td> </tr> <tr> <td> Type </td> <td> <input type='text' id='modelType' placeholder='e.g. Display, Working...' />" +
         "</td> </tr> <tr> <td> Subject Area </td> <td> <input type='text' id='modelArea' placeholder='e.g. Train, Car, Boat...' />" +
@@ -124,7 +185,7 @@ function displayAddItem() {
         "</td> </tr> <tr> <td> Description </td> <td> <textarea id='modelDes'></textarea>" +
         "</td> </tr> <tr> <td> Availability </td> <td> <input type='checkbox' id='modelAvail' />" +
         "</td> </tr> </table>" +
-        "<button class='smallbtn greenbtn' title='Add model' onclick='addNewModel();'><img src='style/add.png' /></button>";
+        "<button type='button' class='smallbtn greenbtn' title='Add model' onclick='addNewModel();'><img src='style/add.png' /></button>";
 }
 
 // Sends input to controller

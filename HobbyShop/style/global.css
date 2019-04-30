@@ -1,0 +1,102 @@
+﻿#header {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 50px;
+    line-height: 50px;
+    width: 100%;
+    background-color: #00007f;
+    color: #ffffff;
+}
+#header .tab {
+    width: 90px;
+    height: 50px;
+    font-size: 16px;
+    background-color: #00007f;
+    color: #ffffff;
+    border: 0px;
+    margin-top: 0px;
+    margin-left: 10px;
+}
+#header .tab:hover {
+    border-bottom: 10px solid #0000ff;
+}
+#header .active {
+    border-bottom: 10px solid #000022;
+}
+#content {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 50px);
+    border-spacing: 0;
+    background-color:white;
+}
+body {
+	font-family: "Verdana";
+}
+button, input[type="button"]{
+    cursor: pointer;
+}
+.smallbtn {
+    background-color: #444444;
+    border: 1px solid black;
+    padding: 0;
+    color: white;
+}
+.smallbtn:hover {
+    background-color: #666666;
+    border: 1px solid white;
+}
+.smallbtn img {
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+    margin-bottom:2px;
+}
+.mediumbtn {
+    width: 100px;
+    padding: 0;
+    color: white;
+}
+.mediumbtn img {
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+}
+.greenbtn {
+    background-color:darkgreen;
+    border:1px solid green;
+}
+.greenbtn:hover {
+    background-color:green;
+    border:1px solid darkgreen;
+}
+.redbtn {
+    background-color: darkred;
+    border:1px solid red;
+}
+.redbtn:hover {
+    background-color:red;
+    border:1px solid darkred;
+}
+.scrollable {
+    overflow-y: auto;
+}
+#results {
+    position: absolute;
+    display: none;
+    left: 25%;
+    right: 0;
+    bottom: 20%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    width: 400px;
+    vertical-align: middle;
+    text-align: center;
+    background-color: white;
+    border: solid black 1px;
+    border-radius: 3px;
+}

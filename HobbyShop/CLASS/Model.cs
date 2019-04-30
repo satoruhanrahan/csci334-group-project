@@ -30,7 +30,7 @@ namespace HobbyShop
         public string SbjArea { get { return itemSbjArea; } set { itemSbjArea = value; } }
         public double Price { get { return itemPrice; } set { itemPrice = value; } }
         public string Description { get { return itemDes; } set { itemDes = value; } }
-        public bool Availablity { get { return itemAvail; } set { itemAvail = value; } }
+        public bool Availability { get { return itemAvail; } set { itemAvail = value; } }
         public int StockCount { get { return stockCount; } set { stockCount = value; } }
 
 

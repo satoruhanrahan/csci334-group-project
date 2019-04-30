@@ -10,7 +10,7 @@
 namespace HobbyShop {
     
     
-    public partial class ModelsUI {
+    public partial class ModelsView {
         
         /// <summary>
         /// form1 control.

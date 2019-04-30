@@ -1,148 +1,10 @@
-body {
-	font-family: "Verdana";
-}
-button, input[type="button"]{
-    cursor: pointer;
-}
-.smallbtn {
-    background-color: #444444;
-    border: 1px solid black;
-    padding: 0;
-    color: white;
-}
-.smallbtn:hover {
-    background-color: #666666;
-    border: 1px solid white;
-}
-.smallbtn img {
-    width: 20px;
-    height: 20px;
-    margin: 5px;
-}
-.mediumbtn {
-    width: 100px;
-    padding: 0;
-    padding-bottom:5px;
-    color: white;
-}
-.mediumbtn img {
-    width: 20px;
-    height: 20px;
-    margin: 5px;
-}
-.greenbtn {
-    background-color:darkgreen;
-    border:1px solid green;
-    
-}
-.greenbtn:hover {
-    background-color:green;
-    border:1px solid darkgreen;
-}
-.redbtn {
-    background-color: darkred;
-    border:1px solid red;
-}
-.redbtn:hover {
-    background-color:red;
-    border:1px solid darkred;
-}
-
-/*Header bar contents*/
-#header {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    height: 50px;
-    line-height: 50px;
-    width:100%;
-    background-color: #00007f;
-    color: #ffffff;
-}
-#header .tab, #header .activeTab {
-	width:90px;
-	height:50px;
-    font-size: 16px;
-	background-color: #00007f;
-	color: #ffffff;
-	border:0px;
-    margin-top:0px;
-    margin-right:10px;
-}
-#header .tab:hover {
-	border-bottom:10px solid #0000ff;
-}
-#header .activeTab {
-    border-bottom:10px solid #000044;
-}
-#models {
-    margin-left:30px;
-}   
-
-/* Main table content */
-.heading2 {
-    font-size: 18px;
-}
-#mainContent {
-    position: absolute;
-    top: 50px;
-    left: 0px;
-    width: 100%;
-    height: calc(100% - 50px);
-    border-spacing: 0;
-}
-#mainContent td {
-    border:2px solid black;
-}
-#leftcol {
-    width: 25%;
-    height: calc(100% - 6px);
-    position:absolute;
-    display: flex;
-    flex-direction: column;
-    background-color:black;
-}
-#searchHead {
-    width: 100%;
-    margin: -3px 0 0 -4px;
-}
-#searchBar {
-    width:100%;
-    height:30px;
-    border:0;
-}
-.searchBarBtn {
-    width: 25px;
-}
-#searchBtn {
-    margin-left: -2px;
-    margin-right: -3px;
-}
-#searchOpt {
-    margin-right: -2px; 
-}
-.listItem {
-    width: calc(100% - 1px);
-    font-family: Verdana;
-    text-align: left;
-    background-color:#444444;
-    color:white;
-    border:1px solid black;
-    height: 50px;  
-}
-.listItem:hover {
-    background-color:#666666;
-    border:1px solid white;
-}
-.scrollable {
-    overflow-y: auto;
-}
 #rightcol {
     position: absolute;
+    top: 0;
+    left: calc(25% + 3px);
     display: flex;
-    width: calc(75% - 6px);
-    height: calc(100% - 6px);
-    left: 25%;
+    width: calc(75% - 3px);
+    height: 100%;
     background-color: white;
 }
 #detailHeading{
@@ -175,22 +37,6 @@ button, input[type="button"]{
 #detailOptions {
     float:right;
 }
-#results {
-    position: absolute;
-    display: none;
-    left: 25%;
-    right: 0;
-    bottom: 20%;
-    margin-left: auto;
-    margin-right: auto;
-    padding:10px;
-    width: 400px;
-    vertical-align: middle;
-    text-align: center;
-    background-color: white;
-    border: solid black 1px;
-    border-radius: 3px;
-}
 
 /* Dropdown menu */
 .dropdown {
@@ -208,7 +54,7 @@ button, input[type="button"]{
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
-.dropdown-content input {
+.dropdown-button {
     background-color:#444444;
     width:100%;
     text-decoration: none;
@@ -216,7 +62,7 @@ button, input[type="button"]{
     border:1px solid black;
     color:white;
 }
-.dropdown-content input:hover {
+.dropdown-button:hover {
     background-color: #666666;
     border:1px solid white;
 }
@@ -225,12 +71,4 @@ button, input[type="button"]{
 }
 .dropdown:hover .dropbtn {
     background-color: #cccccc;
-}
-
-/* Footer (copywrite) */
-footer {
-	text-align: left;
-	position: fixed;
-	bottom: 0;
-	left:0;
 }
