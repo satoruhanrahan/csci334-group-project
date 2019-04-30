@@ -177,14 +177,15 @@ function addNewModel() {
     var sbjarea = document.getElementById("modelArea").value;
     var price = document.getElementById("modelPrice").value;
     var des = document.getElementById("modelDes").value;
-    var avail = document.getElementById("modelAvail").checked;
+    var avail = document.getElementById("modelAvail").checked; // already returns true/false
     var stockCount = 0;
-    if (avail == "checked") {
+   /* if (avail == "checked") {
         avail = true;
     }
     else {
         avail = false;
     }
+    */
     
     ModelController.AddNewModel(name, type, sbjarea, Number(price), des, avail, stockCount, onInputNewModel);
 }
