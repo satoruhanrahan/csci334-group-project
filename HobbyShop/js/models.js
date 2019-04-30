@@ -1,10 +1,25 @@
-// display all items
+// on Page load...
 $(document).ready(function () {
+    // display all items
     var items;
     var searchedItems;
     getAllItems();
+    // prevent form submission on enter
+    $('form').keypress(function (event) {
+        return event.keyCode != 13;
+    }); 
+    // Event listener for search
+    var searchbar = $("#searchbar")[0];
+    searchbar.addEventListener("keyup", function (event) {
+        //limit speed at which click is called
+        setTimeout(function () {
+            event.preventDefault();
+            $("#searchBtn")[0].click();
+        }, 1500)
+    });
 });
 
+// Display all items
 function getAllItems() {
     ModelController.ReturnFromDatabase(onGetItems);
 }
@@ -124,13 +139,13 @@ function displayModel(i) {
 
 //Display search ( can be fixed to reusable elements)
 function getAllSearchedItems() {
-    var searchInput = document.getElementById("searchBar").value;
+    var searchInput = document.getElementById("searchbar").value;
     ModelController.SearchDatabase(searchInput, onSearchItems);
 }
 
 function onSearchItems(result) {
     items = JSON.parse(result);
-    displaySearch(items);
+    displayItemNames(items);
 }
 
 function displaySearch(items) {
