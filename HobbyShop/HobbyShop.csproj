@@ -70,7 +70,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MasterContent.aspx" />
     <None Include="packages.config" />
+    <Content Include="MasterPage.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -79,38 +81,44 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CONTROLLER\CustomerController.svc" />
     <Content Include="CONTROLLER\ModelController.svc" />
-    <Content Include="CONTROLLER\SupplierController.svc" />
-    <Content Include="ModelsUI.aspx" />
-    <Content Include="js\JavaScript.js" />
+    <Content Include="js\global.js" />
+    <Content Include="ModelsView.aspx" />
+    <Content Include="js\javascript.js" />
     <Content Include="js\jquery.js" />
-    <Content Include="style\back.jpg" />
-    <Content Include="style\logo.png" />
+    <Content Include="style\global.css" />
+    <Content Include="style\list.css" />
     <Content Include="style\styles.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CLASS\Customer.cs" />
     <Compile Include="CLASS\Model.cs" />
-    <Compile Include="CLASS\Supplier.cs" />
-    <Compile Include="CONTROLLER\CustomerController.svc.cs">
-      <DependentUpon>CustomerController.svc</DependentUpon>
-    </Compile>
     <Compile Include="CONTROLLER\ModelController.svc.cs">
       <DependentUpon>ModelController.svc</DependentUpon>
     </Compile>
-    <Compile Include="CONTROLLER\SupplierController.svc.cs">
-      <DependentUpon>SupplierController.svc</DependentUpon>
-    </Compile>
-    <Compile Include="ModelsUI.aspx.cs">
-      <DependentUpon>ModelsUI.aspx</DependentUpon>
+    <Compile Include="ModelsView.aspx.cs">
+      <DependentUpon>ModelsView.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ModelsUI.aspx.designer.cs">
-      <DependentUpon>ModelsUI.aspx</DependentUpon>
+    <Compile Include="ModelsView.aspx.designer.cs">
+      <DependentUpon>ModelsView.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MasterPage.Master.cs">
+      <DependentUpon>MasterPage.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage.Master.designer.cs">
+      <DependentUpon>MasterPage.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterContent.aspx.cs">
+      <DependentUpon>MasterContent.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterContent.aspx.designer.cs">
+      <DependentUpon>MasterContent.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
