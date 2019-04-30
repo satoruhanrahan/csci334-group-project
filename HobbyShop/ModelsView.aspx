@@ -17,10 +17,10 @@
                         <input type="text" id="searchbar" placeholder="Search Models..." />
                     </td>
                     <td class="searchBarBtn">
-                        <button type="button" id="searchBtn" class="smallbtn" title="Search"><img src="style/search.png" /></button>
+                        <button type="button" id="searchBtn" class="smallbtn" title="Search" onclick='getAllSearchedItems();'><img src="style/search.png" /></button>
                     </td>
                     <td class="searchBarBtn">
-                        <button type="button" id="searchOpt" title="Advanced search" onclick='displayAdvSearch()' ; class="smallbtn"><img src="style/options.png" /></button>
+                        <button type="button" id="searchOpt" title="Advanced search" onclick="displayAdvSearch();" class="smallbtn"><img src="style/options.png" /></button>
                     </td>
                 </tr>
             </table>
@@ -39,6 +39,7 @@
             <asp:scriptmanager runat="server">
                 <Services>
                    <asp:ServiceReference Path="~/CONTROLLER/ModelController.svc" />
+                    <asp:ServiceReference Path="~/CONTROLLER/CustomerController.svc" />
                 </Services>
             </asp:scriptmanager>
         </form>
