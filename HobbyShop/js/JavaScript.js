@@ -41,12 +41,14 @@ function displayModel(i) {
         "</div> </div>";
     var inner = " ";
     var available = " ";
+
     if (items[i].Availability == true) {
         available = "Yes";
     }
-    else {
+    else if (items[i].Availability == false) {
         available = "No";
     }
+
     inner = "<table id='detailTable'> <tr> <td style='width:25%;'> Name </td> <td>" + items[i].Name + 
         "</td > </tr > <tr> <td> ID </td> <td>" + items[i].Id +
         "</td> </tr> <tr> <td> Type </td> <td>" + items[i].Type +
