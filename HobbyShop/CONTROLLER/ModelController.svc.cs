@@ -106,6 +106,118 @@ namespace HobbyShop.CONTROLLER
             return json;
 
         }
+        [OperationContract]
+        public string SearchDatabase(string input)
+        {
+            if (con.State == System.Data.ConnectionState.Closed)
+            {
+                cmd.Connection = con;
+                con.Open();
+            }
+            string query = "SELECT * FROM Models WHERE Name LIKE '%" + input + "%' OR Type LIKE '%" + input + "%' OR SubjectArea LIKE '%" + input + "%' ORDER BY Name";
+
+            cmd = new OleDbCommand(query, con);
+
+            ArrayList objects = new ArrayList();
+
+            OleDbDataReader reader = cmd.ExecuteReader();
+
+            int itemNum;
+            string itemName;
+            string itemType;
+            string itemSbjArea;
+            double itemPrice;
+            string itemDes;
+            bool itemAvail;
+            int stockCount;
+
+            while (reader.Read())
+            {
+                itemNum = Convert.ToInt32(reader["ItemNumber"]);
+                itemName = Convert.ToString(reader["Name"]);
+                itemType = Convert.ToString(reader["Type"]);
+                itemSbjArea = Convert.ToString(reader["SubjectArea"]);
+                itemPrice = Convert.ToDouble(reader["CurrentRetailPrice"]);
+                itemDes = Convert.ToString(reader["Description"]);
+                itemAvail = Convert.ToBoolean(reader["Availability"]);
+                stockCount = Convert.ToInt32(reader["StockCount"]);
+
+                Model _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes, itemAvail, stockCount);
+                _model.Id = itemNum;
+
+                objects.Add(_model);
+            }
+            con.Close();
+
+            string json = new JavaScriptSerializer().Serialize(objects);
+            return json;
+        }
+
+        [OperationContract]
+        public string UpdateModelDetails(int id, string name, string type, string area, double price, string des, bool avail, int stockCount)
+        {
+            try
+            {
+               //Model x = new Model(name, type, area, price, des, avail, stockCount);
+                if (con.State == System.Data.ConnectionState.Closed)
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                }
+                 
+                string query = "UPDATE Models SET Name='@name',Type='@type',SubjectArea='@area',CurrentRetailPrice=@price ,Description='@des', Availability=@avail, StockCount=@count WHERE ItemNumber=@id";
+
+                cmd = new OleDbCommand(query, con);
+
+                cmd.Parameters.AddWithValue("@name",name);
+                cmd.Parameters.AddWithValue("@type", type);
+                cmd.Parameters.AddWithValue("@area",area);
+                cmd.Parameters.AddWithValue("@price",price);
+                cmd.Parameters.AddWithValue("@des",des);
+                cmd.Parameters.AddWithValue("@avail",avail);
+                cmd.Parameters.AddWithValue("@count",stockCount);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.ExecuteNonQuery();
+                con.Close();
+
+              
+                return "";
+            }
+            catch (Exception oEx)
+            {
+                return oEx.Message;
+            }
+        }
+
+        [OperationContract]
+        public string DeleteModel(int id)
+        {
+            try
+            {
+                //Model x = new Model(name, type, area, price, des, avail, stockCount);
+                if (con.State == System.Data.ConnectionState.Closed)
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                }
+
+                string query = "DELETE FROM Models WHERE ItemNumber=@id";
+
+                cmd = new OleDbCommand(query, con);  
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.ExecuteNonQuery();
+                con.Close();
+
+
+                return "";
+            }
+            catch (Exception oEx)
+            {
+                return oEx.Message;
+            }
+        }
 
 
     }

@@ -79,7 +79,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CONTROLLER\CustomerController.svc" />
     <Content Include="CONTROLLER\ModelController.svc" />
+    <Content Include="CONTROLLER\SupplierController.svc" />
     <Content Include="ModelsUI.aspx" />
     <Content Include="js\JavaScript.js" />
     <Content Include="js\jquery.js" />
@@ -91,8 +93,15 @@
   <ItemGroup>
     <Compile Include="CLASS\Customer.cs" />
     <Compile Include="CLASS\Model.cs" />
+    <Compile Include="CLASS\Supplier.cs" />
+    <Compile Include="CONTROLLER\CustomerController.svc.cs">
+      <DependentUpon>CustomerController.svc</DependentUpon>
+    </Compile>
     <Compile Include="CONTROLLER\ModelController.svc.cs">
       <DependentUpon>ModelController.svc</DependentUpon>
+    </Compile>
+    <Compile Include="CONTROLLER\SupplierController.svc.cs">
+      <DependentUpon>SupplierController.svc</DependentUpon>
     </Compile>
     <Compile Include="ModelsUI.aspx.cs">
       <DependentUpon>ModelsUI.aspx</DependentUpon>

@@ -30,10 +30,10 @@
                         <table id="searchHead">
                             <tr>
                                 <td>
-                                    <input type="text" id="searchbar" placeholder="Search Models..."/> 
+                                    <input type="text" id="searchBar" placeholder="Search Models..."/> 
                                 </td>
                                 <td class="searchBarBtn">
-                                    <button id="searchBtn" class="smallbtn" title="Search"><img src="style/search.png"/></button>
+                                    <button id="searchBtn" class="smallbtn "title ="Search" onclick='getAllSearchedItems();'><img src="style/search.png"/></button>
                                 </td>
                                 <td class="searchBarBtn">
                                     <div class="dropdown">
@@ -60,6 +60,7 @@
             <asp:scriptmanager runat="server">
                 <Services>
                    <asp:ServiceReference Path="~/CONTROLLER/ModelController.svc" />
+                    <asp:ServiceReference Path="~/CONTROLLER/CustomerController.svc" />
                 </Services>
             </asp:scriptmanager>
         </form>
