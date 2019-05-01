@@ -94,33 +94,41 @@ namespace HobbyShop.CONTROLLER
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
-                con.Open();
-                string query = "SELECT * FROM Models WHERE Name LIKE '%" + input + "%' OR Type LIKE '%" + input + "%' OR SubjectArea LIKE '%" + input + "%' ORDER BY Name";
-                OleDbCommand cmd = new OleDbCommand(query, con);
-                cmd.ExecuteNonQuery();
-
-                ArrayList objects = new ArrayList();
-
-                OleDbDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                try 
                 {
-                    int itemNum = Convert.ToInt32(reader["ItemNumber"]);
-                    string itemName = Convert.ToString(reader["Name"]);
-                    string itemType = Convert.ToString(reader["Type"]);
-                    string itemSbjArea = Convert.ToString(reader["SubjectArea"]);
-                    double itemPrice = Convert.ToDouble(reader["CurrentRetailPrice"]);
-                    string itemDes = Convert.ToString(reader["Description"]);
-                    bool itemAvail = Convert.ToBoolean(reader["Availability"]);
-                    int stockCount = Convert.ToInt32(reader["StockCount"]);
+                    con.Open();
+                    string query = "SELECT * FROM Models WHERE Name LIKE '%" + input + "%' OR Type LIKE '%" + input + "%' OR SubjectArea LIKE '%" + input + "%' ORDER BY Name";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.ExecuteNonQuery();
 
-                    Model _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes, itemAvail, stockCount);
-                    _model.Id = itemNum;
+                    ArrayList objects = new ArrayList();
 
-                    objects.Add(_model);
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int itemNum = Convert.ToInt32(reader["ItemNumber"]);
+                        string itemName = Convert.ToString(reader["Name"]);
+                        string itemType = Convert.ToString(reader["Type"]);
+                        string itemSbjArea = Convert.ToString(reader["SubjectArea"]);
+                        double itemPrice = Convert.ToDouble(reader["CurrentRetailPrice"]);
+                        string itemDes = Convert.ToString(reader["Description"]);
+                        bool itemAvail = Convert.ToBoolean(reader["Availability"]);
+                        int stockCount = Convert.ToInt32(reader["StockCount"]);
+
+                        Model _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes, itemAvail, stockCount);
+                        _model.Id = itemNum;
+
+                        objects.Add(_model);
+                    }
+
+                    string json = new JavaScriptSerializer().Serialize(objects);
+                    return json;
                 }
-
-                string json = new JavaScriptSerializer().Serialize(objects);
-                return json;
+                catch (Exception e)
+                {
+                    Console.WriteLine("Caught Exception:", e);
+                    return "{}";
+                }
             }
         }
 

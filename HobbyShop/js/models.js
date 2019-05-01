@@ -8,14 +8,11 @@ $(document).ready(function () {
     $('form').keypress(function (event) {
         return event.keyCode != 13;
     }); 
-    // Event listener for search
+    // Search as the user types
     var searchbar = $("#searchbar")[0];
     searchbar.addEventListener("keyup", function (event) {
-        //limit speed at which click is called
-        setTimeout(function () {
-            event.preventDefault();
-            $("#searchBtn")[0].click();
-        }, 1500)
+        event.preventDefault();
+        $("#searchBtn")[0].click();
     });
 });
 
@@ -148,16 +145,6 @@ function onSearchItems(result) {
     displayItemNames(items);
 }
 
-function displaySearch(items) {
-    var text = " ";
-
-    for (var i = items.length - 1; i >= 0; i--) {
-        text += "<button class='listItem' onClick='displayModel(" + i + ");'>" + items[i].Name + "</button><br />";
-    }
-    document.getElementById("list").innerHTML = text;
-}
-
-
 //Advanced search display
 function displayAdvSearch() {
     document.getElementById("detailHeading").innerHTML = "Advanced Search";
@@ -203,6 +190,9 @@ function updateModel(i) {
     ModelController.UpdateModelDetails(items[i].Id, name, type, sbjarea, Number(price), des, avail, stockCount, onUpdateModel);
     displayModel(i);
 }
+
+//TO DO: I need to make a function which deletes/updates a single button, rather than refreshing the entire dataset.
+
 function onUpdateModel(result) {
     resultPopup("Successfully Updated", "green");
 }
@@ -223,12 +213,18 @@ function removeModel(i) {
 }
 
 function onDeleteSuccess(result) {
+    clearDisplay();
+    getAllItems();
     resultPopup("Item was successfully removed", "green");
+}
+
+function clearDisplay() {
+    $("#detailHeading")[0].innerHTML = "";
+    $("#details")[0].innerHTML = "";
 }
 
 function closeDelete(i) {
     results.style.display = "none";
-    displayModel(i);
 }
 
 //Add new item to model table
@@ -259,5 +255,6 @@ function addNewModel() {
 
 function onInputNewModel(result) {
     resultPopup("Successfully added to the database", "green");
+    clearDisplay();
     getAllItems();
 }
