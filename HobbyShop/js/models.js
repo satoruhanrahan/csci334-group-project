@@ -76,12 +76,11 @@ function displayModel(i) {
     button3.append("Delete Model");
     div2.append(button3);
 
-    var available;
-
+    var available = "";
     if (items[i].Availability == true) {
         available = "Yes";
     }
-    else if (items[i].Availability == false) {
+    else {
         available = "No";
     }
 

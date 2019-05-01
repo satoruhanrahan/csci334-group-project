@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.OleDb;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -19,42 +20,35 @@ namespace HobbyShop.CONTROLLER
 
     public class ModelController
     {
-        static OleDbConnection con = new OleDbConnection("Provider=Microsoft.JET.OLEDB.4.0; Data Source=" + System.Web.Hosting.HostingEnvironment.MapPath("~/Database.mdb"));
-        static OleDbCommand cmd = new OleDbCommand();
+        string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
 
         [OperationContract]
         public string AddNewModel(string name, string type, string area, double price, string des, bool avail, int stockCount)
         {
-            try
+            using (OleDbConnection con = new OleDbConnection(connectionString))
             {
-                Model x = new Model(name, type, area, price, des, avail, stockCount);
-
-                if (con.State == System.Data.ConnectionState.Closed)
+                try
                 {
-                    cmd.Connection = con;
+                    //Model x = new Model(name, type, area, price, des, avail, stockCount);
                     con.Open();
+                    string query = "INSERT INTO Models (Name,Type,SubjectArea,CurrentRetailPrice,Description,Availability,StockCount) VALUES (@name,@type,@area,@price,@des,@avail, @count)";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.Parameters.AddWithValue("@name", name);
+                    cmd.Parameters.AddWithValue("@type", type);
+                    cmd.Parameters.AddWithValue("@area", area);
+                    cmd.Parameters.AddWithValue("@price", price);
+                    cmd.Parameters.AddWithValue("@des", des);
+                    cmd.Parameters.AddWithValue("@avail", avail);
+                    cmd.Parameters.AddWithValue("@count", stockCount);
+
+                    cmd.ExecuteNonQuery();
+
+                    return "";
                 }
-
-                string query = "INSERT INTO Models (Name,Type,SubjectArea,CurrentRetailPrice,Description,Availability,StockCount) VALUES (@name,@type,@area,@price,@des,@avail, @count)";
-
-                cmd = new OleDbCommand(query, con);
-
-                cmd.Parameters.AddWithValue("@name", x.Name);
-                cmd.Parameters.AddWithValue("@type", x.Type);
-                cmd.Parameters.AddWithValue("@area", x.SbjArea);
-                cmd.Parameters.AddWithValue("@price", x.Price);
-                cmd.Parameters.AddWithValue("@des", x.Description);
-                cmd.Parameters.AddWithValue("@avail", x.Availability);
-                cmd.Parameters.AddWithValue("@count", x.StockCount);
-
-                cmd.ExecuteNonQuery();
-                con.Close();
-               
-                return "";
-            }
-            catch (Exception oEx)
-            {
-                return oEx.Message;
+                catch (Exception oEx)
+                {
+                    return oEx.Message;
+                }
             }
         }
 
@@ -62,172 +56,134 @@ namespace HobbyShop.CONTROLLER
         [OperationContract]
         public string ReturnFromDatabase()
         {
-            if (con.State == System.Data.ConnectionState.Closed)
+            using (OleDbConnection con = new OleDbConnection(connectionString))
             {
-                cmd.Connection = con;
                 con.Open();
-            }
-            string query = "SELECT * FROM Models ";
-
-            cmd = new OleDbCommand(query, con);
-
-            ArrayList objects = new ArrayList();
-
-            OleDbDataReader reader = cmd.ExecuteReader();
-
-            int itemNum;
-            string itemName;
-            string itemType;
-            string itemSbjArea;
-            double itemPrice;
-            string itemDes;
-            bool itemAvail;
-            int stockCount;
-
-            while (reader.Read())
-            {
-                itemNum = Convert.ToInt32(reader["ItemNumber"]);
-                itemName = Convert.ToString(reader["Name"]);
-                itemType = Convert.ToString(reader["Type"]);
-                itemSbjArea = Convert.ToString(reader["SubjectArea"]);
-                itemPrice = Convert.ToDouble(reader["CurrentRetailPrice"]);
-                itemDes = Convert.ToString(reader["Description"]);
-                itemAvail = Convert.ToBoolean(reader["Availability"]);
-                stockCount = Convert.ToInt32(reader["StockCount"]);
-
-                Model _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes, itemAvail, stockCount);
-                _model.Id = itemNum;
-
-                objects.Add(_model);
-            }
-            con.Close();
-           
-            string json = new JavaScriptSerializer().Serialize(objects);
-            return json;
-
-        }
-        [OperationContract]
-        public string SearchDatabase(string input)
-        {
-            try
-            {
-                if (con.State == System.Data.ConnectionState.Closed)
-                {
-                    cmd.Connection = con;
-                    con.Open();
-                }
-                string query = "SELECT * FROM Models WHERE Name LIKE '%" + input + "%' OR Type LIKE '%" + input + "%' OR SubjectArea LIKE '%" + input + "%' ORDER BY Name";
-
-                cmd = new OleDbCommand(query, con);
+                string query = "SELECT * FROM Models ";
+                OleDbCommand cmd = new OleDbCommand(query, con);
+                cmd.ExecuteNonQuery();
 
                 ArrayList objects = new ArrayList();
 
                 OleDbDataReader reader = cmd.ExecuteReader();
 
-                int itemNum;
-                string itemName;
-                string itemType;
-                string itemSbjArea;
-                double itemPrice;
-                string itemDes;
-                bool itemAvail;
-                int stockCount;
-
                 while (reader.Read())
                 {
-                    itemNum = Convert.ToInt32(reader["ItemNumber"]);
-                    itemName = Convert.ToString(reader["Name"]);
-                    itemType = Convert.ToString(reader["Type"]);
-                    itemSbjArea = Convert.ToString(reader["SubjectArea"]);
-                    itemPrice = Convert.ToDouble(reader["CurrentRetailPrice"]);
-                    itemDes = Convert.ToString(reader["Description"]);
-                    itemAvail = Convert.ToBoolean(reader["Availability"]);
-                    stockCount = Convert.ToInt32(reader["StockCount"]);
+                    int itemNum = Convert.ToInt32(reader["ItemNumber"]);
+                    string itemName = Convert.ToString(reader["Name"]);
+                    string itemType = Convert.ToString(reader["Type"]);
+                    string itemSbjArea = Convert.ToString(reader["SubjectArea"]);
+                    double itemPrice = Convert.ToDouble(reader["CurrentRetailPrice"]);
+                    string itemDes = Convert.ToString(reader["Description"]);
+                    bool itemAvail = Convert.ToBoolean(reader["Availability"]);
+                    int stockCount = Convert.ToInt32(reader["StockCount"]);
 
                     Model _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes, itemAvail, stockCount);
                     _model.Id = itemNum;
 
                     objects.Add(_model);
                 }
-                con.Close();
 
                 string json = new JavaScriptSerializer().Serialize(objects);
                 return json;
             }
-            catch (Exception e) // *Oliver*: Added an try catch here to catch exceptions that were crashing during searches
+        }
+
+        [OperationContract]
+        public string SearchDatabase(string input)
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
             {
-                Console.WriteLine("Caught Exception:", e);
-                return "{}";
+                try 
+                {
+                    con.Open();
+                    string query = "SELECT * FROM Models WHERE Name LIKE '%" + input + "%' OR Type LIKE '%" + input + "%' OR SubjectArea LIKE '%" + input + "%' ORDER BY Name";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.ExecuteNonQuery();
+
+                    ArrayList objects = new ArrayList();
+
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int itemNum = Convert.ToInt32(reader["ItemNumber"]);
+                        string itemName = Convert.ToString(reader["Name"]);
+                        string itemType = Convert.ToString(reader["Type"]);
+                        string itemSbjArea = Convert.ToString(reader["SubjectArea"]);
+                        double itemPrice = Convert.ToDouble(reader["CurrentRetailPrice"]);
+                        string itemDes = Convert.ToString(reader["Description"]);
+                        bool itemAvail = Convert.ToBoolean(reader["Availability"]);
+                        int stockCount = Convert.ToInt32(reader["StockCount"]);
+
+                        Model _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes, itemAvail, stockCount);
+                        _model.Id = itemNum;
+
+                        objects.Add(_model);
+                    }
+
+                    string json = new JavaScriptSerializer().Serialize(objects);
+                    return json;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Caught Exception:", e);
+                    return "{}";
+                }
             }
         }
 
         [OperationContract]
         public string UpdateModelDetails(int id, string name, string type, string area, double price, string des, bool avail, int stockCount)
         {
-            try
+            using (OleDbConnection con = new OleDbConnection(connectionString))
             {
-               //Model x = new Model(name, type, area, price, des, avail, stockCount);
-                if (con.State == System.Data.ConnectionState.Closed)
+                try
                 {
-                    cmd.Connection = con;
+                    //Model x = new Model(name, type, area, price, des, avail, stockCount);
                     con.Open();
+                    string query = "UPDATE Models SET Name='@name',Type='@type',SubjectArea='@area',CurrentRetailPrice=@price ,Description='@des', Availability=@avail, StockCount=@count WHERE ItemNumber=@id";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.Parameters.AddWithValue("@name", name);
+                    cmd.Parameters.AddWithValue("@type", type);
+                    cmd.Parameters.AddWithValue("@area", area);
+                    cmd.Parameters.AddWithValue("@price", price);
+                    cmd.Parameters.AddWithValue("@des", des);
+                    cmd.Parameters.AddWithValue("@avail", avail);
+                    cmd.Parameters.AddWithValue("@count", stockCount);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+
+                    return "";
                 }
-                 
-                string query = "UPDATE Models SET Name='@name',Type='@type',SubjectArea='@area',CurrentRetailPrice=@price ,Description='@des', Availability=@avail, StockCount=@count WHERE ItemNumber=@id";
-
-                cmd = new OleDbCommand(query, con);
-
-                cmd.Parameters.AddWithValue("@name",name);
-                cmd.Parameters.AddWithValue("@type", type);
-                cmd.Parameters.AddWithValue("@area",area);
-                cmd.Parameters.AddWithValue("@price",price);
-                cmd.Parameters.AddWithValue("@des",des);
-                cmd.Parameters.AddWithValue("@avail",avail);
-                cmd.Parameters.AddWithValue("@count",stockCount);
-                cmd.Parameters.AddWithValue("@id", id);
-
-                cmd.ExecuteNonQuery();
-                con.Close();
-
-              
-                return "";
-            }
-            catch (Exception oEx)
-            {
-                return oEx.Message;
+                catch (Exception oEx)
+                {
+                    return oEx.Message;
+                }
             }
         }
 
         [OperationContract]
         public string DeleteModel(int id)
         {
-            try
+            using (OleDbConnection con = new OleDbConnection(connectionString))
             {
-                //Model x = new Model(name, type, area, price, des, avail, stockCount);
-                if (con.State == System.Data.ConnectionState.Closed)
+                try
                 {
-                    cmd.Connection = con;
                     con.Open();
+                    string query = "DELETE FROM Models WHERE ItemNumber=@id";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                    return "";
                 }
-
-                string query = "DELETE FROM Models WHERE ItemNumber=@id";
-
-                cmd = new OleDbCommand(query, con);  
-                cmd.Parameters.AddWithValue("@id", id);
-
-                cmd.ExecuteNonQuery();
-                con.Close();
-
-
-                return "";
-            }
-            catch (Exception oEx)
-            {
-                return oEx.Message;
+                catch (Exception oEx)
+                {
+                    return oEx.Message;
+                }
             }
         }
-
-
     }
 }
 
