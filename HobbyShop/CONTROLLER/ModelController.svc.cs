@@ -109,48 +109,56 @@ namespace HobbyShop.CONTROLLER
         [OperationContract]
         public string SearchDatabase(string input)
         {
-            if (con.State == System.Data.ConnectionState.Closed)
+            try
             {
-                cmd.Connection = con;
-                con.Open();
+                if (con.State == System.Data.ConnectionState.Closed)
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                }
+                string query = "SELECT * FROM Models WHERE Name LIKE '%" + input + "%' OR Type LIKE '%" + input + "%' OR SubjectArea LIKE '%" + input + "%' ORDER BY Name";
+
+                cmd = new OleDbCommand(query, con);
+
+                ArrayList objects = new ArrayList();
+
+                OleDbDataReader reader = cmd.ExecuteReader();
+
+                int itemNum;
+                string itemName;
+                string itemType;
+                string itemSbjArea;
+                double itemPrice;
+                string itemDes;
+                bool itemAvail;
+                int stockCount;
+
+                while (reader.Read())
+                {
+                    itemNum = Convert.ToInt32(reader["ItemNumber"]);
+                    itemName = Convert.ToString(reader["Name"]);
+                    itemType = Convert.ToString(reader["Type"]);
+                    itemSbjArea = Convert.ToString(reader["SubjectArea"]);
+                    itemPrice = Convert.ToDouble(reader["CurrentRetailPrice"]);
+                    itemDes = Convert.ToString(reader["Description"]);
+                    itemAvail = Convert.ToBoolean(reader["Availability"]);
+                    stockCount = Convert.ToInt32(reader["StockCount"]);
+
+                    Model _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes, itemAvail, stockCount);
+                    _model.Id = itemNum;
+
+                    objects.Add(_model);
+                }
+                con.Close();
+
+                string json = new JavaScriptSerializer().Serialize(objects);
+                return json;
             }
-            string query = "SELECT * FROM Models WHERE Name LIKE '%" + input + "%' OR Type LIKE '%" + input + "%' OR SubjectArea LIKE '%" + input + "%' ORDER BY Name";
-
-            cmd = new OleDbCommand(query, con);
-
-            ArrayList objects = new ArrayList();
-
-            OleDbDataReader reader = cmd.ExecuteReader();
-
-            int itemNum;
-            string itemName;
-            string itemType;
-            string itemSbjArea;
-            double itemPrice;
-            string itemDes;
-            bool itemAvail;
-            int stockCount;
-
-            while (reader.Read())
+            catch (Exception e) // *Oliver*: Added an try catch here to catch exceptions that were crashing during searches
             {
-                itemNum = Convert.ToInt32(reader["ItemNumber"]);
-                itemName = Convert.ToString(reader["Name"]);
-                itemType = Convert.ToString(reader["Type"]);
-                itemSbjArea = Convert.ToString(reader["SubjectArea"]);
-                itemPrice = Convert.ToDouble(reader["CurrentRetailPrice"]);
-                itemDes = Convert.ToString(reader["Description"]);
-                itemAvail = Convert.ToBoolean(reader["Availability"]);
-                stockCount = Convert.ToInt32(reader["StockCount"]);
-
-                Model _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes, itemAvail, stockCount);
-                _model.Id = itemNum;
-
-                objects.Add(_model);
+                Console.WriteLine("Caught Exception:", e);
+                return "{}";
             }
-            con.Close();
-
-            string json = new JavaScriptSerializer().Serialize(objects);
-            return json;
         }
 
         [OperationContract]
