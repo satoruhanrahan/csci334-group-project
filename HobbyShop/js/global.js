@@ -1,5 +1,32 @@
 ﻿$(document).ready(function () {
     $("#content").load("ModelsView.aspx");
+    $("#Models")[0].addEventListener("click", function () {
+        loadPage("Models");
+    });
+    $("#Sales")[0].addEventListener("click", function () {
+        loadPage("Sales");
+    });
+    $("#Deliveries")[0].addEventListener("click", function () {
+        loadPage("Deliveries");
+    });
+    $("#Suppliers")[0].addEventListener("click", function () {
+        loadPage("Suppliers");
+    });
+    $("#Contacts")[0].addEventListener("click", function () {
+        loadPage("Contacts");
+    });
+    $("#Customers")[0].addEventListener("click", function () {
+        loadPage("Customers");
+    });
+    $("#Stores")[0].addEventListener("click", function () {
+        loadPage("Stores");
+    });
+    $("#Users")[0].addEventListener("click", function () {
+        loadPage("Users");
+    });
+    $("#Settings")[0].addEventListener("click", function () {
+        loadPage("Settings");
+    });
 });
 
 function loadPage(page) {
@@ -12,12 +39,13 @@ function loadPage(page) {
 }
 
 function resultPopup(result, color) {
-    var results = document.getElementById("results");
+    var results = $("#results")[0];
     var bg = "light" + color;
     if (color == "red") {
         bg = "indianred";
     }
-    results.innerHTML = result;
+    results.innerHTML = "";
+    results.append(result);
     results.style.borderColor = color;
     results.style.backgroundColor = bg;
     results.style.display = "block";

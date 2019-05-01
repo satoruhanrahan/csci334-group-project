@@ -1,4 +1,4 @@
-#rightcol {
+#detailContainer {
     position: absolute;
     top: 0;
     left: calc(25% + 3px);
@@ -11,6 +11,7 @@
     margin:10px;
 }
 #details {
+    visibility:hidden;
     margin:10px;
 }
 #details input, #details textarea {
@@ -30,15 +31,26 @@
     width: 100%;
     border: 1px solid black;
 }
+#firstcell {
+    width:25%;
+}
 #detailTable td {
     vertical-align: top;
     border: 1px solid black;
 }
-#detailOptions {
-    float:right;
+#leftButton {
+    visibility:hidden;
 }
-
-/* Dropdown menu */
+#rightButton {
+    float: right;
+    visibility: hidden;
+}
+#detailOptions {
+    position:absolute;
+    top:10px;
+    right:10px;
+    visibility:hidden;
+}
 .dropdown {
     position: relative;
     display: inline-block;

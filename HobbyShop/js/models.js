@@ -12,9 +12,22 @@ $(document).ready(function () {
     var searchbar = $("#searchbar")[0];
     searchbar.addEventListener("keyup", function (event) {
         event.preventDefault();
-        $("#searchBtn")[0].click();
+        getAllSearchedItems();
+    });
+    $("#advSearch")[0].addEventListener("click", function () {
+        displayAdvSearch();
+    });
+    $("#addButton")[0].addEventListener("click", function () {
+        displayAddItem();
     });
 });
+
+/* TO DO: 
+ * I need to make a function which adds/deletes/updates a single button, rather than refreshing the entire dataset.
+ * Get all items and search all items can be combined into one!  (just use search instead of get all)
+ * REMOVED: Availability and stock count from edit and add functions. The parsed variables in the controller should be updated.
+ *          These should be set as 0 and false by the constructor in the case of adding a new item. ***
+ */
 
 // Display all items
 function getAllItems() {
@@ -24,114 +37,6 @@ function getAllItems() {
 function onGetItems(result) {
     items = JSON.parse(result);
     displayItemNames(items);
-}
-
-// Creates and displays a list of buttons used representing items in the inventory. 
-function displayItemNames(items) {
-    $("#list")[0].innerHTML = "";
-    var button;
-    for (var i = items.length - 1; i >= 0; i--) {
-        button = document.createElement("button");
-        button.setAttribute("type", "button");
-        button.setAttribute("class", "listItem");
-        button.setAttribute("onclick", "displayModel(" + i + ")");
-        button.innerHTML = items[i].Name;
-        $("#list")[0].append(button);
-    }
-}
-
-// Displays an items details
-function displayModel(i) {
-    $("#detailHeading")[0].innerHTML = items[i].Name;
-    $("#details")[0].innerHTML = "";
-
-    var div1 = document.createElement("div");
-    div1.setAttribute("id", "detailOptions");
-    div1.setAttribute("class", "dropdown");
-    $("#detailHeading").append(div1);
-
-    var img1 = document.createElement("img");
-    img1.src = "style/options.png";
-    var button1 = document.createElement("button");
-    button1.setAttribute("type", "button");
-    button1.setAttribute("class", "smallbtn");
-    button1.append(img1);
-    div1.append(button1);
-    
-    var div2 = document.createElement("div");
-    div2.setAttribute("class", "dropdown-content");
-    div1.append(div2);
-
-    var button2 = document.createElement("button");
-    button2.setAttribute("type", "button");
-    button2.setAttribute("class", "dropdown-button");
-    button2.setAttribute("onclick", "editModel(" + i + ")");
-    button2.append("Edit Details");
-    div2.append(button2);
-
-    var button3 = document.createElement("button");
-    button3.setAttribute("type", "button");
-    button3.setAttribute("class", "dropdown-button");
-    button3.setAttribute("onclick", "displayDeleteModel(" + i + ")");
-    button3.append("Delete Model");
-    div2.append(button3);
-
-    var available = "";
-    if (items[i].Availability == true) {
-        available = "Yes";
-    }
-    else {
-        available = "No";
-    }
-
-    var table = document.createElement("table");
-    table.setAttribute("id", "detailTable"); 
-    $("#details").append(table);
-
-    var tr, td1, td2;
-    for (var j = 0; j < 8; j++) {
-        tr = document.createElement("tr");
-        table.append(tr);
-        td1 = document.createElement("td");
-        td1.style.width = "20%";
-        td2 = document.createElement("td");
-        switch (j) {
-            case 0:
-                td1.append("Name");
-                td2.append(items[i].Name);
-                break;
-            case 1:
-                td1.append("ID");
-                td2.append(items[i].Id);
-                break;
-            case 2:
-                td1.append("Type");
-                td2.append(items[i].Type);
-                break;
-            case 3:
-                td1.append("Subject Area");
-                td2.append(items[i].SbjArea);
-                break;
-            case 4:
-                td1.append("Price");
-                td2.append(items[i].Price);
-                break;
-            case 5:
-                td1.append("Description");
-                td2.append(items[i].Description);
-                break;
-            case 6:
-                td1.append("Availability");
-                td2.append(available);
-                break;
-            case 7:
-                td1.append("Total Stock");
-                td2.append(items[i].StockCount);
-                break;
-        }
-        tr.append(td1);
-        tr.append(td2);
-    }
 }
 
 //Display search ( can be fixed to reusable elements)
@@ -151,65 +56,203 @@ function displayAdvSearch() {
     document.getElementById("details").innerHTML = "Here will be filter & sort settings for an advanced search!";
 }
 
-// Edit details
-function editModel(i) {
-    document.getElementById("detailHeading").innerHTML = items[i].Name;
-    var inner = " ";
-    var available = " ";
-    /*
-    if (items[i].Availability == true) {
-        available = "checked";
+// Creates and displays a list of buttons representing items in the inventory. 
+function displayItemNames(items) {
+    $("#list")[0].innerHTML = "";
+    var button;
+    for (var i = items.length - 1; i >= 0; i--) {
+        button = document.createElement("button");
+        button.innerHTML = items[i].Name;
+        button.setAttribute("type", "button");
+        button.setAttribute("class", "listItem");
+        let item = items[i];
+        button.addEventListener("click", function () {
+            displayItemDetails(item);
+        });
+        $("#list")[0].append(button);
+    }
+}
+
+// Displays an items details
+function displayItemDetails(item) {
+    $("#detailHeading")[0].innerHTML = item.Name;
+    $("#leftButton")[0].style.visibility = "hidden";
+    $("#rightButton")[0].style.visibility = "hidden";
+    $("#results")[0].style.display = "none";
+    $("#itemID")[0].style.backgroundColor = "white";
+    $("#itemAvailability")[0].style.backgroundColor = "white";
+    $("#itemTotalStock")[0].style.backgroundColor = "white";
+    $("#detailHeading")[0].style.visibility = "visible";
+    $("#detailOptions")[0].style.visibility = "visible";
+    $("#details")[0].style.visibility = "visible";
+    $("#editItem")[0].addEventListener("click", function () {
+        editItemDetails(item);
+    });
+    $("#deleteItem")[0].addEventListener("click", function () {
+        displayDeleteItem(item);
+    });
+
+    var available;
+    if (item.Availability == true) {
+        available = "Yes";
     }
     else {
-        available = "unchecked";
+        available = "No";
     }
-    */
-    inner = "<table id='detailTable'> <tr> <td style='width:25%;'> Name </td> <td> <input type='text' id='modelName1' value='" + items[i].Name + "' />" +
-        "</td> </tr> <tr> <td> Type </td> <td> <input type='text' id='modelType1' value='" + items[i].Type + "' />" +
-        "</td> </tr> <tr> <td> Subject Area </td> <td> <input type='text' id='modelArea1' value='" + items[i].SbjArea + "' />" +
-        "</td> </tr> <tr> <td> Price </td> <td> <input type='number' id='modelPrice1' value='" + items[i].Price + "' />" +
-        "</td> </tr> <tr> <td> Description </td> <td> <textarea id='modelDes1'>" + items[i].Description + "</textarea>" +
-        "</td> </tr> <tr> <td> Availability </td> <td> <input type='checkbox' id='modelAvailable1' value='" + available + "' />" +
-        "</td> </tr> <tr> <td> Total in Stock </td> <td> <input type='number' id='modelStock1' value='" + items[i].StockCount + "' />" +
-        "</td> </tr> </table>" +
-        "<button type='button' title='Save changes' onclick='updateModel(" + i + ");' class='smallbtn greenbtn'> <img src='style/save.png' /></button>" +
-        "<button type='button' title='Discard changes' onclick='displayModel(" + i + ");' class='smallbtn redbtn' style='float:right;'> <img src='style/close.png' /></button>";
-    document.getElementById("details").innerHTML = inner;
+
+    $("#itemName")[0].innerHTML = item.Name;
+    $("#itemID")[0].innerHTML = item.Id;
+    $("#itemType")[0].innerHTML = item.Type;
+    $("#itemSbjArea")[0].innerHTML = item.SbjArea;
+    $("#itemPrice")[0].innerHTML = item.Price;
+    $("#itemDescription")[0].innerHTML = item.Description;
+    $("#itemAvailability")[0].innerHTML = available;
+    $("#itemTotalStock")[0].innerHTML = item.StockCount;
 }
 
-function updateModel(i) {
-    var name = document.getElementById("modelName1").value;
-    var type = document.getElementById("modelType1").value;
-    var sbjarea = document.getElementById("modelArea1").value;
-    var price = document.getElementById("modelPrice1").value;
-    var des = document.getElementById("modelDes1").value;
-    var avail = document.getElementById("modelAvailable1").checked;
-    var stockCount = document.getElementById("modelStock1").value;
+// Generalized input generation for edit and add model menus
+function itemInputs(item) {
+    $("#itemName")[0].innerHTML = "";
+    $("#itemType")[0].innerHTML = "";
+    $("#itemSbjArea")[0].innerHTML = "";
+    $("#itemPrice")[0].innerHTML = "";
+    $("#itemDescription")[0].innerHTML = "";
+
+    var input1 = document.createElement("input");
+    input1.setAttribute("type", "text");
+    input1.setAttribute("id", "itemNameInput");
+    input1.setAttribute("value", item.Name);
+
+    var input2 = document.createElement("input");
+    input2.setAttribute("type", "text");
+    input2.setAttribute("id", "itemTypeInput");
+    input2.setAttribute("value", item.Type);
+
+    var input3 = document.createElement("input");
+    input3.setAttribute("type", "text");
+    input3.setAttribute("id", "itemSbjAreaInput");
+    input3.setAttribute("value", item.SbjArea);
+
+    var input4 = document.createElement("input");
+    input4.setAttribute("type", "text");
+    input4.setAttribute("id", "itemPriceInput");
+    input4.setAttribute("value", item.Price);
+
+    var input5 = document.createElement("textarea");
+    input5.setAttribute("id", "itemDescriptionInput");
+    input5.innerHTML = item.Description;
+
+    $("#itemName")[0].append(input1);
+    $("#itemType")[0].append(input2);
+    $("#itemSbjArea")[0].append(input3);
+    $("#itemPrice")[0].append(input4);
+    $("#itemDescription")[0].append(input5);
+}
+
+// Edit details
+function editItemDetails(item) {
+    $("#detailHeading")[0].innerHTML = "";
+    $("#detailHeading")[0].append(item.Name);
+    $("#leftButton")[0].style.visibility = "visible";
+    $("#rightButton")[0].style.visibility = "visible";
+    $("#itemID")[0].style.backgroundColor = "lightgrey";
+    $("#itemAvailability")[0].style.backgroundColor = "lightgrey";
+    $("#itemTotalStock")[0].style.backgroundColor = "lightgrey";
+
+    itemInputs(item);
+
+    var img1 = document.createElement("img");
+    img1.src = "style/save.png";
+
+    $("#leftButton")[0].innerHTML = "";
+    $("#leftButton")[0].append(img1);
+    $("#leftButton")[0].addEventListener("click", function () {
+        updateItem(item.Id);
+        $("#leftButton")[0].style.visibility = "hidden";
+        $("#rightButton")[0].style.visibility = "hidden";
+        $("#itemID")[0].style.backgroundColor = "white";
+        $("#itemAvailability")[0].style.backgroundColor = "white";
+        $("#itemTotalStock")[0].style.backgroundColor = "white";
+        displayItemDetails(item);
+    });
     
-    //console.log(items[i].Id, avail);
-    ModelController.UpdateModelDetails(items[i].Id, name, type, sbjarea, Number(price), des, avail, stockCount, onUpdateModel);
-    displayModel(i);
+    $("#rightButton")[0].addEventListener("click", function () {
+        $("#leftButton")[0].style.visibility = "hidden";
+        $("#rightButton")[0].style.visibility = "hidden";
+        $("#itemID")[0].style.backgroundColor = "white";
+        $("#itemAvailability")[0].style.backgroundColor = "white";
+        $("#itemTotalStock")[0].style.backgroundColor = "white";
+        displayItemDetails(item);
+    });
 }
 
-//TO DO: I need to make a function which deletes/updates a single button, rather than refreshing the entire dataset.
+// Send edited data to controller
+function updateItem(id) {
+    ModelController.UpdateModelDetails(
+        id,
+        $("#itemName")[0].value,
+        $("#itemType")[0].value,
+        $("#itemSbjArea")[0].value,
+        $("#itemPrice")[0].value,
+        $("#itemDescription")[0].value,
+        onUpdateItem
+    );
+}
 
-function onUpdateModel(result) {
+function onUpdateItem(result) {
     resultPopup("Successfully Updated", "green");
 }
 
 //displays the delete model prompt
-function displayDeleteModel(i) {
-    var results = document.getElementById("results");
-    results.innerHTML = "Are you sure you want to delete this model <span style='font-weight:bold'>permanently</span> from the database? <br /> <br />" +
-        "<button type='button' title='Delete' onclick='removeModel(" + i + ");' class='mediumbtn greenbtn' style='float: left;'> <img src='style/delete.png' /><br/> Delete</button>" +
-        "<button type='button' title='Cancel' onclick='closeDelete(" + i + ");' class='mediumbtn redbtn' style='float:right;'> <img src='style/close.png' /><br /> Cancel</button>";
-    results.style.borderColor = "red";
-    results.style.display = "block";
+function displayDeleteItem(item) {
+    $("#results")[0].style.borderColor = "red";
+    $("#results")[0].style.display = "block";
+    $("#results")[0].innerHTML = "";
+
+    var br = document.createElement("br");
+
+    var button1 = document.createElement("button");
+    button1.setAttribute("type", "button");
+    button1.setAttribute("title", "Delete");
+    button1.style.cssFloat = "left";
+    button1.setAttribute("class", "mediumbtn greenbtn");
+    button1.addEventListener("click", function () {
+        removeItem(item.Id);
+    });
+    var img1 = document.createElement("img");
+    img1.src = "style/delete.png";
+    button1.append(img1);
+    button1.append("Delete");
+
+    var button2 = document.createElement("button");
+    button2.setAttribute("type", "button");
+    button2.setAttribute("title", "Cancel");
+    button2.style.cssFloat = "right";
+    button2.setAttribute("class", "mediumbtn redbtn");
+    button2.addEventListener("click", function () {
+        closeDelete();
+    });
+    var img2 = document.createElement("img");
+    img2.src = "style/close.png";
+    button2.append(img2);
+    button2.append("Cancel");
+
+    $("#results")[0].append("Are you sure you want to delete this model ");
+    var span = document.createElement("span");
+    span.style.fontWeight = "bold";
+    span.append("permanently");
+    $("#results")[0].append(span);
+    $("#results")[0].append(" from the database?");
+    $("#results")[0].append(br);
+    $("#results")[0].append(br);
+    $("#results")[0].append(button1);
+    $("#results")[0].append(button2);
 }
 
-function removeModel(i) {
+// sends id of item to be deleted to controller
+function removeItem(id) {
     results.style.display = "none";
-    ModelController.DeleteModel(items[i].Id, onDeleteSuccess);
+    ModelController.DeleteModel(id, onDeleteSuccess);
 }
 
 function onDeleteSuccess(result) {
@@ -218,42 +261,81 @@ function onDeleteSuccess(result) {
     resultPopup("Item was successfully removed", "green");
 }
 
-function clearDisplay() {
-    $("#detailHeading")[0].innerHTML = "";
-    $("#details")[0].innerHTML = "";
-}
-
-function closeDelete(i) {
+// closes the delete prompt
+function closeDelete() {
     results.style.display = "none";
 }
 
+// removes any details that are displayed in the details section
+function clearDisplay() {
+    $("#detailHeading")[0].style.visibility = "hidden";
+    $("#details")[0].style.visibility = "hidden";
+    $("#detailOptions")[0].style.visibility = "hidden";
+}
+
 //Add new item to model table
-function displayAddModel() {
-    document.getElementById("detailHeading").innerHTML = "Add New Model";
-    document.getElementById("details").innerHTML = "<table id='detailTable'> <tr> <td style='width:25%;'> Name </td> <td> <input type='text' id='modelName' />" +
-        "</td> </tr> <tr> <td> Type </td> <td> <input type='text' id='modelType' placeholder='e.g. Display, Working...' />" +
-        "</td> </tr> <tr> <td> Subject Area </td> <td> <input type='text' id='modelArea' placeholder='e.g. Train, Car, Boat...' />" +
-        "</td> </tr> <tr> <td> Price </td> <td> <input type='number' id='modelPrice' />" +
-        "</td> </tr> <tr> <td> Description </td> <td> <textarea id='modelDes'></textarea>" +
-        "</td> </tr> <tr> <td> Availability </td> <td> <input type='checkbox' id='modelAvail' />" +
-        "</td> </tr> </table>" +
-        "<button type='button' class='smallbtn greenbtn' title='Add model' onclick='addNewModel();'><img src='style/add.png' /></button>";
+function displayAddItem() {
+    $("#detailHeading")[0].innerHTML = "";
+    $("#detailHeading")[0].innerHTML = "Add a New Model";
+    $("#detailHeading")[0].style.visibility = "visible";
+    $("#details")[0].style.visibility = "visible";
+    $("#leftButton")[0].style.visibility = "visible";
+    $("#rightButton")[0].style.visibility = "visible";
+    $("#itemID")[0].style.backgroundColor = "lightgrey";
+    $("#itemID")[0].innerHTML = "";
+    $("#itemAvailability")[0].style.backgroundColor = "lightgrey";
+    $("#itemAvailability")[0].innerHTML = "";
+    $("#itemTotalStock")[0].style.backgroundColor = "lightgrey";
+    $("#itemTotalStock")[0].innerHTML = "";
+    $("#detailOptions")[0].style.visibility = "hidden";
+
+    var item = {
+        "Name": "",
+        "Type": "",
+        "SbjArea": "",
+        "Price": "",
+        "Description": ""
+    }
+    itemInputs(item);
+
+    var img1 = document.createElement("img");
+    img1.src = "style/add.png";
+
+    $("#leftButton")[0].innerHTML = "";
+    $("#leftButton")[0].append(img1);
+    $("#leftButton")[0].addEventListener("click", function () {
+        updateItem(item.Id);
+        $("#leftButton")[0].style.visibility = "hidden";
+        $("#rightButton")[0].style.visibility = "hidden";
+        $("#itemID")[0].style.backgroundColor = "white";
+        $("#itemAvailability")[0].style.backgroundColor = "white";
+        $("#itemTotalStock")[0].style.backgroundColor = "white";
+        addNewItem(item);
+    });
+
+    $("#rightButton")[0].addEventListener("click", function () {
+        $("#leftButton")[0].style.visibility = "hidden";
+        $("#rightButton")[0].style.visibility = "hidden";
+        $("#itemID")[0].style.backgroundColor = "white";
+        $("#itemAvailability")[0].style.backgroundColor = "white";
+        $("#itemTotalStock")[0].style.backgroundColor = "white";
+        clearDisplay();
+    });
 }
 
 // Sends input to controller
-function addNewModel() {
-    var name = document.getElementById("modelName").value;
-    var type = document.getElementById("modelType").value;
-    var sbjarea = document.getElementById("modelArea").value;
-    var price = document.getElementById("modelPrice").value;
-    var des = document.getElementById("modelDes").value;
-    var avail = document.getElementById("modelAvail").checked;
-    var stockCount = 0;
-    
-    ModelController.AddNewModel(name, type, sbjarea, Number(price), des, avail, stockCount, onInputNewModel);
+function addNewItem() {
+    ModelController.AddNewModel(
+        $("#itemName")[0].value,
+        $("#itemType")[0].value,
+        $("#itemSbjArea")[0].value,
+        $("#itemPrice")[0].value,
+        $("#itemDescription")[0].value,
+        onAddNewItem
+    );
 }
 
-function onInputNewModel(result) {
+function onAddNewItem(result) {
     resultPopup("Successfully added to the database", "green");
     clearDisplay();
     getAllItems();

@@ -88,7 +88,7 @@
     <Content Include="js\jquery.js" />
     <Content Include="style\global.css" />
     <Content Include="style\list.css" />
-    <Content Include="style\models.css" />
+    <Content Include="style\details.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
