@@ -70,6 +70,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CONTROLLER\SaleController.svc" />
     <Content Include="MasterContent.aspx" />
     <None Include="packages.config" />
     <Content Include="MasterPage.Master" />
@@ -94,8 +95,12 @@
   <ItemGroup>
     <Compile Include="CLASS\Customer.cs" />
     <Compile Include="CLASS\Model.cs" />
+    <Compile Include="CLASS\Sale.cs" />
     <Compile Include="CONTROLLER\ModelController.svc.cs">
       <DependentUpon>ModelController.svc</DependentUpon>
+    </Compile>
+    <Compile Include="CONTROLLER\SaleController.svc.cs">
+      <DependentUpon>SaleController.svc</DependentUpon>
     </Compile>
     <Compile Include="ModelsView.aspx.cs">
       <DependentUpon>ModelsView.aspx</DependentUpon>
