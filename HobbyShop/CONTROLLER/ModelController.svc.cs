@@ -133,7 +133,7 @@ namespace HobbyShop.CONTROLLER
                 {
                     //Model x = new Model(name, type, area, price, des, avail, stockCount);
                     con.Open();
-                    string query = "UPDATE Models SET Name='@name',Type='@type',SubjectArea='@area',CurrentRetailPrice=@price ,Description='@des', Availability=@avail, StockCount=@count WHERE ItemNumber=@id";
+                    string query = "UPDATE Models SET Name=@name,Type=@type,SubjectArea=@area,CurrentRetailPrice=@price ,Description=@des, Availability=@avail, StockCount=@count WHERE ItemNumber=@id";
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.Parameters.AddWithValue("@name", name);
                     cmd.Parameters.AddWithValue("@type", type);
