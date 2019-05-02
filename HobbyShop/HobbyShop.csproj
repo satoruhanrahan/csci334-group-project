@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CONTROLLER\SaleController.svc" />
+    <Content Include="js\sales.js" />
     <Content Include="MasterContent.aspx" />
     <None Include="packages.config" />
     <Content Include="MasterPage.Master" />
@@ -87,9 +88,12 @@
     <Content Include="ModelsView.aspx" />
     <Content Include="js\models.js" />
     <Content Include="js\jquery.js" />
+    <Content Include="SalesView.aspx" />
     <Content Include="style\global.css" />
     <Content Include="style\list.css" />
     <Content Include="style\details.css" />
+    <Content Include="style\sale.css" />
+    <Content Include="SuppliersView.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +127,20 @@
     </Compile>
     <Compile Include="MasterContent.aspx.designer.cs">
       <DependentUpon>MasterContent.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesView.aspx.cs">
+      <DependentUpon>SalesView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesView.aspx.designer.cs">
+      <DependentUpon>SalesView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SuppliersView.aspx.cs">
+      <DependentUpon>SuppliersView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SuppliersView.aspx.designer.cs">
+      <DependentUpon>SuppliersView.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <PropertyGroup>

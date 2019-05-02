@@ -26,6 +26,17 @@ namespace HobbyShop.CLASS
 
         public Sale() { }
 
+        public Sale(int saleID) { this.saleID = saleID; }
+
+        public Sale(DateTime date, int customerID, double totalValue, double discount, double finalTotal)
+        {
+            this.date = date;
+            this.customerID = customerID;
+            this.totalValue = totalValue;
+            this.discount = discount;
+            this.finalTotal = finalTotal;
+        }
+
         public Sale(int saleID, DateTime date, int customerID, double totalValue, double discount, double finalTotal)
         {
             this.saleID = saleID;
@@ -37,7 +48,7 @@ namespace HobbyShop.CLASS
         }
 
         string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
-        
+
         public ArrayList GetSaleRecords()
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
@@ -67,7 +78,7 @@ namespace HobbyShop.CLASS
             }
         }
 
-        public void AddSaleRecord(DateTime date, int customerID, double totalValue, double discount, double finalTotal)
+        public void AddSaleRecord()
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
@@ -90,7 +101,7 @@ namespace HobbyShop.CLASS
             }
         }
 
-        public void UpdateSaleDetails(int id, DateTime date, int customerID, double totalValue, double discount, double finalTotal)
+        public void UpdateSaleDetails()
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
@@ -104,6 +115,7 @@ namespace HobbyShop.CLASS
                     cmd.Parameters.AddWithValue("@totalValue", totalValue);
                     cmd.Parameters.AddWithValue("@discount", discount);
                     cmd.Parameters.AddWithValue("@finalTotal", finalTotal);
+                    cmd.Parameters.AddWithValue("@id", saleID);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -113,8 +125,8 @@ namespace HobbyShop.CLASS
                 }
             }
         }
-        
-        public void DeleteSaleRecord(int id)
+
+        public void DeleteSaleRecord()
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
@@ -123,7 +135,7 @@ namespace HobbyShop.CLASS
                     con.Open();
                     string query = "DELETE FROM Sales WHERE SaleID=@id";
                     OleDbCommand cmd = new OleDbCommand(query, con);
-                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@id", saleID);
 
                     cmd.ExecuteNonQuery();
                 }
