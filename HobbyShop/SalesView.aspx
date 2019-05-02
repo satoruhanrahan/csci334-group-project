@@ -72,7 +72,6 @@
     <form id="form1" runat="server">
             <asp:scriptmanager runat="server">
                 <Services>
-                   <asp:ServiceReference Path="~/CONTROLLER/ModelController.svc" />
                     <asp:ServiceReference Path="~/CONTROLLER/SaleController.svc" />
                 </Services>
             </asp:scriptmanager>
