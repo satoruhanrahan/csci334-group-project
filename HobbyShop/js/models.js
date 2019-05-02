@@ -3,7 +3,7 @@ $(document).ready(function () {
     // display all items
     var items;
     var searchedItems;
-    getAllItems();
+    getAllSearchedItems();
     // prevent form submission on enter
     $('form').keypress(function (event) {
         return event.keyCode != 13;
@@ -22,24 +22,7 @@ $(document).ready(function () {
     });
 });
 
-/* TO DO: 
- * I need to make a function which adds/deletes/updates a single button, rather than refreshing the entire dataset.
- * Get all items and search all items can be combined into one!  (just use search instead of get all)
- * REMOVED: Availability and stock count from edit and add functions. The parsed variables in the controller should be updated.
- *          These should be set as 0 and false by the constructor in the case of adding a new item. ***
- */
-
-// Display all items
-function getAllItems() {
-    ModelController.ReturnFromDatabase(onGetItems);
-}
-
-function onGetItems(result) {
-    items = JSON.parse(result);
-    displayItemNames(items);
-}
-
-//Display search ( can be fixed to reusable elements)
+// Display items in list based on search
 function getAllSearchedItems() {
     var searchInput = document.getElementById("searchbar").value;
     ModelController.SearchDatabase(searchInput, onSearchItems);
@@ -200,6 +183,7 @@ function updateItem(id) {
 }
 
 function onUpdateItem(result) {
+    // ** todo: refresh the updated button 
     resultPopup("Successfully Updated", "green");
 }
 
@@ -257,7 +241,7 @@ function removeItem(id) {
 
 function onDeleteSuccess(result) {
     clearDisplay();
-    getAllItems();
+    // **todo: remove corresponding button from list
     resultPopup("Item was successfully removed", "green");
 }
 
@@ -338,5 +322,5 @@ function addNewItem() {
 function onAddNewItem(result) {
     resultPopup("Successfully added to the database", "green");
     clearDisplay();
-    getAllItems();
+    // **todo: add single new button to list
 }

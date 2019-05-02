@@ -14,6 +14,13 @@ using System.Web.Script.Serialization;
 namespace HobbyShop.CONTROLLER
 {
 
+    /* FROM OLIVER:
+     * Get all items is not needed (return from database), it should be removed from the controller. Search all items is the replacement.
+     * REMOVED: Availability and stock count from edit and add functions. The parsed variables in the controller should be updated.
+     *          These should be set as 0 and false by the constructor in the case of adding a new item. 
+     *          Also is it possible for the onAdd/onUpdate/onDelete to return the item name?
+     */
+
     [ServiceContract(Namespace = "")]
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
 
