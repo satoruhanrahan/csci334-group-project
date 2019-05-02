@@ -38,12 +38,13 @@
     vertical-align: top;
     border: 1px solid black;
 }
+/*
 #leftButton {
     visibility:hidden;
-}
+}*/
 #rightButton {
     float: right;
-    visibility: hidden;
+    /*visibility: hidden;*/
 }
 #detailOptions {
     position:absolute;

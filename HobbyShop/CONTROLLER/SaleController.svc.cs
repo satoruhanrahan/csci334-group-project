@@ -31,11 +31,12 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string AddSaleRecord(DateTime date, int customerID, double totalValue, double discount, double finalTotal)
+        public string AddSaleRecord(string date, int customerID, double totalValue, double discount, double finalTotal)
         {
             try
             {
-                Sale sale = new Sale(date, customerID, totalValue, discount, finalTotal);
+                DateTime formatedDate = DateTime.Parse(date);
+                Sale sale = new Sale(formatedDate, customerID, totalValue, discount, finalTotal);
                 sale.AddSaleRecord();
                 return "";
             }

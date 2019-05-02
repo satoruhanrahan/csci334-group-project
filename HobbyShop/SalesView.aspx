@@ -7,7 +7,9 @@
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
 	    <meta content="utf-8" http-equiv="encoding"/>
         <title> Sales - Tim's Sale Records</title>
+        <link rel="stylesheet" href="http://momentjs.com/downloads/moment.js" />
 	    <link rel="stylesheet" href="style/details.css"/>
+        <link rel="stylesheet" href="style/sales.css"/>
         <link rel="stylesheet" href="style/list.css" />
         <script type="text/javascript" src="js/sales.js"></script>
 </head>
@@ -26,7 +28,7 @@
         </table>
         <div class="scrollable" id="list"></div>
         <div id="addButtonContainer">
-            <button type="button" id="addButton" class='smallbtn greenbtn' title="Add Sale"><img src='style/add.png' /></button>
+            <button type="button" id="addButton" class='smallbtn greenbtn' title="Add Sale" onclick="displayAddSaleRecord();"><img src='style/add.png' /></button>
         </div>
     </div>
 	<div id="detailContainer">
@@ -43,29 +45,35 @@
                 <table id="detailTable">
                     <tr> 
                         <td id="firstcell"> Sale date: </td> 
-                         <td id="saleDate"></td> 
+                         <td id="saleDate"><input type="date" id="date" class="userInput" disabled/></td> 
                     </tr> 
                     <tr> 
                         <td> Sale ID </td> 
-                        <td id="saleID"></td> 
+                        <td id="saleID"><input type="text" id="sale" class="userInput" disabled/></td> 
+                    </tr>
+                    <tr> 
+                        <td> Customer ID </td> 
+                        <td id="customerID"><input type="text" id="customer" class="userInput" disabled/></td> 
                     </tr> 
                     <tr> 
                         <td> Total: </td> 
-                        <td id="total"></td> </tr> 
+                        <td id="total"><input type="text" id="totalValue" class="userInput" disabled /></td>
+                    </tr> 
                     <tr> 
                         <td> Discount: </td> 
-                        <td id="discount"></td> 
+                        <td id="discount"><input type="text" id="discountValue" class="userInput" disabled /></td> 
                     </tr>
                     <tr> 
                         <td> Final Total: </td> 
-                        <td id="final"></td> 
+                        <td id="final"><input type="text" id="finalValue" class="userInput" disabled /></td> 
                     </tr> 
                 </table>
                 <button type="button" id="leftButton" title="Save changes" class="smallbtn greenbtn"> 
                 </button>
                 <button type="button" id="rightButton" title="Discard changes" class="smallbtn redbtn" style="float:right;"> 
                     <img src="style/close.png" />
-                </button>
+                </button> <br/><br/>
+                <span id="error"></span>
             </div>
         </div>
 	</div>

@@ -288,7 +288,7 @@ function displayAddItem() {
     $("#leftButton")[0].innerHTML = "";
     $("#leftButton")[0].append(img1);
     $("#leftButton")[0].addEventListener("click", function () {
-        updateItem(item.Id);
+        updateItem(item.Id);                                        //Linh: why updateItem() is needed here when we already have addNewItem()?
         $("#leftButton")[0].style.visibility = "hidden";
         $("#rightButton")[0].style.visibility = "hidden";
         $("#itemID")[0].style.backgroundColor = "white";
