@@ -92,8 +92,6 @@
     <Content Include="style\global.css" />
     <Content Include="style\list.css" />
     <Content Include="style\details.css" />
-    <Content Include="style\sale.css" />
-    <Content Include="SuppliersView.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -134,13 +132,6 @@
     </Compile>
     <Compile Include="SalesView.aspx.designer.cs">
       <DependentUpon>SalesView.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="SuppliersView.aspx.cs">
-      <DependentUpon>SuppliersView.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="SuppliersView.aspx.designer.cs">
-      <DependentUpon>SuppliersView.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <PropertyGroup>

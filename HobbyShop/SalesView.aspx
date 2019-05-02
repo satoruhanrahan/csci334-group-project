@@ -7,7 +7,7 @@
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
 	    <meta content="utf-8" http-equiv="encoding"/>
         <title> Sales - Tim's Sale Records</title>
-	    <link rel="stylesheet" href="style/sale.css"/>
+	    <link rel="stylesheet" href="style/details.css"/>
         <link rel="stylesheet" href="style/list.css" />
         <script type="text/javascript" src="js/sales.js"></script>
 </head>
