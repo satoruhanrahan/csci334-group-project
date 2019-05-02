@@ -7,7 +7,6 @@
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
 	    <meta content="utf-8" http-equiv="encoding"/>
         <title> Sales - Tim's Sale Records</title>
-        <link rel="stylesheet" href="http://momentjs.com/downloads/moment.js" />
 	    <link rel="stylesheet" href="style/details.css"/>
         <link rel="stylesheet" href="style/sales.css"/>
         <link rel="stylesheet" href="style/list.css" />
@@ -28,7 +27,7 @@
         </table>
         <div class="scrollable" id="list"></div>
         <div id="addButtonContainer">
-            <button type="button" id="addButton" class='smallbtn greenbtn' title="Add Sale" onclick="displayAddSaleRecord();"><img src='style/add.png' /></button>
+            <button type="button" id="addButton" class='smallbtn greenbtn' title="Add Sale" ="displayAddSaleRecord();"><img src='style/add.png' /></button>
         </div>
     </div>
 	<div id="detailContainer">
@@ -37,8 +36,8 @@
             <div id="detailOptions" class="dropdown">
                 <button type="button" class="smallbtn"> <img src="style/options.png" /></button>
                  <div class="dropdown-content">
-                     <button type="button" class="dropdown-button" id="editSale">Edit Details</button>
-                     <button type="button" class="dropdown-button" id="deleteSale">Delete Sale</button>
+                     <button type="button" class="dropdown-button" id="editSale" onclick="editSaleDetails();">Edit Details</button>
+                     <button type="button" class="dropdown-button" id="deleteSale" <%--onclick="deleteSaleRecord();"--%>>Delete Sale</button>
                  </div> 
              </div>
             <div id="details">
@@ -68,7 +67,8 @@
                         <td id="final"><input type="text" id="finalValue" class="userInput" disabled /></td> 
                     </tr> 
                 </table>
-                <button type="button" id="leftButton" title="Save changes" class="smallbtn greenbtn"> 
+                <button type="button" id="leftButton" title="Save changes" class="smallbtn greenbtn">
+                    <%--<img id="leftImage" src="style/add.png" />--%>
                 </button>
                 <button type="button" id="rightButton" title="Discard changes" class="smallbtn redbtn" style="float:right;"> 
                     <img src="style/close.png" />

@@ -46,12 +46,14 @@ namespace HobbyShop.CONTROLLER
             }
         }
 
-        public string UpdateSaleDetails(int id, DateTime date, int customerID, double totalValue, double discount, double finalTotal)
+        [OperationContract]
+        public string EditSaleDetails(int id, string date, int customerID, double totalValue, double discount, double finalTotal)
         {
             try
             {
-                Sale sale = new Sale(id, date, customerID, totalValue, discount, finalTotal);
-                sale.UpdateSaleDetails();
+                DateTime formatedDate = DateTime.Parse(date);
+                Sale sale = new Sale(id, formatedDate, customerID, totalValue, discount, finalTotal);
+                sale.EditSaleDetails();
                 return "";
             }
             catch (Exception e)

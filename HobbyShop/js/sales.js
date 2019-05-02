@@ -35,6 +35,13 @@ function displaySaleDetails(sale) {
     $("#results")[0].style.display = "none";
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
+    /*
+    $("#editItem")[0].addEventListener("click", function () {
+        editSaleDetails(sale);
+    });
+   $("#deleteItem")[0].addEventListener("click", function () {
+        displayDeleteItem(item);
+    });*/
 
     var date = new Date(parseInt((sale.Date).substr(6)));
 
@@ -65,6 +72,16 @@ function displayAddSaleRecord() {
     $("#detailHeading")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
     $("#detailOptions")[0].style.visibility = "hidden";
+
+    $("#leftImage").attr("src", "style/add.png");
+
+    /*var img1 = document.createElement("img");
+    img1.src = "style/add.png";
+    $("#leftButton")[0].append(img1);
+    */
+    $("#leftButton")[0].setAttribute("title", "Add");
+    $("#leftButton")[0].style.visibility = "visible";
+    $("#rightButton")[0].style.visibility = "visible";
     
     var elements = document.getElementsByTagName("input");
     for (var i = 0; i < elements.length; i++) {
@@ -75,15 +92,10 @@ function displayAddSaleRecord() {
             elements[i].disabled = false;
         }
     }
- 
-    var img1 = document.createElement("img");
-    img1.src = "style/add.png";
-    
-    $("#leftButton")[0].append(img1);
+
     $("#leftButton")[0].addEventListener("click", function () {
         $("#leftButton")[0].style.visibility = "hidden";
         $("#rightButton")[0].style.visibility = "hidden";
-
         addSaleRecord();
     });
 
@@ -127,13 +139,74 @@ function onAddSaleRecord(result) {
     // **todo: add single new button to list
 }
 
+//edit sale record
+function editSaleDetails(sale) {
+    //document.getElementById("left").src = "style/save.png";
+    $("#leftImage").attr("src", "style/save.png");
+    /*var img1 = document.createElement("img");
+    img1.src = "style/save.png";
+    $("#leftButton")[0].append(img1);
+    */
 
+    $("#leftButton")[0].style.visibility = "visible";
+    $("#rightButton")[0].style.visibility = "visible";
+    var elements = document.getElementsByTagName("input");
+    for (var i = 0; i < elements.length; i++) {
+        var id = elements[i].id;
+        if (id == "date" || id == "customer" || id == "totalValue" || id == "discountValue" || id == "finalValue") {
+            elements[i].disabled = false;
+        }
+    }
+    $("#leftButton")[0].addEventListener("click", function () {
+        saveSaleDetails(sale);
+    });
+    
+    $("#rightButton")[0].addEventListener("click", function () {
+        //
+    });
+}
 
-/*
-$(document).ready(function () {
-    getSaleRecords();
-});
-*/
+function saveSaleDetails() {
+    var id = document.getElementById("sale").value;
+    var date = document.getElementById("date").value;
+    var customer = document.getElementById("customer").value;
+    var total = document.getElementById("totalValue").value;
+    var discount = document.getElementById("discountValue").value;
+    var final = document.getElementById("finalValue").value;/**/
+
+    //SaleController.EditSaleDetails(sale.SaleID, sale.Date, sale.CustomerID, sale.TotalValue, sale.Discount, sale.FinalTotal, onEditSaleDetails);
+    SaleController.EditSaleDetails(Number(id), date, Number(customer), Number(total), Number(discount), Number(final), onEditSaleDetails);
+}
+
+function onEditSaleDetails(result) {
+    if (result == "") {
+        resultPopup("Successfully Edited", "green");
+        $("#leftButton")[0].style.visibility = "hidden";
+        $("#rightButton")[0].style.visibility = "hidden";
+        var elements = document.getElementsByTagName("input");
+        for (var i = 0; i < elements.length; i++) {
+            var id = elements[i].id;
+            if (id == "date" || id == "customer" || id == "totalValue" || id == "discountValue" || id == "finalValue") {
+                elements[i].disabled = true;
+            }
+        }
+    }
+}
+
+function deleteSaleRecord() {
+    var id = document.getElementById("sale").value;
+    SaleController.DeleteSaleRecord(Number(id), onDeleteSaleRecord);
+}
+
+function onDeleteSaleRecord(result) {
+    if (result == "") {
+        clearDisplay();
+        resultPopup("Successfully deleted", "green");
+        $("#leftButton")[0].style.visibility = "hidden";
+        $("#rightButton")[0].style.visibility = "hidden";
+    }
+}
+
 $(document).ready(function () {
     getSaleRecords();
     // prevent form submission on enter
@@ -150,7 +223,7 @@ $(document).ready(function () {
         displayAdvSearch();
     });
     /*$("#addButton")[0].addEventListener("click", function () {
-        displayAddSale();
+        displayAddSaleRecord();
     });*/
 });
 
@@ -159,3 +232,14 @@ function displayAdvSearch() {
     document.getElementById("detailHeading").innerHTML = "Advanced Search";
     document.getElementById("details").innerHTML = "Here will be filter & sort settings for an advanced search!";
 }
+function restore() {
+
+    $('#evaluationForm').find(':input').each(function (i, elem) {
+        $(this).val($(this).data("previous-value"));
+    });
+}
+
+$('#evaluationFormEditCancel').click(function () {
+
+    restore();
+});

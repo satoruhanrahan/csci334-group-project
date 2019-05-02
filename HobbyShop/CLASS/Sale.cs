@@ -101,7 +101,7 @@ namespace HobbyShop.CLASS
             }
         }
 
-        public void UpdateSaleDetails()
+        public void EditSaleDetails()
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
