@@ -35,38 +35,42 @@ namespace HobbyShop.CONTROLLER
         {
             try
             {
-                Sale sale = new Sale();
-                sale.AddSaleRecord(date, customerID, totalValue, discount, finalTotal);
+                Sale sale = new Sale(date, customerID, totalValue, discount, finalTotal);
+                sale.AddSaleRecord();
                 return "";
             }
-            catch (Exception oEx)
+            catch (Exception e)
             {
-                return oEx.Message;
+                return e.Message;
             }
         }
 
-        public string UpdateModelDetails(int id, string name, string type, string area, double price, string des, bool avail, int stockCount)
+        public string UpdateSaleDetails(int id, DateTime date, int customerID, double totalValue, double discount, double finalTotal)
         {
             try
-            { 
+            {
+                Sale sale = new Sale(id, date, customerID, totalValue, discount, finalTotal);
+                sale.UpdateSaleDetails();
                 return "";
             }
-            catch (Exception oEx)
+            catch (Exception e)
             {
-                return oEx.Message;
+                return e.Message;
             }
         }
 
         [OperationContract]
-        public string DeleteModel(int id)
+        public string DeleteSaleRecord(int id)
         {
             try
             {
+                Sale sale = new Sale(id);
+                sale.DeleteSaleRecord();
                 return "";
             }
-            catch (Exception oEx)
+            catch (Exception e)
             {
-                return oEx.Message;
+                return e.Message;
             }
         }
     }

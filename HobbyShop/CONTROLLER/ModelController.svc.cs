@@ -126,8 +126,11 @@ namespace HobbyShop.CONTROLLER
                 }
                 catch (Exception e)
                 {
+                    /*
                     Console.WriteLine("Caught Exception:", e);
                     return "{}";
+                    */
+                    return e.Message; //Linh: can be simple like this to catch the error message.
                 }
             }
         }
