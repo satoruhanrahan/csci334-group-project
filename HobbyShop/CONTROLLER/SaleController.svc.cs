@@ -54,7 +54,9 @@ namespace HobbyShop.CONTROLLER
                 DateTime formatedDate = DateTime.Parse(date);
                 Sale sale = new Sale(id, formatedDate, customerID, totalValue, discount, finalTotal);
                 sale.EditSaleDetails();
-                return "";
+                string json = new JavaScriptSerializer().Serialize(sale);
+                return json;
+                //return "";
             }
             catch (Exception e)
             {

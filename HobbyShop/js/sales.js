@@ -11,7 +11,9 @@ function onGetSaleRecords(result) {
 //display a list of sales
 function displaySaleRecords(sales) {
     var list = document.getElementById("list");
-
+    while (list.hasChildNodes()) {
+        list.removeChild(list.lastChild);
+    }
     for (var i = sales.length - 1; i >= 0; i--) {
         var button = document.createElement("button");
         button.setAttribute("class", "listItem");
@@ -136,6 +138,7 @@ function addSaleRecord() {
 function onAddSaleRecord(result) {
     resultPopup("Successfully added to the database", "green");
     clearDisplay();
+    getSaleRecords();
     // **todo: add single new button to list
 }
 
@@ -162,7 +165,7 @@ function editSaleDetails(sale) {
     });
     
     $("#rightButton")[0].addEventListener("click", function () {
-        //
+        restore();
     });
 }
 
@@ -179,7 +182,12 @@ function saveSaleDetails() {
 }
 
 function onEditSaleDetails(result) {
-    if (result == "") {
+    if (parseJSON(result)) {
+        var sale = JSON.parse(result);
+        
+        //clearDisplay();
+        getSaleRecords();
+        displaySaleDetails(sale);
         resultPopup("Successfully Edited", "green");
         $("#leftButton")[0].style.visibility = "hidden";
         $("#rightButton")[0].style.visibility = "hidden";
@@ -204,6 +212,7 @@ function onDeleteSaleRecord(result) {
         resultPopup("Successfully deleted", "green");
         $("#leftButton")[0].style.visibility = "hidden";
         $("#rightButton")[0].style.visibility = "hidden";
+        getSaleRecords();
     }
 }
 
@@ -232,14 +241,23 @@ function displayAdvSearch() {
     document.getElementById("detailHeading").innerHTML = "Advanced Search";
     document.getElementById("details").innerHTML = "Here will be filter & sort settings for an advanced search!";
 }
-function restore() {
 
-    $('#evaluationForm').find(':input').each(function (i, elem) {
+function restore() {
+    $('#detailTable').find(':input').each(function (i, elem) {
         $(this).val($(this).data("previous-value"));
     });
 }
 
-$('#evaluationFormEditCancel').click(function () {
-
+function parseJSON(jsonString) {
+    try {
+        var obj = JSON.parse(jsonString);
+        if (obj && typeof obj === "object")
+            return obj;
+    }
+    catch (e) { }
+    return false;
+}
+/*
+$('#rightButton').click(function () {
     restore();
-});
+});*/

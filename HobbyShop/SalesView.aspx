@@ -27,7 +27,7 @@
         </table>
         <div class="scrollable" id="list"></div>
         <div id="addButtonContainer">
-            <button type="button" id="addButton" class='smallbtn greenbtn' title="Add Sale" ="displayAddSaleRecord();"><img src='style/add.png' /></button>
+            <button type="button" id="addButton" class='smallbtn greenbtn' title="Add Sale" onclick="displayAddSaleRecord();"><img src='style/add.png' /></button>
         </div>
     </div>
 	<div id="detailContainer">
@@ -37,7 +37,7 @@
                 <button type="button" class="smallbtn"> <img src="style/options.png" /></button>
                  <div class="dropdown-content">
                      <button type="button" class="dropdown-button" id="editSale" onclick="editSaleDetails();">Edit Details</button>
-                     <button type="button" class="dropdown-button" id="deleteSale" <%--onclick="deleteSaleRecord();"--%>>Delete Sale</button>
+                     <button type="button" class="dropdown-button" id="deleteSale" onclick="deleteSaleRecord();">Delete Sale</button>
                  </div> 
              </div>
             <div id="details">
@@ -68,7 +68,7 @@
                     </tr> 
                 </table>
                 <button type="button" id="leftButton" title="Save changes" class="smallbtn greenbtn">
-                    <%--<img id="leftImage" src="style/add.png" />--%>
+                    <img id="leftImage" src="style/add.png" />
                 </button>
                 <button type="button" id="rightButton" title="Discard changes" class="smallbtn redbtn" style="float:right;"> 
                     <img src="style/close.png" />
