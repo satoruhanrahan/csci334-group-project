@@ -46,6 +46,7 @@ function displayItemNames(items) {
     for (var i = items.length - 1; i >= 0; i--) {
         button = document.createElement("button");
         button.innerHTML = items[i].Name;
+        button.setAttribute("id", items[i].Id);
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem");
         let item = items[i];
@@ -182,9 +183,13 @@ function updateItem(id) {
     );
 }
 
-function onUpdateItem(result) {
-    // ** todo: refresh the updated button 
-    resultPopup("Successfully Updated", "green");
+function onUpdateItem(item) {
+    //  Refreshes the updated button 
+    $("#" + item.Id).innerHTML = item.Name;
+    $("#" + item.Id).addEventListener("click", function () {
+        displayItemDetails(item);
+    });
+    resultPopup("Successfully updated item in the Database.", "green");
 }
 
 //displays the delete model prompt
@@ -201,7 +206,7 @@ function displayDeleteItem(item) {
     button1.style.cssFloat = "left";
     button1.setAttribute("class", "mediumbtn greenbtn");
     button1.addEventListener("click", function () {
-        removeItem(item.Id);
+        deleteItem(item.Id);
     });
     var img1 = document.createElement("img");
     img1.src = "style/delete.png";
@@ -234,15 +239,16 @@ function displayDeleteItem(item) {
 }
 
 // sends id of item to be deleted to controller
-function removeItem(id) {
+function deleteItem(id) {
     results.style.display = "none";
-    ModelController.DeleteModel(id, onDeleteSuccess);
+    ModelController.DeleteModel(id, onDeleteItem);
 }
 
-function onDeleteSuccess(result) {
+function onDeleteItem(item) {
     clearDisplay();
-    // **todo: remove corresponding button from list
-    resultPopup("Item was successfully removed", "green");
+    // remove corresponding button from list
+    $("#" + item.Id).remove();
+    resultPopup("Item was successfully removed.", "green");
 }
 
 // closes the delete prompt
@@ -319,8 +325,17 @@ function addNewItem() {
     );
 }
 
-function onAddNewItem(result) {
-    resultPopup("Successfully added to the database", "green");
+function onAddNewItem(item) {
     clearDisplay();
-    // **todo: add single new button to list
+    // add single new button
+    button = document.createElement("button");
+    button.innerHTML = item.Name;
+    button.setAttribute("id", item.Id);
+    button.setAttribute("type", "button");
+    button.setAttribute("class", "listItem");
+    button.addEventListener("click", function () {
+        displayItemDetails(item);
+    });
+    $("#list")[0].append(button);
+    resultPopup("Successfully added to the database.", "green");
 }
