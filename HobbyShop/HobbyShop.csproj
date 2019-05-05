@@ -70,7 +70,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CONTROLLER\DeliveryController.svc" />
     <Content Include="CONTROLLER\SaleController.svc" />
+    <Content Include="DeliveriesView.aspx" />
+    <Content Include="js\deliveries.js" />
     <Content Include="js\sales.js" />
     <Content Include="MasterContent.aspx" />
     <None Include="packages.config" />
@@ -89,6 +92,7 @@
     <Content Include="js\models.js" />
     <Content Include="js\jquery.js" />
     <Content Include="SalesView.aspx" />
+    <Content Include="style\deliveries.css" />
     <Content Include="style\global.css" />
     <Content Include="style\list.css" />
     <Content Include="style\details.css" />
@@ -96,14 +100,25 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CLASS\Delivery.cs" />
     <Compile Include="CLASS\Customer.cs" />
     <Compile Include="CLASS\Model.cs" />
     <Compile Include="CLASS\Sale.cs" />
+    <Compile Include="CONTROLLER\DeliveryController.svc.cs">
+      <DependentUpon>DeliveryController.svc</DependentUpon>
+    </Compile>
     <Compile Include="CONTROLLER\ModelController.svc.cs">
       <DependentUpon>ModelController.svc</DependentUpon>
     </Compile>
     <Compile Include="CONTROLLER\SaleController.svc.cs">
       <DependentUpon>SaleController.svc</DependentUpon>
+    </Compile>
+    <Compile Include="DeliveriesView.aspx.cs">
+      <DependentUpon>DeliveriesView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DeliveriesView.aspx.designer.cs">
+      <DependentUpon>DeliveriesView.aspx</DependentUpon>
     </Compile>
     <Compile Include="ModelsView.aspx.cs">
       <DependentUpon>ModelsView.aspx</DependentUpon>
