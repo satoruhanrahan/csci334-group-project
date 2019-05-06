@@ -56,7 +56,6 @@ namespace HobbyShop.CONTROLLER
                 sale.EditSaleDetails();
                 string json = new JavaScriptSerializer().Serialize(sale);
                 return json;
-                //return "";
             }
             catch (Exception e)
             {

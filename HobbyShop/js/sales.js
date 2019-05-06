@@ -96,8 +96,8 @@ function displayAddSaleRecord() {
     }
 
     $("#leftButton")[0].addEventListener("click", function () {
-        $("#leftButton")[0].style.visibility = "hidden";
-        $("#rightButton")[0].style.visibility = "hidden";
+        //$("#leftButton")[0].style.visibility = "hidden";
+        //$("#rightButton")[0].style.visibility = "hidden";
         addSaleRecord();
     });
 
@@ -111,6 +111,8 @@ function clearDisplay() {
     $("#detailHeading")[0].style.visibility = "hidden";
     $("#details")[0].style.visibility = "hidden";
     $("#detailOptions")[0].style.visibility = "hidden";
+    $("#leftButton")[0].style.visibility = "hidden";
+    $("#rightButton")[0].style.visibility = "hidden";
 }
 
 //add a new sale record
@@ -139,7 +141,6 @@ function onAddSaleRecord(result) {
     resultPopup("Successfully added to the database", "green");
     clearDisplay();
     getSaleRecords();
-    // **todo: add single new button to list
 }
 
 //edit sale record
@@ -201,6 +202,52 @@ function onEditSaleDetails(result) {
     }
 }
 
+function displayConfirmDelete() {
+    $("#results")[0].style.borderColor = "red";
+    $("#results")[0].style.display = "block";
+    $("#results")[0].innerHTML = "";
+
+    var br = document.createElement("br");
+
+    var button1 = document.createElement("button");
+    button1.setAttribute("type", "button");
+    button1.setAttribute("title", "Delete");
+    button1.style.cssFloat = "left";
+    button1.setAttribute("class", "mediumbtn greenbtn");
+    button1.addEventListener("click", function () {
+        //deleteItem(item.Id);
+        deleteSaleRecord();
+    });
+    var img1 = document.createElement("img");
+    img1.src = "style/delete.png";
+    button1.append(img1);
+    button1.append("Delete");
+
+    var button2 = document.createElement("button");
+    button2.setAttribute("type", "button");
+    button2.setAttribute("title", "Cancel");
+    button2.style.cssFloat = "right";
+    button2.setAttribute("class", "mediumbtn redbtn");
+    button2.addEventListener("click", function () {
+        closeDelete();
+    });
+    var img2 = document.createElement("img");
+    img2.src = "style/close.png";
+    button2.append(img2);
+    button2.append("Cancel");
+
+    $("#results")[0].append("Are you sure you want to delete this model ");
+    var span = document.createElement("span");
+    span.style.fontWeight = "bold";
+    span.append("permanently");
+    $("#results")[0].append(span);
+    $("#results")[0].append(" from the database?");
+    $("#results")[0].append(br);
+    $("#results")[0].append(br);
+    $("#results")[0].append(button1);
+    $("#results")[0].append(button2);
+}
+
 function deleteSaleRecord() {
     var id = document.getElementById("sale").value;
     SaleController.DeleteSaleRecord(Number(id), onDeleteSaleRecord);
@@ -209,11 +256,16 @@ function deleteSaleRecord() {
 function onDeleteSaleRecord(result) {
     if (result == "") {
         clearDisplay();
-        resultPopup("Successfully deleted", "green");
+        resultPopup("Sale record was successfully deleted", "green");
         $("#leftButton")[0].style.visibility = "hidden";
         $("#rightButton")[0].style.visibility = "hidden";
         getSaleRecords();
     }
+}
+
+// closes the delete prompt
+function closeDelete() {
+    results.style.display = "none";
 }
 
 $(document).ready(function () {
