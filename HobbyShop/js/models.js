@@ -35,8 +35,9 @@ function onSearchItems(result) {
 
 //Advanced search display
 function displayAdvSearch() {
-    document.getElementById("detailHeading").innerHTML = "Advanced Search";
-    document.getElementById("details").innerHTML = "Here will be filter & sort settings for an advanced search!";
+    clearDisplay();
+    $("#detailHeading")[0].style.visibility = "visible";
+    $("#detailHeading")[0].innerHTML = "Advanced Search";
 }
 
 // Creates and displays a list of buttons representing items in the inventory. 
@@ -59,13 +60,9 @@ function displayItemNames(items) {
 
 // Displays an items details
 function displayItemDetails(item) {
+    // set display
+    clearDisplay();
     $("#detailHeading")[0].innerHTML = item.Name;
-    $("#leftButton")[0].style.visibility = "hidden";
-    $("#rightButton")[0].style.visibility = "hidden";
-    $("#results")[0].style.display = "none";
-    $("#itemID")[0].style.backgroundColor = "white";
-    $("#itemAvailability")[0].style.backgroundColor = "white";
-    $("#itemTotalStock")[0].style.backgroundColor = "white";
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
@@ -135,13 +132,15 @@ function itemInputs(item) {
 
 // Edit details
 function editItemDetails(item) {
-    $("#detailHeading")[0].innerHTML = "";
-    $("#detailHeading")[0].append(item.Name);
+    clearDisplay();
+    $("#detailHeading")[0].style.visibility = "visible";
+    $("#details")[0].style.visibility = "visible";
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#itemID")[0].style.backgroundColor = "lightgrey";
     $("#itemAvailability")[0].style.backgroundColor = "lightgrey";
     $("#itemTotalStock")[0].style.backgroundColor = "lightgrey";
+    $("#detailHeading")[0].append(item.Name);
 
     itemInputs(item);
 
@@ -184,6 +183,7 @@ function updateItem(id) {
 }
 
 function onUpdateItem(item) {
+    item = JSON.parse(item);
     //  Refreshes the updated button 
     $("#" + item.Id).innerHTML = item.Name;
     $("#" + item.Id).addEventListener("click", function () {
@@ -244,10 +244,10 @@ function deleteItem(id) {
     ModelController.DeleteModel(id, onDeleteItem);
 }
 
-function onDeleteItem(item) {
+function onDeleteItem(id) {
     clearDisplay();
     // remove corresponding button from list
-    $("#" + item.Id).remove();
+    $("#" + id).remove();
     resultPopup("Item was successfully removed.", "green");
 }
 
@@ -258,26 +258,33 @@ function closeDelete() {
 
 // removes any details that are displayed in the details section
 function clearDisplay() {
+    $("#detailHeading")[0].innerHTML = "";
     $("#detailHeading")[0].style.visibility = "hidden";
     $("#details")[0].style.visibility = "hidden";
     $("#detailOptions")[0].style.visibility = "hidden";
+    $("#leftButton")[0].style.visibility = "hidden";
+    $("#rightButton")[0].style.visibility = "hidden";
+    $("#results")[0].style.display = "none";
+    $("#itemID")[0].style.backgroundColor = "white";
+    $("#itemAvailability")[0].style.backgroundColor = "white";
+    $("#itemTotalStock")[0].style.backgroundColor = "white";
+    $("#itemID")[0].innerHTML = "";
+    $("#itemAvailability")[0].innerHTML = "";
+    $("#itemTotalStock")[0].innerHTML = "";
 }
 
 //Add new item to model table
 function displayAddItem() {
-    $("#detailHeading")[0].innerHTML = "";
+    //reset detail display to have correct elements for this menu.
+    clearDisplay();
     $("#detailHeading")[0].innerHTML = "Add a New Model";
     $("#detailHeading")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#itemID")[0].style.backgroundColor = "lightgrey";
-    $("#itemID")[0].innerHTML = "";
     $("#itemAvailability")[0].style.backgroundColor = "lightgrey";
-    $("#itemAvailability")[0].innerHTML = "";
     $("#itemTotalStock")[0].style.backgroundColor = "lightgrey";
-    $("#itemTotalStock")[0].innerHTML = "";
-    $("#detailOptions")[0].style.visibility = "hidden";
 
     var item = {
         "Name": "",
@@ -288,13 +295,12 @@ function displayAddItem() {
     }
     itemInputs(item);
 
+    // set details for left button
     var img1 = document.createElement("img");
     img1.src = "style/add.png";
-
     $("#leftButton")[0].innerHTML = "";
     $("#leftButton")[0].append(img1);
     $("#leftButton")[0].addEventListener("click", function () {
-        updateItem(item.Id);                                        //Linh: why updateItem() is needed here when we already have addNewItem()?
         $("#leftButton")[0].style.visibility = "hidden";
         $("#rightButton")[0].style.visibility = "hidden";
         $("#itemID")[0].style.backgroundColor = "white";
@@ -303,6 +309,7 @@ function displayAddItem() {
         addNewItem(item);
     });
 
+    // set details for right button
     $("#rightButton")[0].addEventListener("click", function () {
         $("#leftButton")[0].style.visibility = "hidden";
         $("#rightButton")[0].style.visibility = "hidden";
@@ -326,6 +333,7 @@ function addNewItem() {
 }
 
 function onAddNewItem(item) {
+    item = JSON.parse(item);
     clearDisplay();
     // add single new button
     button = document.createElement("button");
