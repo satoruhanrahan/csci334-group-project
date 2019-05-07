@@ -65,7 +65,7 @@ function displayItemDetails(item) {
     $("#detailHeading")[0].innerHTML = item.Name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailOptions")[0].style.visibility = "visible";
-    $("#details")[0].style.visibility = "visible";
+    $("#detailTable")[0].style.visibility = "visible";
     $("#editItem")[0].addEventListener("click", function () {
         editItemDetails(item);
     });
@@ -134,7 +134,7 @@ function itemInputs(item) {
 function editItemDetails(item) {
     clearDisplay();
     $("#detailHeading")[0].style.visibility = "visible";
-    $("#details")[0].style.visibility = "visible";
+    $("#detailTable")[0].style.visibility = "visible";
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#itemID")[0].style.backgroundColor = "lightgrey";
@@ -143,6 +143,16 @@ function editItemDetails(item) {
     $("#detailHeading")[0].append(item.Name);
 
     itemInputs(item);
+    var available;
+    if (item.Availability == true) {
+        available = "Yes";
+    }
+    else {
+        available = "No";
+    }
+    $("#itemID")[0].append(item.Id);
+    $("#itemAvailability")[0].append(available);
+    $("#itemTotalStock")[0].append(item.StockCount);
 
     var img1 = document.createElement("img");
     img1.src = "style/save.png";
@@ -151,20 +161,10 @@ function editItemDetails(item) {
     $("#leftButton")[0].append(img1);
     $("#leftButton")[0].addEventListener("click", function () {
         updateItem(item.Id);
-        $("#leftButton")[0].style.visibility = "hidden";
-        $("#rightButton")[0].style.visibility = "hidden";
-        $("#itemID")[0].style.backgroundColor = "white";
-        $("#itemAvailability")[0].style.backgroundColor = "white";
-        $("#itemTotalStock")[0].style.backgroundColor = "white";
         displayItemDetails(item);
     });
     
     $("#rightButton")[0].addEventListener("click", function () {
-        $("#leftButton")[0].style.visibility = "hidden";
-        $("#rightButton")[0].style.visibility = "hidden";
-        $("#itemID")[0].style.backgroundColor = "white";
-        $("#itemAvailability")[0].style.backgroundColor = "white";
-        $("#itemTotalStock")[0].style.backgroundColor = "white";
         displayItemDetails(item);
     });
 }
@@ -260,7 +260,7 @@ function closeDelete() {
 function clearDisplay() {
     $("#detailHeading")[0].innerHTML = "";
     $("#detailHeading")[0].style.visibility = "hidden";
-    $("#details")[0].style.visibility = "hidden";
+    $("#detailTable")[0].style.visibility = "hidden";
     $("#detailOptions")[0].style.visibility = "hidden";
     $("#leftButton")[0].style.visibility = "hidden";
     $("#rightButton")[0].style.visibility = "hidden";
@@ -279,7 +279,7 @@ function displayAddItem() {
     clearDisplay();
     $("#detailHeading")[0].innerHTML = "Add a New Model";
     $("#detailHeading")[0].style.visibility = "visible";
-    $("#details")[0].style.visibility = "visible";
+    $("#detailTable")[0].style.visibility = "visible";
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#itemID")[0].style.backgroundColor = "lightgrey";
@@ -301,21 +301,11 @@ function displayAddItem() {
     $("#leftButton")[0].innerHTML = "";
     $("#leftButton")[0].append(img1);
     $("#leftButton")[0].addEventListener("click", function () {
-        $("#leftButton")[0].style.visibility = "hidden";
-        $("#rightButton")[0].style.visibility = "hidden";
-        $("#itemID")[0].style.backgroundColor = "white";
-        $("#itemAvailability")[0].style.backgroundColor = "white";
-        $("#itemTotalStock")[0].style.backgroundColor = "white";
         addNewItem(item);
     });
 
     // set details for right button
     $("#rightButton")[0].addEventListener("click", function () {
-        $("#leftButton")[0].style.visibility = "hidden";
-        $("#rightButton")[0].style.visibility = "hidden";
-        $("#itemID")[0].style.backgroundColor = "white";
-        $("#itemAvailability")[0].style.backgroundColor = "white";
-        $("#itemTotalStock")[0].style.backgroundColor = "white";
         clearDisplay();
     });
 }
