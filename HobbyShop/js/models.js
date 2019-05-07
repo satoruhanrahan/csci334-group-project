@@ -292,7 +292,7 @@ function displayAddItem() {
         "SbjArea": "",
         "Price": "",
         "Description": ""
-    }
+    };
     itemInputs(item);
 
     // set details for left button
@@ -301,7 +301,8 @@ function displayAddItem() {
     $("#leftButton")[0].innerHTML = "";
     $("#leftButton")[0].append(img1);
     $("#leftButton")[0].addEventListener("click", function () {
-        addNewItem(item);
+        //addNewItem(item);
+        addNewItem();
     });
 
     // set details for right button
@@ -312,14 +313,21 @@ function displayAddItem() {
 
 // Sends input to controller
 function addNewItem() {
-    ModelController.AddNewModel(
+    var name = document.getElementById("itemNameInput").value;
+    var type = document.getElementById("itemTypeInput").value;
+    var area = document.getElementById("itemSbjAreaInput").value;
+    var price = document.getElementById("itemPriceInput").value;
+    var description = document.getElementById("itemDescriptionInput").value;
+    console.log("Test: " + name + " " + type + " " + area);
+    ModelController.AddNewModel(name, type, area, Number(price), description, onAddNewItem);
+    /*ModelController.AddNewModel(
         $("#itemName")[0].value,
         $("#itemType")[0].value,
         $("#itemSbjArea")[0].value,
         $("#itemPrice")[0].value,
         $("#itemDescription")[0].value,
         onAddNewItem
-    );
+    );*/
 }
 
 function onAddNewItem(item) {
@@ -327,7 +335,7 @@ function onAddNewItem(item) {
     item = JSON.parse(item);
     clearDisplay();
     // add single new button
-    button = document.createElement("button");
+    var button = document.createElement("button");
     button.innerHTML = item.Name;
     button.setAttribute("id", item.Id);
     button.setAttribute("type", "button");

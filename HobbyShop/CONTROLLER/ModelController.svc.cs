@@ -23,7 +23,7 @@ namespace HobbyShop.CONTROLLER
         {
             try
             {
-                Model _model = new Model (name,type,area,price,des);
+                Model _model = new Model(name,type,area,price,des);
                 _model.AddNewModel();
 
                 string json = new JavaScriptSerializer().Serialize(_model);

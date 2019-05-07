@@ -55,19 +55,18 @@ namespace HobbyShop
                 try
                 {
                     con.Open();
-                    string query = "INSERT INTO Models (Name,Type,SubjectArea,CurrentRetailPrice,Description,Availability,StockCount) VALUES (@name,@type,@area,@price,@des,@avail,@count)";
+                    //string query = "INSERT INTO Models (Name,Type,SubjectArea,CurrentRetailPrice,Description,Availability,StockCount) VALUES (@name,@type,@area,@price,@des,@avail,@count)";
+                    string query = "INSERT INTO Models (Name,Type,SubjectArea,CurrentRetailPrice,Description) VALUES (@name,@type,@area,@price,@des)";
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.Parameters.AddWithValue("@name", itemName);
                     cmd.Parameters.AddWithValue("@type", itemType);
                     cmd.Parameters.AddWithValue("@area", itemSbjArea);
                     cmd.Parameters.AddWithValue("@price", itemPrice);
                     cmd.Parameters.AddWithValue("@des", itemDes);
-                    cmd.Parameters.AddWithValue("@avail", itemAvail);
-                    cmd.Parameters.AddWithValue("@count", stockCount);
+                    //cmd.Parameters.AddWithValue("@avail", itemAvail);
+                    //cmd.Parameters.AddWithValue("@count", stockCount);
 
                     cmd.ExecuteNonQuery();
-                    con.Close();
-
                 }
                 catch (Exception ex)
                 {
@@ -107,7 +106,6 @@ namespace HobbyShop
 
                         objects.Add(_model);
                     }
-                    con.Close();
                     return objects;
                 }
                 catch (Exception e)
@@ -133,7 +131,6 @@ namespace HobbyShop
                     cmd.Parameters.AddWithValue("@id", itemNum);
 
                     cmd.ExecuteNonQuery();
-                    con.Close();
                 }
                 catch (Exception e)
                 {
@@ -153,7 +150,6 @@ namespace HobbyShop
                     cmd.Parameters.AddWithValue("@id", itemNum);
 
                     cmd.ExecuteNonQuery();
-                    con.Close();
                 }
                 catch (Exception e)
                 {

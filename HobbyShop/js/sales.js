@@ -37,7 +37,10 @@ function displaySaleDetails(sale) {
     $("#results")[0].style.display = "none";
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
-    $("editSale").click(editSaleDetails(sale));
+    $("#editSale")[0].addEventListener("click", function () {
+        editSaleDetails(sale);
+    });
+    $("editSale").click();
     $("#sale")[0].style.backgroundColor = "white";
     
     var date = new Date(parseInt((sale.Date).substr(6)));
@@ -78,7 +81,7 @@ function displayAddSaleRecord() {
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
 
-    document.getElementById("detailTable").deleteRow(1);
+    //document.getElementById("detailTable").deleteRow(1);
     var elements = document.getElementsByTagName("input");
     for (var i = 0; i < elements.length; i++) {
         elements[i].value = "";

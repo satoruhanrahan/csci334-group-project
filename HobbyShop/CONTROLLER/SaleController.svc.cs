@@ -17,8 +17,6 @@ namespace HobbyShop.CONTROLLER
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class SaleController
     {
-        //string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
-
         [OperationContract]
         public string GetSaleRecords()
         {
