@@ -36,7 +36,7 @@
             <div id="detailOptions" class="dropdown">
                 <button type="button" class="smallbtn"> <img src="style/options.png" /></button>
                  <div class="dropdown-content">
-                     <button type="button" class="dropdown-button" id="editSale" onclick="editSaleDetails();">Edit Details</button>
+                     <button type="button" class="dropdown-button" id="editSale">Edit Details</button>
                      <button type="button" class="dropdown-button" id="deleteSale" onclick="deleteSaleRecord();">Delete Sale</button>
                  </div> 
              </div>
