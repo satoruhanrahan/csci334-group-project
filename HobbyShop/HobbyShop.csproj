@@ -72,6 +72,7 @@
   <ItemGroup>
     <Content Include="CONTROLLER\DeliveryController.svc" />
     <Content Include="CONTROLLER\SaleController.svc" />
+    <Content Include="CONTROLLER\SupplierController.svc" />
     <Content Include="DeliveriesView.aspx" />
     <Content Include="js\deliveries.js" />
     <Content Include="js\sales.js" />
@@ -104,6 +105,7 @@
     <Compile Include="CLASS\Customer.cs" />
     <Compile Include="CLASS\Model.cs" />
     <Compile Include="CLASS\Sale.cs" />
+    <Compile Include="CLASS\Supplier.cs" />
     <Compile Include="CONTROLLER\DeliveryController.svc.cs">
       <DependentUpon>DeliveryController.svc</DependentUpon>
     </Compile>
@@ -112,6 +114,9 @@
     </Compile>
     <Compile Include="CONTROLLER\SaleController.svc.cs">
       <DependentUpon>SaleController.svc</DependentUpon>
+    </Compile>
+    <Compile Include="CONTROLLER\SupplierController.svc.cs">
+      <DependentUpon>SupplierController.svc</DependentUpon>
     </Compile>
     <Compile Include="DeliveriesView.aspx.cs">
       <DependentUpon>DeliveriesView.aspx</DependentUpon>
@@ -153,6 +158,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>CONTROLLER\SupplierController.svc.cs</ApplicationManifest>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

@@ -15,7 +15,7 @@ namespace HobbyShop
         private string cusPhone;
         private int cusCreditLine;
         private double cusBalance;
-        private bool cusMemberStatus;
+        private string cusMemberStatus;
         private DateTime cusJoinDate;
 
         public int Id { get { return cusNum; } set { cusNum = value; } }
@@ -25,10 +25,10 @@ namespace HobbyShop
         public string Phone { get { return cusPhone; } set { cusPhone = value; } }
         public int CreditLine { get { return cusCreditLine; } set { cusCreditLine = value; } }
         public double Balance { get { return cusBalance; } set { cusBalance = value; } }
-        public bool MemberStatus { get { return cusMemberStatus; } set { cusMemberStatus = value; } }
+        public string MemberStatus { get { return cusMemberStatus; } set { cusMemberStatus = value; } }
         public DateTime JoinDate { get { return cusJoinDate; } set { cusJoinDate = value; } }
 
-        public Customer(string cusName, string cusAddress, string cusPhone, int cusCreditLine, double cusBalance, bool cusMemberStatus, DateTime cusJoinDate, string cusEmail)    
+        public Customer(string cusName, string cusAddress, string cusPhone, int cusCreditLine, double cusBalance, string cusMemberStatus, DateTime cusJoinDate, string cusEmail)    
         {
             this.cusName = cusName;
             this.cusPhone = cusPhone;

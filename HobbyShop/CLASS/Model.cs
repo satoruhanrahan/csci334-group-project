@@ -74,6 +74,44 @@ namespace HobbyShop
                 }
             }
         }
+        public Model SearchByID(int id)
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    string query = "SELECT * FROM Models WHERE ItemNumber=" + id;
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.ExecuteNonQuery();
+
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    Model _model = new Model();
+                    while (reader.Read())
+                    {
+                        int itemNum = Convert.ToInt32(reader["ItemNumber"]);
+                        string itemName = Convert.ToString(reader["Name"]);
+                        string itemType = Convert.ToString(reader["Type"]);
+                        string itemSbjArea = Convert.ToString(reader["SubjectArea"]);
+                        double itemPrice = Convert.ToDouble(reader["CurrentRetailPrice"]);
+                        string itemDes = Convert.ToString(reader["Description"]);
+                        bool itemAvail = Convert.ToBoolean(reader["Availability"]);
+                        int stockCount = Convert.ToInt32(reader["StockCount"]);
+
+                        _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes);
+                        _model.Id = itemNum;
+                        _model.Availability = itemAvail;
+                        _model.StockCount = stockCount;
+
+                    }
+                    return _model;
+                }
+                catch (Exception e)
+                {
+                    throw new System.ApplicationException(e.Message);
+                }
+            }
+        }
         public List<Model> SearchDatabase(string input)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
