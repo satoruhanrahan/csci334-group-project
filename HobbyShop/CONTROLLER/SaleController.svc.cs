@@ -47,12 +47,12 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string EditSaleDetails(int id, string date, int customerID, double totalValue, double discount, double finalTotal)
+        public string EditSaleDetails(string date, int customerID, double totalValue, double discount, double finalTotal)
         {
             try
             {
                 DateTime formatedDate = DateTime.Parse(date);
-                Sale sale = new Sale(id, formatedDate, customerID, totalValue, discount, finalTotal);
+                Sale sale = new Sale(formatedDate, customerID, totalValue, discount, finalTotal);
                 sale.EditSaleDetails();
                 string json = new JavaScriptSerializer().Serialize(sale);
                 return json;

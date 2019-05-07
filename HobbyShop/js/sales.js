@@ -37,14 +37,9 @@ function displaySaleDetails(sale) {
     $("#results")[0].style.display = "none";
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
-    /*
-    $("#editItem")[0].addEventListener("click", function () {
-        editSaleDetails(sale);
-    });
-   $("#deleteItem")[0].addEventListener("click", function () {
-        displayDeleteItem(item);
-    });*/
-
+    $("editSale").click(editSaleDetails(sale));
+    $("#sale")[0].style.backgroundColor = "white";
+    
     var date = new Date(parseInt((sale.Date).substr(6)));
 
     var month = date.getMonth() + 1;
@@ -77,14 +72,13 @@ function displayAddSaleRecord() {
 
     $("#leftImage").attr("src", "style/add.png");
 
-    /*var img1 = document.createElement("img");
-    img1.src = "style/add.png";
-    $("#leftButton")[0].append(img1);
-    */
+    $("#sale")[0].style.backgroundColor = "lightgray";
+    
     $("#leftButton")[0].setAttribute("title", "Add");
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
-    
+
+    document.getElementById("detailTable").deleteRow(1);
     var elements = document.getElementsByTagName("input");
     for (var i = 0; i < elements.length; i++) {
         elements[i].value = "";
@@ -94,7 +88,8 @@ function displayAddSaleRecord() {
             elements[i].disabled = false;
         }
     }
-
+    calculate();
+  
     $("#leftButton")[0].addEventListener("click", function () {
         //$("#leftButton")[0].style.visibility = "hidden";
         //$("#rightButton")[0].style.visibility = "hidden";
@@ -105,6 +100,23 @@ function displayAddSaleRecord() {
         clearDisplay();
     });
 }
+
+//dynamic finalTotal calculation
+function calculate() {
+    var total = document.getElementById("totalValue");
+    var discount = document.getElementById("discountValue");
+    var finalTotal = document.getElementById("finalValue");
+    total.addEventListener("input", substract);
+    discount.addEventListener("input", substract);
+
+    function substract() {
+        var one = parseFloat(total.value);
+        var two = parseFloat(discount.value);
+        var substract = one - two;
+        finalTotal.value = substract;
+    }
+}
+
 
 // removes any details that are displayed in the details section
 function clearDisplay() {
@@ -145,15 +157,13 @@ function onAddSaleRecord(result) {
 
 //edit sale record
 function editSaleDetails(sale) {
-    //document.getElementById("left").src = "style/save.png";
     $("#leftImage").attr("src", "style/save.png");
-    /*var img1 = document.createElement("img");
-    img1.src = "style/save.png";
-    $("#leftButton")[0].append(img1);
-    */
-
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
+    $("#sale")[0].style.backgroundColor = "lightgray";
+
+    calculate();
+    //document.getElementById("detailTable").deleteRow(1);
     var elements = document.getElementsByTagName("input");
     for (var i = 0; i < elements.length; i++) {
         var id = elements[i].id;
@@ -162,11 +172,12 @@ function editSaleDetails(sale) {
         }
     }
     $("#leftButton")[0].addEventListener("click", function () {
-        saveSaleDetails(sale);
+        saveSaleDetails();
     });
     
     $("#rightButton")[0].addEventListener("click", function () {
-        restore();
+        //restore();
+        displaySaleDetails(sale);
     });
 }
 
@@ -176,7 +187,7 @@ function saveSaleDetails() {
     var customer = document.getElementById("customer").value;
     var total = document.getElementById("totalValue").value;
     var discount = document.getElementById("discountValue").value;
-    var final = document.getElementById("finalValue").value;/**/
+    var final = document.getElementById("finalValue").value;
 
     //SaleController.EditSaleDetails(sale.SaleID, sale.Date, sale.CustomerID, sale.TotalValue, sale.Discount, sale.FinalTotal, onEditSaleDetails);
     SaleController.EditSaleDetails(Number(id), date, Number(customer), Number(total), Number(discount), Number(final), onEditSaleDetails);
@@ -309,7 +320,3 @@ function parseJSON(jsonString) {
     catch (e) { }
     return false;
 }
-/*
-$('#rightButton').click(function () {
-    restore();
-});*/
