@@ -74,6 +74,7 @@ namespace HobbyShop.CLASS
                     Sale sale = new Sale(id, date, customerID, totalValue, discount, finalTotal);
                     saleList.Add(sale);
                 }
+                con.Close();
                 return saleList;
             }
         }
@@ -93,6 +94,7 @@ namespace HobbyShop.CLASS
                     cmd.Parameters.AddWithValue("@discount", discount);
                     cmd.Parameters.AddWithValue("@finalTotal", finalTotal);
                     cmd.ExecuteNonQuery();
+                    con.Close();
                 }
                 catch (OleDbException ex)
                 {
@@ -118,6 +120,7 @@ namespace HobbyShop.CLASS
                     cmd.Parameters.AddWithValue("@id", saleID);
 
                     cmd.ExecuteNonQuery();
+                    con.Close();
                 }
                 catch (OleDbException ex)
                 {
@@ -138,6 +141,7 @@ namespace HobbyShop.CLASS
                     cmd.Parameters.AddWithValue("@id", saleID);
 
                     cmd.ExecuteNonQuery();
+                    con.Close();
                 }
                 catch (OleDbException ex)
                 {

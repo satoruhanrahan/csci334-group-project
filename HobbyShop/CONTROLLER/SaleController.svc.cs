@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.OleDb;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -18,7 +17,7 @@ namespace HobbyShop.CONTROLLER
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class SaleController
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
+        //string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
 
         [OperationContract]
         public string GetSaleRecords()

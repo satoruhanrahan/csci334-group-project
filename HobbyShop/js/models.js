@@ -323,6 +323,7 @@ function addNewItem() {
 }
 
 function onAddNewItem(item) {
+    console.log(item);
     item = JSON.parse(item);
     clearDisplay();
     // add single new button
