@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Linq;
@@ -13,28 +13,28 @@ namespace HobbyShop
 {
     public class SupplierContact
     {
-        
+
         private int contactID;
         private string contactName;
         private string contactPhone;
-       
+
         public int Id { get { return contactID; } set { contactID = value; } }
         public string Name { get { return contactName; } set { contactName = value; } }
         public string Address { get { return contactPhone; } set { contactPhone = value; } }
-       
 
 
-        public Supplier()
+
+        public SupplierContact()
         {
 
         }
-        public Supplier(int ID, string Name, string Phone)
+        public SupplierContact(int ID, string Name, string Phone)
         {
-            this.contactID=ID;
-			this.contactName=Name;
-			this.contactPhone=Phone;
+            this.contactID = ID;
+            this.contactName = Name;
+            this.contactPhone = Phone;
         }
-       
+
 
     }
 }

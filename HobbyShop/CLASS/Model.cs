@@ -119,7 +119,7 @@ namespace HobbyShop
                 try
                 {
                     con.Open();
-                    string query = "SELECT * FROM Models WHERE Name LIKE '%" + input + "%' OR ItemNumber LIKE '%" + input + "%' OR Type LIKE '%" + input + "%' OR SubjectArea LIKE '%" + input + "%' ORDER BY Name";
+                    string query = "SELECT * FROM Models WHERE Name LIKE '%" + input + "%' OR Type LIKE '%" + input + "%' OR SubjectArea LIKE '%" + input + "%' ORDER BY Name";
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.ExecuteNonQuery();
 
