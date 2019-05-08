@@ -318,7 +318,6 @@ function addNewItem() {
     var area = document.getElementById("itemSbjAreaInput").value;
     var price = document.getElementById("itemPriceInput").value;
     var description = document.getElementById("itemDescriptionInput").value;
-    console.log("Test: " + name + " " + type + " " + area);
     ModelController.AddNewModel(name, type, area, Number(price), description, onAddNewItem);
     /*ModelController.AddNewModel(
         $("#itemName")[0].value,
@@ -343,6 +342,6 @@ function onAddNewItem(item) {
     button.addEventListener("click", function () {
         displayItemDetails(item);
     });
-    $("#list")[0].append(button);
+    $("#list")[0].append(button);/**/
     resultPopup("Successfully added to the database.", "green");
 }

@@ -18,10 +18,10 @@ namespace HobbyShop.CONTROLLER
     public class SaleController
     {
         [OperationContract]
-        public string GetSaleRecords()
+        public string GetSaleRecords(string keywords)
         {
             Sale sale = new Sale();
-            ArrayList saleList = sale.GetSaleRecords();
+            ArrayList saleList = sale.GetSaleRecords(keywords);
 
             string json = new JavaScriptSerializer().Serialize(saleList);
             return json;

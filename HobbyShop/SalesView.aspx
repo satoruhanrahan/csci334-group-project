@@ -50,10 +50,25 @@
                         <td> Sale ID </td> 
                         <td id="saleID"><input type="text" id="sale" class="userInput" disabled/></td> 
                     </tr>
-                    <tr> 
+                    <tr id="customerIDRow"> 
                         <td> Customer ID </td> 
                         <td id="customerID"><input type="text" id="customer" class="userInput" disabled/></td> 
                     </tr> 
+
+                    <tr> 
+                        <td> Items </td> 
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Quantity</td>
+                                    <td>Unit Price</td>
+                                    <td>Total Price</td>
+                                </tr>
+                            </table>
+                        </td> 
+                    </tr> 
+
                     <tr> 
                         <td> Total: </td> 
                         <td id="total"><input type="text" id="totalValue" class="userInput" disabled /></td>

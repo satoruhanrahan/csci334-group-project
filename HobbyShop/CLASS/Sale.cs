@@ -16,13 +16,16 @@ namespace HobbyShop.CLASS
         private double totalValue;
         private double discount;
         private double finalTotal;
-
+        
         public int SaleID { get { return saleID; } }
         public DateTime Date { get { return date; } set { date = value; } }
         public int CustomerID { get { return customerID; } set { customerID = value; } }
         public double TotalValue { get { return totalValue; } set { totalValue = value; } }
         public double Discount { get { return discount; } set { discount = value; } }
         public double FinalTotal { get { return finalTotal; } set { finalTotal = value; } }
+
+        private Dictionary<int, int> _items;
+        public Dictionary<int, int> Items {    get { return _items; } }
 
         public Sale() { }
 
@@ -49,32 +52,40 @@ namespace HobbyShop.CLASS
 
         string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
 
-        public ArrayList GetSaleRecords()
+        public ArrayList GetSaleRecords(string keyword)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
-                con.Open();
-                string query = "SELECT * FROM Sales ";
-                OleDbCommand cmd = new OleDbCommand(query, con);
-                cmd.ExecuteNonQuery();
-
-                ArrayList saleList = new ArrayList();
-
-                OleDbDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
+                try
                 {
-                    int id = Convert.ToInt32(reader["SaleID"]);
-                    DateTime date = Convert.ToDateTime(reader["DateOfSale"]);
-                    int customerID = Convert.ToInt32(reader["CustomerNumber"]);
-                    double totalValue = Convert.ToDouble(reader["TotalValue"]);
-                    double discount = Convert.ToDouble(reader["Discount"]);
-                    double finalTotal = Convert.ToDouble(reader["FinalTotal"]);
+                    con.Open();
+                    string query = "SELECT * FROM Sales WHERE SaleID LIKE '%" + keyword + "%' OR DateOfSale LIKE '%" + keyword + "%' OR CustomerNumber LIKE '%" + keyword +
+                        "%' OR TotalValue LIKE '%" + keyword + "%' OR Discount LIKE '%" + keyword + "%' OR FinalTotal LIKE '%" + keyword + "%' ORDER BY SaleID";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.ExecuteNonQuery();
 
-                    Sale sale = new Sale(id, date, customerID, totalValue, discount, finalTotal);
-                    saleList.Add(sale);
+                    ArrayList saleList = new ArrayList();
+
+                    OleDbDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        int id = Convert.ToInt32(reader["SaleID"]);
+                        DateTime date = Convert.ToDateTime(reader["DateOfSale"]);
+                        int customerID = Convert.ToInt32(reader["CustomerNumber"]);
+                        double totalValue = Convert.ToDouble(reader["TotalValue"]);
+                        double discount = Convert.ToDouble(reader["Discount"]);
+                        double finalTotal = Convert.ToDouble(reader["FinalTotal"]);
+
+                        Sale sale = new Sale(id, date, customerID, totalValue, discount, finalTotal);
+                        saleList.Add(sale);
+                    }
+                    return saleList;
                 }
-                return saleList;
+                catch (OleDbException ex)
+                {
+                    throw new System.ApplicationException(ex.Message);
+                }
             }
         }
 

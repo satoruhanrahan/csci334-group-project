@@ -1,5 +1,6 @@
 ﻿function getSaleRecords() {
-    SaleController.GetSaleRecords(onGetSaleRecords);
+    var keywords = document.getElementById("searchbar").value;
+    SaleController.GetSaleRecords(keywords, onGetSaleRecords);
 }
 
 //callback function
@@ -64,6 +65,16 @@ function displaySaleDetails(sale) {
     document.getElementById("totalValue").value = sale.TotalValue;
     document.getElementById("discountValue").value = sale.Discount;
     document.getElementById("finalValue").value = sale.FinalTotal;
+
+
+    $(strVar).insertAfter($("#detailTable").find("#customerIDRow"));
+
+    var table = document.getElementById("myTable");
+    var row = table.insertRow(1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    cell1.innerHTML = "NEW CELL1";
+    cell2.innerHTML = "NEW CELL2";
 }
 
 function displayAddSaleRecord() {
@@ -292,6 +303,7 @@ $(document).ready(function () {
     var searchbar = $("#searchbar")[0];
     searchbar.addEventListener("keyup", function (event) {
         event.preventDefault();
+        getSaleRecords();
         //getAllSearchedItems();
     });
     $("#advSearch")[0].addEventListener("click", function () {
@@ -304,8 +316,11 @@ $(document).ready(function () {
 
 //Advanced search display
 function displayAdvSearch() {
-    document.getElementById("detailHeading").innerHTML = "Advanced Search";
-    document.getElementById("details").innerHTML = "Here will be filter & sort settings for an advanced search!";
+    /*document.getElementById("detailHeading").innerHTML = "Advanced Search";
+    document.getElementById("details").innerHTML = "Here will be filter & sort settings for an advanced search!";*/
+    clearDisplay();
+    $("#detailHeading")[0].style.visibility = "visible";
+    $("#detailHeading")[0].innerHTML = "Advanced Search";
 }
 
 function restore() {
