@@ -65,18 +65,77 @@ function displaySaleDetails(sale) {
     document.getElementById("totalValue").value = sale.TotalValue;
     document.getElementById("discountValue").value = sale.Discount;
     document.getElementById("finalValue").value = sale.FinalTotal;
+    var items = sale.Items;
 
+    var itemTable = document.getElementById("itemTable");
+    var numberOfRows = itemTable.rows.length;
+   
+    if (items.length > 0 && numberOfRows == 1) {
+        for (var i = 0; i < items.length; i++) {
+            var row = document.createElement("tr");
+            var name = document.createElement("td");
+            var nameInput = document.createElement("input");
+            nameInput.setAttribute("type", "text");
+            nameInput.setAttribute("class", "itemInput nameInput");
+            nameInput.value = items[i].ItemName;
+            nameInput.disabled = true;
+            name.appendChild(nameInput);
 
-    $(strVar).insertAfter($("#detailTable").find("#customerIDRow"));
+            var quantity = document.createElement("td");
+            var quantityInput = document.createElement("input");
+            quantityInput.setAttribute("type", "text");
+            quantityInput.setAttribute("class", "itemInput quantityInput");
+            quantityInput.value = items[i].Quantity;
+            quantityInput.disabled = true;
+            quantity.appendChild(quantityInput);
 
-    var table = document.getElementById("myTable");
-    var row = table.insertRow(1);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    cell1.innerHTML = "NEW CELL1";
-    cell2.innerHTML = "NEW CELL2";
+            var price = document.createElement("td");
+            var priceInput = document.createElement("input");
+            priceInput.setAttribute("type", "text");
+            priceInput.setAttribute("class", "itemInput priceInput");
+            priceInput.value = items[i].Price;
+            priceInput.disabled = true;
+            price.appendChild(priceInput);
+
+            var total = document.createElement("td");
+            var totalInput = document.createElement("input");
+            totalInput.setAttribute("type", "text");
+            //totalInput.setAttribute("id", "totalInput");
+            totalInput.setAttribute("class", "itemInput totalInput");
+            totalInput.value = priceInput.value * quantityInput.value;
+            totalInput.disabled = true;
+            total.appendChild(totalInput);
+
+            priceInput.addEventListener("input", multiply);
+            quantityInput.addEventListener("input", multiply);
+            
+            function multiply() {
+                var one = parseFloat(priceInput.value);
+                var two = parseInt(quantityInput.value);
+                var result = one * two;
+                totalInput.value = result;
+            }
+            
+            row.appendChild(name);
+            row.appendChild(quantity);
+            row.appendChild(price);
+            row.appendChild(total);
+            itemTable.appendChild(row);
+        }
+    }
+    else if (items.length == 0){
+        $("#itemTable").find("tr:gt(0)").remove(); //delete table except the first row
+    }
 }
-
+/*
+function multiply() {
+    var totalInput = document.getElementById("totalInput");
+    var one = parseFloat(priceInput.value);
+    var two = parseInt(quantityInput.value);
+    var result = one * two;
+    totalInput.value = result;
+}
+*/
 function displayAddSaleRecord() {
     $("#detailHeading")[0].innerHTML = "";
     $("#detailHeading")[0].innerHTML = "Add a New Sale Record";
@@ -131,7 +190,6 @@ function calculate() {
     }
 }
 
-
 // removes any details that are displayed in the details section
 function clearDisplay() {
     $("#detailHeading")[0].style.visibility = "hidden";
@@ -181,7 +239,8 @@ function editSaleDetails(sale) {
     var elements = document.getElementsByTagName("input");
     for (var i = 0; i < elements.length; i++) {
         var id = elements[i].id;
-        if (id == "date" || id == "customer" || id == "totalValue" || id == "discountValue" || id == "finalValue") {
+        //if (id == "date" || id == "customer" || id == "totalValue" || id == "discountValue" || id == "finalValue") {
+        if (id != "sale") {
             elements[i].disabled = false;
         }
     }
@@ -190,7 +249,6 @@ function editSaleDetails(sale) {
     });
     
     $("#rightButton")[0].addEventListener("click", function () {
-        //restore();
         displaySaleDetails(sale);
     });
 }
@@ -203,16 +261,29 @@ function saveSaleDetails() {
     var discount = document.getElementById("discountValue").value;
     var final = document.getElementById("finalValue").value;
 
+    var nameInput = document.getElementsByClassName("nameInput");
+    var quantityInput = document.getElementsByClassName("quantityInput");
+    var priceInput = document.getElementsByClassName("priceInput");
+    var totalInput = document.getElementsByClassName("totalInput");
+    var listOfItems = [];
+    for (var i = 0; i < nameInput.length; i++) {
+        var name = nameInput[i].value;
+        var amount = quantityInput[i].value;
+        var unitPrice = priceInput[i].value;
+        var totalPrice = totalInput[i].value;
+        var item = { ItemName: name, Quantity: parseInt(amount), Price: parseFloat(unitPrice) };
+        listOfItems.push(item);
+    }
+    var itemListString = JSON.stringify(listOfItems);
     //SaleController.EditSaleDetails(sale.SaleID, sale.Date, sale.CustomerID, sale.TotalValue, sale.Discount, sale.FinalTotal, onEditSaleDetails);
-    SaleController.EditSaleDetails(Number(id), date, Number(customer), Number(total), Number(discount), Number(final), onEditSaleDetails);
+    SaleController.EditSaleDetails(Number(id), date, Number(customer), Number(total), Number(discount), Number(final), itemListString, onEditSaleDetails);
 }
 
 function onEditSaleDetails(result) {
     if (parseJSON(result)) {
         var sale = JSON.parse(result);
-        
         //clearDisplay();
-        getSaleRecords();
+        //getSaleRecords();
         displaySaleDetails(sale);
         resultPopup("Successfully Edited", "green");
         $("#leftButton")[0].style.visibility = "hidden";
@@ -220,7 +291,8 @@ function onEditSaleDetails(result) {
         var elements = document.getElementsByTagName("input");
         for (var i = 0; i < elements.length; i++) {
             var id = elements[i].id;
-            if (id == "date" || id == "customer" || id == "totalValue" || id == "discountValue" || id == "finalValue") {
+            //if (id == "date" || id == "customer" || id == "totalValue" || id == "discountValue" || id == "finalValue") {
+            if (id != "sale") {
                 elements[i].disabled = true;
             }
         }
@@ -275,6 +347,7 @@ function displayConfirmDelete() {
 
 function deleteSaleRecord() {
     var id = document.getElementById("sale").value;
+    //displayConfirmDelete();
     SaleController.DeleteSaleRecord(Number(id), onDeleteSaleRecord);
 }
 

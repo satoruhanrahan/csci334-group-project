@@ -16,6 +16,7 @@ namespace HobbyShop.CLASS
         private double totalValue;
         private double discount;
         private double finalTotal;
+        private ArrayList items;
         
         public int SaleID { get { return saleID; } }
         public DateTime Date { get { return date; } set { date = value; } }
@@ -23,10 +24,8 @@ namespace HobbyShop.CLASS
         public double TotalValue { get { return totalValue; } set { totalValue = value; } }
         public double Discount { get { return discount; } set { discount = value; } }
         public double FinalTotal { get { return finalTotal; } set { finalTotal = value; } }
-
-        private Dictionary<int, int> _items;
-        public Dictionary<int, int> Items {    get { return _items; } }
-
+        public ArrayList Items { get { return items; } set { items = value; } }
+        
         public Sale() { }
 
         public Sale(int saleID) { this.saleID = saleID; }
@@ -59,15 +58,15 @@ namespace HobbyShop.CLASS
                 try
                 {
                     con.Open();
-                    string query = "SELECT * FROM Sales WHERE SaleID LIKE '%" + keyword + "%' OR DateOfSale LIKE '%" + keyword + "%' OR CustomerNumber LIKE '%" + keyword +
-                        "%' OR TotalValue LIKE '%" + keyword + "%' OR Discount LIKE '%" + keyword + "%' OR FinalTotal LIKE '%" + keyword + "%' ORDER BY SaleID";
-                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    string saleQuery = "SELECT * FROM Sales WHERE SaleID LIKE '%" + keyword + "%' OR DateOfSale LIKE '%" + keyword +
+                        "%' OR CustomerNumber LIKE '%" + keyword + "%' OR TotalValue LIKE '%" + keyword + "%' OR Discount LIKE '%" + keyword +
+                        "%' OR FinalTotal LIKE '%" + keyword + "%' ORDER BY SaleID";
+                    OleDbCommand cmd = new OleDbCommand(saleQuery, con);
                     cmd.ExecuteNonQuery();
 
                     ArrayList saleList = new ArrayList();
 
                     OleDbDataReader reader = cmd.ExecuteReader();
-
                     while (reader.Read())
                     {
                         int id = Convert.ToInt32(reader["SaleID"]);
@@ -76,9 +75,34 @@ namespace HobbyShop.CLASS
                         double totalValue = Convert.ToDouble(reader["TotalValue"]);
                         double discount = Convert.ToDouble(reader["Discount"]);
                         double finalTotal = Convert.ToDouble(reader["FinalTotal"]);
-
+                        
                         Sale sale = new Sale(id, date, customerID, totalValue, discount, finalTotal);
                         saleList.Add(sale);
+                    }
+                    con.Close();
+                    con.Open();
+
+                    for (int i = 0; i < saleList.Count; i++)
+                    {
+                        Sale sale = (Sale)saleList[i];
+                        string itemQuery = "SELECT Models.Name, Models.CurrentRetailPrice, SaleItems.* FROM SaleItems" +
+                        " INNER JOIN Models ON Models.ItemNumber = SaleItems.ItemNumber" +
+                        " WHERE SaleItems.SaleID = @id";
+                        OleDbCommand itemCmd = new OleDbCommand(itemQuery, con);
+                        itemCmd.Parameters.AddWithValue("@id", sale.SaleID);
+                        itemCmd.ExecuteNonQuery();
+
+                        OleDbDataReader itemReader = itemCmd.ExecuteReader();
+                        ArrayList itemList = new ArrayList();
+                        while (itemReader.Read())
+                        {
+                            string name = Convert.ToString(itemReader["Name"]);
+                            int quantity = Convert.ToInt32(itemReader["ItemAmount"]);
+                            double price = Convert.ToDouble(itemReader["CurrentRetailPrice"]);
+                            SaleItem item = new SaleItem(name, quantity, price);
+                            itemList.Add(item);
+                        }
+                        sale.Items = itemList;
                     }
                     return saleList;
                 }
@@ -119,16 +143,52 @@ namespace HobbyShop.CLASS
                 try
                 {
                     con.Open();
-                    string query = "UPDATE Sales SET DateOfSale=@date, CustomerNumber=@customerID, TotalValue=@totalValue, Discount=@discount, FinalTotal=@finalTotal WHERE SaleID=@id";
-                    OleDbCommand cmd = new OleDbCommand(query, con);
-                    cmd.Parameters.AddWithValue("@date", date);
-                    cmd.Parameters.AddWithValue("@customerID", customerID);
-                    cmd.Parameters.AddWithValue("@totalValue", totalValue);
-                    cmd.Parameters.AddWithValue("@discount", discount);
-                    cmd.Parameters.AddWithValue("@finalTotal", finalTotal);
+                    string itemNumberQuery = "SELECT ItemNumber FROM SaleItems WHERE SaleID=@id";
+                    OleDbCommand cmd = new OleDbCommand(itemNumberQuery, con);
                     cmd.Parameters.AddWithValue("@id", saleID);
-
                     cmd.ExecuteNonQuery();
+                    
+                    ArrayList itemNumbers = new ArrayList();
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int itemNumber = Convert.ToInt32(reader["ItemNumber"]);
+                        itemNumbers.Add(itemNumber);
+                    }
+                    con.Close();
+
+                    for (int i = 0; i < itemNumbers.Count; i++)
+                    {
+                        SaleItem item = (SaleItem)items[i];
+                        int number = (int)itemNumbers[i];
+                        con.Open();
+                        string itemQuery = "UPDATE SaleItems SET ItemAmount=@quantity WHERE ItemNumber=@itemNumber AND SaleID=@saleID";//"UPDATE SaleItems SET SaleItems.ItemAmount = @amount WHERE(((SaleItems.[ItemNumber]) = @itemNumber))";//
+                        OleDbCommand itemCmd = new OleDbCommand(itemQuery, con);
+                        itemCmd.Parameters.AddWithValue("@itemNumber", number);
+                        itemCmd.Parameters.AddWithValue("@quantity", item.Quantity);
+                        itemCmd.Parameters.AddWithValue("@saleID", saleID);
+                        itemCmd.ExecuteNonQuery();
+                        con.Close();
+
+                        con.Open();
+                        string modelQuery = "UPDATE Models SET Name=@name, CurrentRetailPrice=@price WHERE ItemNumber=@itemNumber";//"UPDATE SaleItems SET SaleItems.ItemAmount = @amount WHERE(((SaleItems.[ItemNumber]) = @itemNumber))";//
+                        OleDbCommand modelCmd = new OleDbCommand(modelQuery, con);
+                        modelCmd.Parameters.AddWithValue("@itemNumber", number);
+                        modelCmd.Parameters.AddWithValue("@name", item.ItemName);
+                        modelCmd.Parameters.AddWithValue("@price", item.Price);
+                        modelCmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+                    con.Open();
+                    string saleQuery = "UPDATE Sales SET DateOfSale=@date, CustomerNumber=@customerID, TotalValue=@totalValue, Discount=@discount, FinalTotal=@finalTotal WHERE SaleID=@id";
+                    OleDbCommand saleCmd = new OleDbCommand(saleQuery, con);
+                    saleCmd.Parameters.AddWithValue("@date", date);
+                    saleCmd.Parameters.AddWithValue("@customerID", customerID);
+                    saleCmd.Parameters.AddWithValue("@totalValue", totalValue);
+                    saleCmd.Parameters.AddWithValue("@discount", discount);
+                    saleCmd.Parameters.AddWithValue("@finalTotal", finalTotal);
+                    saleCmd.Parameters.AddWithValue("@id", saleID);
+                    saleCmd.ExecuteNonQuery();
                 }
                 catch (OleDbException ex)
                 {

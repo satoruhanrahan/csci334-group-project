@@ -37,7 +37,7 @@
                 <button type="button" class="smallbtn"> <img src="style/options.png" /></button>
                  <div class="dropdown-content">
                      <button type="button" class="dropdown-button" id="editSale">Edit Details</button>
-                     <button type="button" class="dropdown-button" id="deleteSale" onclick="deleteSaleRecord();">Delete Sale</button>
+                     <button type="button" class="dropdown-button" id="deleteSale" onclick="displayConfirmDelete();">Delete Sale</button>
                  </div> 
              </div>
             <div id="details">
@@ -58,7 +58,7 @@
                     <tr> 
                         <td> Items </td> 
                         <td>
-                            <table>
+                            <table id="itemTable">
                                 <tr>
                                     <td>Name</td>
                                     <td>Quantity</td>

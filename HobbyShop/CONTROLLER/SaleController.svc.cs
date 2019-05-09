@@ -1,4 +1,5 @@
 ﻿using HobbyShop.CLASS;
+//using HobbyShop.CLASS.SaleItem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,12 +45,19 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string EditSaleDetails(string date, int customerID, double totalValue, double discount, double finalTotal)
+        public string EditSaleDetails(int saleID, string date, int customerID, double totalValue, double discount, double finalTotal, string itemList)
         {
             try
             {
                 DateTime formatedDate = DateTime.Parse(date);
-                Sale sale = new Sale(formatedDate, customerID, totalValue, discount, finalTotal);
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                var list = serializer.Deserialize<SaleItem[]>(itemList);
+                //JavaScriptSerializer js = new JavaScriptSerializer();
+                //BlogSites blogObject = js.Deserialize<BlogSites>(jsonData);
+                //var items = new JavaScriptSerializer().Deserialize<List<SaleItem>>(itemList);
+                ArrayList items = new ArrayList(list);
+                Sale sale = new Sale(saleID, formatedDate, customerID, totalValue, discount, finalTotal);
+                sale.Items = items;
                 sale.EditSaleDetails();
                 string json = new JavaScriptSerializer().Serialize(sale);
                 return json;
