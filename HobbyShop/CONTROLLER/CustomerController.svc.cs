@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.OleDb;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -16,95 +15,79 @@ namespace HobbyShop.CONTROLLER
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class CustomerController
     {
-        static OleDbConnection con = new OleDbConnection("Provider=Microsoft.JET.OLEDB.4.0; Data Source=" + System.Web.Hosting.HostingEnvironment.MapPath("~/Database.mdb"));
-        static OleDbCommand cmd = new OleDbCommand();
-
         [OperationContract]
-        public string AddNewCustomer(string cusName,string cusAddress,string cusEmail,string cusPhone,int cusCreditLine,double cusBalance,bool cusMemberStatus,DateTime cusJoinDate)
+        public string Add(string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime cusJoinDate, string cusEmail)
         {
             try
             {
-                Customer x = new Customer(cusName, cusAddress, cusPhone, cusCreditLine, cusBalance, cusMemberStatus, cusJoinDate, cusEmail);
+                Customer _cus = new Customer(cusName,cusAddress,cusPhone,cusCreditLine,cusBalance,cusMemberStatus,cusJoinDate,cusEmail);
+                _cus.Add();
 
-                if (con.State == System.Data.ConnectionState.Closed)
-                {
-                    cmd.Connection = con;
-                    con.Open();
-                }
-
-                string query = "INSERT INTO Models (Name,Address,PhoneNumber,CreditLine,CurrentBalance,ClubMemberStatus,ClubMemberJoinDate,EmailAddress) VALUES (@name,@address,@phone,@credit,@balance,@status, @joindate, @email)";
-
-                cmd = new OleDbCommand(query, con);
-
-                cmd.Parameters.AddWithValue("@name", x.Name);
-                cmd.Parameters.AddWithValue("@address", x.Address);
-                cmd.Parameters.AddWithValue("@phone", x.Phone);
-                cmd.Parameters.AddWithValue("@credit", x.CreditLine);
-                cmd.Parameters.AddWithValue("@balance", x.Balance);
-                cmd.Parameters.AddWithValue("@status", x.MemberStatus);
-                cmd.Parameters.AddWithValue("@email", x.Email);
-                cmd.Parameters.AddWithValue("@joindate", x.JoinDate);
-
-                cmd.ExecuteNonQuery();
-                con.Close();
-
-                return "";
+                string json = new JavaScriptSerializer().Serialize(_cus);
+                return json;
             }
-            catch (Exception oEx)
+            catch (Exception e)
             {
-                return oEx.Message;
+                return e.Message;
             }
         }
 
+        [OperationContract]
+        public string Search(string input)
+        {
+            Customer _cus = new Customer();
+            List<Customer> cusList = new List<Customer>();
+            cusList = _cus.SearchDatabase(input);
+
+            string json = new JavaScriptSerializer().Serialize(cusList);
+            return json;
+        }
 
         [OperationContract]
-        public string ReturnFromDatabase()
+        public string Update(int id, string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime cusJoinDate, string cusEmail)
         {
-            if (con.State == System.Data.ConnectionState.Closed)
+            try
             {
-                cmd.Connection = con;
-                con.Open();
+                Customer _cus = new Customer();
+                _cus = _cus.SearchByID(id);
+                _cus.Name = cusName;
+                _cus.Address = cusAddress;
+                _cus.Phone = cusPhone;
+                _cus.CreditLine = cusCreditLine;
+                _cus.Balance = cusBalance;
+                _cus.MemberStatus = cusMemberStatus;
+                _cus.JoinDate = cusJoinDate;
+                _cus.Email = cusEmail;
+
+                _cus.Update();
+
+                string json = new JavaScriptSerializer().Serialize(_cus);
+                return json;
             }
-            string query = "SELECT * FROM Models ";
-
-            cmd = new OleDbCommand(query, con);
-
-            ArrayList objects = new ArrayList();
-
-            OleDbDataReader reader = cmd.ExecuteReader();
-
-         string cusName;
-         int cusNum;
-         string cusAddress;
-         string cusEmail;
-         string cusPhone;
-         int cusCreditLine;
-         double cusBalance;
-         bool cusMemberStatus;
-         DateTime cusJoinDate;
-
-
-            while (reader.Read())
+            catch (Exception e)
             {
-                cusNum = Convert.ToInt32(reader["CustomerNumber"]);
-                cusName = Convert.ToString(reader["Name"]);
-                cusAddress = Convert.ToString(reader["Address"]);
-                cusPhone = Convert.ToString(reader["PhoneNumber"]);
-                cusCreditLine = Convert.ToInt32(reader["CreditLine"]);
-                cusBalance = Convert.ToDouble(reader["CurrentBalance"]);
-                cusMemberStatus = Convert.ToBoolean(reader["ClubMemberStatus"]);
-                cusJoinDate = Convert.ToDateTime(reader["ClubMemberJoinDate"]);
-                cusEmail = Convert.ToString(reader["EmailAddress"]);
-
-                Customer _cus = new Customer(cusName, cusAddress, cusPhone, cusCreditLine, cusBalance, cusMemberStatus, cusJoinDate, cusEmail);
-                _cus.Id = cusNum;
-
-                objects.Add(_cus);
+                return e.Message;
             }
-            con.Close();
+        }
 
-            string json = new JavaScriptSerializer().Serialize(objects);
-            return json;
+        [OperationContract]
+        public string Delete(int id)
+        {
+            try
+            {
+                Customer _cus = new Customer
+                {
+                    Id = id
+                };
+                _cus.Delete();
+
+                return id.ToString();
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
         }
     }
 }
+

@@ -12,6 +12,7 @@ using System.Web.Script.Serialization;
 
 namespace HobbyShop.CONTROLLER
 {
+    // FOR OLIVER: Delete only return modelName because when model is deleted cannot retrieve object, everything else return modelObject
 
     [ServiceContract(Namespace = "")]
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
@@ -51,18 +52,17 @@ namespace HobbyShop.CONTROLLER
         {
             try
             {
-                Model _model = new Model();
-                List<Model> modelList=_model.SearchDatabase(id.ToString()); // this list only have one item because the parsed variable is ID, get the item to update
-
+                Model modelOnSearch = new Model();
+                modelOnSearch=modelOnSearch.SearchByID(id); 
                 //set the item attributes 
-                modelList[0].Name = name;
-                modelList[0].Type = type;
-                modelList[0].SbjArea = area;
-                modelList[0].Price = price;
-                modelList[0].Description = des;
-                modelList[0].UpdateModelDetails();
+                modelOnSearch.Name = name;
+                modelOnSearch.Type = type;
+                modelOnSearch.SbjArea = area;
+                modelOnSearch.Price = price;
+                modelOnSearch.Description = des;
+                modelOnSearch.UpdateModelDetails();
 
-                string json = new JavaScriptSerializer().Serialize(modelList[0]);
+                string json = new JavaScriptSerializer().Serialize(modelOnSearch);
                 return json;
             }
             catch (Exception e)

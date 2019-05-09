@@ -171,6 +171,17 @@ function editItemDetails(item) {
 
 // Send edited data to controller
 function updateItem(id) {
+
+    var name = document.getElementById("itemNameInput").value;
+    var type = document.getElementById("itemTypeInput").value;
+    var area = document.getElementById("itemSbjAreaInput").value;
+    var price = document.getElementById("itemPriceInput").value;
+    var description = document.getElementById("itemDescriptionInput").value;
+
+    console.log("Test1: " + name + " " + type + " " + area + price + description);
+    ModelController.UpdateModelDetails(id,name, type, area, Number(price), description, onUpdateItem);
+
+    /* wrong ids
     ModelController.UpdateModelDetails(
         id,
         $("#itemName")[0].value,
@@ -180,9 +191,11 @@ function updateItem(id) {
         $("#itemDescription")[0].value,
         onUpdateItem
     );
+    */
 }
 
 function onUpdateItem(item) {
+    console.log(item);
     item = JSON.parse(item);
     //  Refreshes the updated button 
     $("#" + item.Id).innerHTML = item.Name;
@@ -319,7 +332,9 @@ function addNewItem() {
     var price = document.getElementById("itemPriceInput").value;
     var description = document.getElementById("itemDescriptionInput").value;
     ModelController.AddNewModel(name, type, area, Number(price), description, onAddNewItem);
-    /*ModelController.AddNewModel(
+
+    /* wrong ids
+     ModelController.AddNewModel(
         $("#itemName")[0].value,
         $("#itemType")[0].value,
         $("#itemSbjArea")[0].value,
