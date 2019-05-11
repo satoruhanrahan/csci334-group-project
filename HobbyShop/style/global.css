@@ -8,20 +8,20 @@
     background-color: #00007f;
     color: #ffffff;
 }
-#header .tab {
+.tab {
     width: 90px;
     height: 50px;
     font-size: 16px;
     background-color: #00007f;
     color: #ffffff;
-    border: 0px;
+    border: 8px solid #00007f;
     margin-left: 10px;
 }
-#header .tab:hover {
-    border-bottom: 10px solid #0000ff;
+.tab:hover {
+    border-bottom: 8px solid #0000ff;
 }
-#header .active {
-    border-bottom: 10px solid #000022;
+.active {
+    border-bottom: 8px solid #000022;
 }
 #content {
     position: absolute;

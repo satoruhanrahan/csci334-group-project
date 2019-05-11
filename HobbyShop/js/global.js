@@ -30,12 +30,16 @@
 });
 
 function loadPage(page) {
-    var tabs = document.getElementsByClassName("tab");
+    switchTabs("header", page);
+    $("#content").load(page + "View.aspx");
+}
+
+function switchTabs(containerId, activeTab) {
+    var tabs = document.getElementById(containerId).getElementsByClassName("tab");
     for (i = 0; i < tabs.length; i++) {
         tabs[i].className = tabs[i].className.replace(" active", "");
     }
-    document.getElementById(page).className += " active";
-    $("#content").load(page + "View.aspx");
+    document.getElementById(activeTab).className += " active";
 }
 
 function resultPopup(result, color) {

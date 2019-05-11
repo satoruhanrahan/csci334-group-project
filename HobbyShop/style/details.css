@@ -5,14 +5,18 @@
     display: flex;
     width: calc(75% - 3px);
     height: 100%;
-    background-color: white;
+    line-height:100%;
 }
 #detailHeading{
     margin:10px;
 }
+#detailTabBar {
+    visibility: hidden;
+    margin:0;
+    border-bottom: 3px solid #000000;
+}
 #details {
-    visibility:hidden;
-    margin:10px;
+    margin: 10px;
 }
 #details input, #details textarea {
     position: relative;
@@ -30,6 +34,7 @@
     border-collapse: collapse;
     width: 100%;
     border: 1px solid black;
+    visibility:hidden;
 }
 #firstcell {
     width:25%;
