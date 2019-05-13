@@ -152,7 +152,7 @@ function addSaleRecord() {
     if (date == "" || customer == "" || total == "" || discount == "" || final == "" || name == ""|| quantity == "" || price == "") {
         errorMessage.innerText = "Please input date, customerID, discount and at least 1 item!";
     }
-    else if (!(Number(total)) || !(Number(discount)) || !(Number(final)) || !(Number(quantity)) || !(Number(price))) {
+    else if (!(Number(total)) || !(Number(discount) && discount!=0) || !(Number(final)) || !(Number(quantity)) || !(Number(price))) {
         errorMessage.innerText = "Please input the right format!";
     }
     else {
@@ -192,7 +192,8 @@ function editSaleDetails(sale) {
     $("#leftImage").attr("src", "style/save.png");
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
-    $("#sale")[0].style.backgroundColor = "lightgray";
+    $("#sale")[0].className += " readonly";
+    $("#finalValue")[0].className += " readonly";
 
     var elements = document.getElementsByTagName("input");
     for (var i = 0; i < elements.length; i++) {

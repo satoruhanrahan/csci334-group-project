@@ -179,7 +179,6 @@ function editItemDetails(item) {
     $("#leftButton")[0].append(img1);
     $("#leftButton")[0].addEventListener("click", function () {
         updateItem(item.Id);
-        displayItemDetails(item);
     });
     
     $("#rightButton")[0].addEventListener("click", function () {
@@ -189,9 +188,10 @@ function editItemDetails(item) {
 
 // Send edited data to controller
 function updateItem(id) {
+    var name = $("#itemNameInput")[0].value;
     ModelController.UpdateModelDetails(
         id,
-        $("#itemNameInput")[0].value,
+        name,
         $("#itemTypeInput")[0].value,
         $("#itemSbjAreaInput")[0].value,
        Number( $("#itemPriceInput")[0].value),
@@ -334,6 +334,7 @@ function displayAddItem() {
 
 // Sends input to controller
 function addNewItem() {
+    console.log("hey!");
      ModelController.AddNewModel(
         $("#itemNameInput")[0].value,
         $("#itemTypeInput")[0].value,
@@ -344,8 +345,8 @@ function addNewItem() {
     );
 }
 
-function onAddNewItem(item) {
-    item = JSON.parse(item);
+function onAddNewItem(result) {
+    var item = JSON.parse(result);
     clearDisplay();
     // add single new button
     var button = document.createElement("button");
