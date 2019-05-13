@@ -65,12 +65,6 @@
                                     <td>Unit Price</td>
                                     <td>Total Price</td>
                                 </tr>
-                                <tr>
-                                    <td><input class="itemInput nameInput" /></td>
-                                    <td><input class="itemInput quantityInput" /></td>
-                                    <td><input class="itemInput priceInput" /></td>
-                                    <td><input class="itemInput totalInput" /></td>
-                                </tr>
                             </table>
                         </td> 
                     </tr> 
@@ -94,7 +88,7 @@
                 <button type="button" id="rightButton" title="Discard changes" class="smallbtn redbtn" style="float:right;"> 
                     <img src="style/close.png" />
                 </button> <br/><br/>
-                <span id="error" style="color: red; font-style: italic;"></span>
+                <span id="error"></span>
             </div>
         </div>
 	</div>
