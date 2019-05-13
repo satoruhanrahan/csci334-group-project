@@ -36,7 +36,7 @@ namespace HobbyShop.CONTROLLER
                 DateTime formatedDate = DateTime.Parse(date);
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 var list = serializer.Deserialize<SaleItem[]>(itemList);
-
+                
                 ArrayList items = new ArrayList(list);
                 Sale sale = new Sale(formatedDate, customerID, totalValue, discount, finalTotal);
                 sale.Items = items;
@@ -51,7 +51,7 @@ namespace HobbyShop.CONTROLLER
 
         //[System.Runtime.InteropServices.ComVisible(false)]
         //public static void NotifyOfCrossThreadDependency();
-        
+
         [OperationContract]
         public string EditSaleDetails(int saleID, string date, int customerID, double totalValue, double discount, double finalTotal, string itemList)
         {
@@ -60,11 +60,12 @@ namespace HobbyShop.CONTROLLER
                 DateTime formatedDate = DateTime.Parse(date);
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 var list = serializer.Deserialize<SaleItem[]>(itemList);
-                
+                //JavaScriptSerializer js = new JavaScriptSerializer();
+                //BlogSites blogObject = js.Deserialize<BlogSites>(jsonData);
+                //var items = new JavaScriptSerializer().Deserialize<List<SaleItem>>(itemList);
                 ArrayList items = new ArrayList(list);
                 Sale sale = new Sale(saleID, formatedDate, customerID, totalValue, discount, finalTotal);
                 sale.Items = items;
-                
                 sale.EditSaleDetails();
                 string json = new JavaScriptSerializer().Serialize(sale);
                 return json;

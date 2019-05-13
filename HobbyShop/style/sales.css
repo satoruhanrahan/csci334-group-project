@@ -8,7 +8,12 @@
     color: red;
     font-style: italic;
 }
-
+/*
+#itemTable {
+    vertical-align: top;
+    border: solid 1px;
+}
+*/
 #sale {
     background-color: white;
     /*background-color: white;-----lightgray*/

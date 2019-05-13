@@ -40,12 +40,19 @@ function displaySaleDetails(sale) {
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
     $("#detailTable")[0].style.visibility = "visible";
+
     $("#editSale")[0].addEventListener("click", function () {
         editSaleDetails(sale);
     });
+    //$("editSale").click();
     $("#sale")[0].style.backgroundColor = "white";
-    document.getElementById("error").innerText = "";
 
+    var itemInputs = document.getElementsByClassName("itemInput");
+    for (var i = 0; i < itemInputs.length; i++) {
+        itemInputs[i].disabled = true;
+    }
+
+    document.getElementById("error").innerText = "";
     var date = new Date(parseInt((sale.Date).substr(6)));
 
     var month = date.getMonth() + 1;
@@ -71,7 +78,8 @@ function displaySaleDetails(sale) {
 
     var itemTable = document.getElementById("itemTable");
     var numberOfRows = itemTable.rows.length;
-    if (items.length > 0 && numberOfRows >= 2) { 
+   
+    if (items.length > 0 && numberOfRows >= 2) {
         $("#itemTable").find("tr:gt(0)").remove();
         for (var i = 0; i < items.length; i++) {
             insertNewRow(i);
@@ -82,12 +90,12 @@ function displaySaleDetails(sale) {
             $(".priceInput").prop("disabled", true);
             $("#priceInput" + i).val(items[i].Price);
             $(".totalInput").prop("disabled", true);
-            $("#totalInput" + i).val(items[i].Quantity * items[i].Price); //should be retrieved from database
+            $("#totalInput" + i).val(items[i].Quantity * items[i].Price);
         }
     }
     else if (items.length == 0){
         $("#itemTable").find("tr:gt(1)").remove(); //delete table except the first 2 rows
-        $(".itemInput").val("");
+        $(".itemInput").val("");    
     }
 }
 
@@ -98,6 +106,7 @@ function displayAddSaleRecord() {
     $("#details")[0].style.visibility = "visible";
     $("#detailTable")[0].style.visibility = "visible";
     $("#detailOptions")[0].style.visibility = "hidden";
+
     $("#itemTable").find("tr:gt(0)").remove(); //delete table except the second row
     insertNewRow(1);
     $("#leftImage").attr("src", "style/add.png");
@@ -107,22 +116,20 @@ function displayAddSaleRecord() {
     $("#leftButton")[0].setAttribute("title", "Add");
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
-   
+
     $(".totalInput")[0].addEventListener("keydown", addRow);
-    
+
     //document.getElementById("detailTable").deleteRow(1);
     var elements = document.getElementsByTagName("input");
     for (var j = 0; j < elements.length; j++) {
         elements[j].value = "";
         var id = elements[j].id;
-        if(id != "sale")
-        {
+        if (id != "sale") {
             elements[j].disabled = false;
         }
     }
-
-    //deleteRow();
-
+    //calculate();
+  
     $("#leftButton")[0].addEventListener("click", function () {
         addSaleRecord();
     });
@@ -149,17 +156,17 @@ function addSaleRecord() {
 
     var check = false;
     var errorMessage = document.getElementById("error");
-    if (date == "" || customer == "" || total == "" || discount == "" || final == "" || name == ""|| quantity == "" || price == "") {
+    if (date == "" || customer == "" || total == "" || discount == "" || final == "" || name == "" || quantity == "" || price == "") {
         errorMessage.innerText = "Please input date, customerID, discount and at least 1 item!";
     }
-    else if (!(Number(total)) || !(Number(discount) && discount!=0) || !(Number(final)) || !(Number(quantity)) || !(Number(price))) {
+    else if (!(Number(total)) || (!(Number(discount)) && discount != 0) || !(Number(final)) || !(Number(quantity)) || !(Number(price))) {
         errorMessage.innerText = "Please input the right format!";
     }
     else {
         errorMessage.innerText = "";
         check = true;
     }
-    
+
     if (check) {
         var listOfItems = [];
         for (var i = 0; i < nameInput.length; i++) {
@@ -202,13 +209,9 @@ function editSaleDetails(sale) {
             elements[i].disabled = false;
         }
     }
-
-    //deleteRow();
-    
     $("#leftButton")[0].addEventListener("click", function () {
         saveSaleDetails();
     });
-
     $("#rightButton")[0].addEventListener("click", function () {
         displaySaleDetails(sale);
     });
@@ -225,11 +228,12 @@ function saveSaleDetails() {
     var nameInput = document.getElementsByClassName("nameInput");
     var quantityInput = document.getElementsByClassName("quantityInput");
     var priceInput = document.getElementsByClassName("priceInput");
+
     var name = nameInput[0].value;
     var quantity = quantityInput[0].value;
     var price = priceInput[0].value;
 
-    console.log("Quantity: " + quantity + ", price: " + price + " type amount: " + typeof(quantity) + ", price:" + typeof(price) + ", final: " + typeof(final));
+    console.log("Quantity: " + quantity + ", price: " + price + " type amount: " + typeof (quantity) + ", price:" + typeof (price) + ", final: " + typeof (final));
     console.log("Date: " + date + ", Number: " + !(Number(discount)));
 
     var check = false;
@@ -337,7 +341,7 @@ function insertNewRow(index) {
     totalInput.setAttribute("id", "totalInput" + index);
     totalInput.addEventListener("keydown", addRow);
     total.appendChild(totalInput);
-    
+
     priceInput.addEventListener("input", multiply);
     quantityInput.addEventListener("input", multiply);
     //nameInput.addEventListener("input", multiply);
@@ -378,7 +382,7 @@ function deleteRow() {
             if (this.value == "") {
                 var totalInput = document.getElementsByClassName("totalInput");
                 var sum = 0;
-                
+
                 var id = (this.id).substr(9, 10);
                 var price = document.getElementById("priceInput" + id);
                 var quantity = document.getElementById("quantityInput" + id);
