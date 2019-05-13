@@ -73,6 +73,7 @@
     <Content Include="CONTROLLER\DeliveryController.svc" />
     <Content Include="CONTROLLER\SaleController.svc" />
     <Content Include="CONTROLLER\SupplierController.svc" />
+    <Content Include="CONTROLLER\UserController.svc" />
     <Content Include="DeliveriesView.aspx" />
     <Content Include="js\deliveries.js" />
     <Content Include="js\sales.js" />
@@ -119,6 +120,9 @@
     </Compile>
     <Compile Include="CONTROLLER\SupplierController.svc.cs">
       <DependentUpon>SupplierController.svc</DependentUpon>
+    </Compile>
+    <Compile Include="CONTROLLER\UserController.svc.cs">
+      <DependentUpon>UserController.svc</DependentUpon>
     </Compile>
     <Compile Include="DeliveriesView.aspx.cs">
       <DependentUpon>DeliveriesView.aspx</DependentUpon>

@@ -8,12 +8,11 @@
     color: red;
     font-style: italic;
 }
-/*
-#itemTable {
-    vertical-align: top;
-    border: solid 1px;
+
+.dropdown {
+    margin-top: -5px;
 }
-*/
+
 #sale {
     background-color: white;
     /*background-color: white;-----lightgray*/
