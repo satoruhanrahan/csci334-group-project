@@ -103,6 +103,7 @@
   <ItemGroup>
     <Compile Include="CLASS\Delivery.cs" />
     <Compile Include="CLASS\Customer.cs" />
+    <Compile Include="CLASS\DeliveryItem.cs" />
     <Compile Include="CLASS\Model.cs" />
     <Compile Include="CLASS\Sale.cs" />
     <Compile Include="CLASS\SaleItem.cs" />
