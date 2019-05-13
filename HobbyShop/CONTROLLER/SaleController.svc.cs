@@ -29,12 +29,17 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string AddSaleRecord(string date, int customerID, double totalValue, double discount, double finalTotal)
+        public string AddSaleRecord(string date, int customerID, double totalValue, double discount, double finalTotal, string itemList)
         {
             try
             {
                 DateTime formatedDate = DateTime.Parse(date);
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                var list = serializer.Deserialize<SaleItem[]>(itemList);
+                
+                ArrayList items = new ArrayList(list);
                 Sale sale = new Sale(formatedDate, customerID, totalValue, discount, finalTotal);
+                sale.Items = items;
                 sale.AddSaleRecord();
                 return "";
             }
@@ -43,6 +48,9 @@ namespace HobbyShop.CONTROLLER
                 return e.Message;
             }
         }
+
+        //[System.Runtime.InteropServices.ComVisible(false)]
+        //public static void NotifyOfCrossThreadDependency();
 
         [OperationContract]
         public string EditSaleDetails(int saleID, string date, int customerID, double totalValue, double discount, double finalTotal, string itemList)

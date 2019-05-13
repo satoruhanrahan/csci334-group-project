@@ -1,8 +1,19 @@
 ﻿.userInput, .itemInput {
     background-color: white;
     color: black;
+    width: 70px;
 }
 
+#error {
+    color: red;
+    font-style: italic;
+}
+/*
+#itemTable {
+    vertical-align: top;
+    border: solid 1px;
+}
+*/
 #sale {
     background-color: white;
     /*background-color: white;-----lightgray*/
