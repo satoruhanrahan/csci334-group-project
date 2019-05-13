@@ -29,6 +29,7 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
+        public string AddSaleRecord(string date, int customerID, double totalValue, double discount, double finalTotal)
         {
             try
             {
