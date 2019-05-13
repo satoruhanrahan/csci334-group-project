@@ -14,6 +14,7 @@ namespace HobbyShop.CLASS
         private DateTime date;
         private int storeID;
         private int supplierID;
+        private List<DeliveryItem> itemList;
 
         public int DeliveryID { get { return deliveryID; } }
         public DateTime Date { get { return date; } set { date = value; } }
@@ -24,19 +25,20 @@ namespace HobbyShop.CLASS
 
         public Delivery(int deliveryID) { this.deliveryID = deliveryID; }
 
-        public Delivery(DateTime date, int storeID, int supplierID)
+        public Delivery(DateTime date, int storeID, int supplierID, List<DeliveryItem> itemList)
         {
             this.date = date;
             this.storeID = storeID;
             this.supplierID = supplierID;
         }
 
-        public Delivery(int deliveryID, DateTime date, int storeID, int supplierID)
+        public Delivery(int deliveryID, DateTime date, int storeID, int supplierID, List<DeliveryItem> itemList)
         {
             this.deliveryID = deliveryID;
             this.date = date;
             this.storeID = storeID;
             this.supplierID = supplierID;
+            this.itemList = itemList;
         }
 
         string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
@@ -60,13 +62,38 @@ namespace HobbyShop.CLASS
                     DateTime date = Convert.ToDateTime(reader["Date"]);
                     int storeID = Convert.ToInt32(reader["StoreID"]);
                     int supplierID = Convert.ToInt32(reader["SupplierID"]);
-
-                    Delivery delivery = new Delivery(id, date, storeID, supplierID);
+                    List<DeliveryItem> itemList = getItemList(id);
+                    Delivery delivery = new Delivery(id, date, storeID, supplierID, itemList);
                     deliveryList.Add(delivery);
                 }
                 return deliveryList;
             }
         }
+
+        public List<DeliveryItem> getItemList(int deliveryID)
+        {
+            List<DeliveryItem> itemList = new List<DeliveryItem>();
+            //get all items for one delivery
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                con.Open();
+                string query = "SELECT * FROM DeliveryItems WHERE DeliveryID = " + deliveryID.ToString();
+                OleDbCommand cmd = new OleDbCommand(query, con);
+                cmd.ExecuteNonQuery();
+                OleDbDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    int itemDeliveryID = Convert.ToInt32(reader["DeliveryID"]);
+                    int itemNumber = Convert.ToInt32(reader["ItemNumber"]);
+                    double totalCost = Convert.ToDouble(reader["TotalCost"]);
+
+                    DeliveryItem deliveryItem = new DeliveryItem(deliveryID, itemNumber, totalCost);
+                    itemList.Add(deliveryItem);
+                }
+                return itemList;
+            }
+        }
+
         public void AddDeliveryRecord()
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
