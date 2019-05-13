@@ -199,8 +199,9 @@ function editSaleDetails(sale) {
     $("#leftImage").attr("src", "style/save.png");
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
-    $("#sale")[0].style.backgroundColor = "lightgray";
-    
+    $("#sale")[0].className += " readonly";
+    $("#finalValue")[0].className += " readonly";
+
     var elements = document.getElementsByTagName("input");
     for (var i = 0; i < elements.length; i++) {
         var id = elements[i].id;

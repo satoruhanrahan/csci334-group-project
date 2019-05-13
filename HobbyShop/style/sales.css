@@ -17,3 +17,7 @@
     background-color: white;
     /*background-color: white;-----lightgray*/
 }
+
+.readonly {
+    background-color:lightgray;
+}
