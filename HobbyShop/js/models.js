@@ -66,6 +66,23 @@ function displayItemDetails(item) {
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailOptions")[0].style.visibility = "visible";
     $("#detailTable")[0].style.visibility = "visible";
+    $("#detailTabBar")[0].style.visibility = "visible";
+    $("#detailsTab")[0].addEventListener("click", function () {
+        switchTabs("detailTabBar", "detailsTab");
+        displayItemDetails(item);
+    });
+    $("#storesTab")[0].addEventListener("click", function () {
+        switchTabs("detailTabBar", "storesTab");
+        displayItemStores(item);
+    });
+    $("#suppliersTab")[0].addEventListener("click", function () {
+        switchTabs("detailTabBar", "suppliersTab");
+        displayItemSuppliers(item);
+    });
+    $("#reviewsTab")[0].addEventListener("click", function () {
+        switchTabs("detailTabBar", "reviewsTab");
+        displayItemReviews(item);
+    });
     $("#editItem")[0].addEventListener("click", function () {
         editItemDetails(item);
     });
@@ -135,6 +152,7 @@ function editItemDetails(item) {
     clearDisplay();
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTable")[0].style.visibility = "visible";
+    $("#detailTabBar")[0].style.visibility = "visible";
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#itemID")[0].style.backgroundColor = "lightgrey";
@@ -171,37 +189,25 @@ function editItemDetails(item) {
 
 // Send edited data to controller
 function updateItem(id) {
-
-    var name = document.getElementById("itemNameInput").value;
-    var type = document.getElementById("itemTypeInput").value;
-    var area = document.getElementById("itemSbjAreaInput").value;
-    var price = document.getElementById("itemPriceInput").value;
-    var description = document.getElementById("itemDescriptionInput").value;
-
-    console.log("Test1: " + name + " " + type + " " + area + price + description);
-    ModelController.UpdateModelDetails(id,name, type, area, Number(price), description, onUpdateItem);
-
-    /* wrong ids
     ModelController.UpdateModelDetails(
         id,
-        $("#itemName")[0].value,
-        $("#itemType")[0].value,
-        $("#itemSbjArea")[0].value,
-        $("#itemPrice")[0].value,
-        $("#itemDescription")[0].value,
+        $("#itemNameInput")[0].value,
+        $("#itemTypeInput")[0].value,
+        $("#itemSbjAreaInput")[0].value,
+       Number( $("#itemPriceInput")[0].value),
+        $("#itemDescriptionInput")[0].value,
         onUpdateItem
     );
-    */
 }
 
 function onUpdateItem(item) {
-    console.log(item);
     item = JSON.parse(item);
     //  Refreshes the updated button 
-    $("#" + item.Id).innerHTML = item.Name;
-    $("#" + item.Id).addEventListener("click", function () {
+    $("#" + item.Id)[0].innerHTML = item.Name;
+    $("#" + item.Id)[0].addEventListener("click", function () {
         displayItemDetails(item);
     });
+    displayItemDetails(item);
     resultPopup("Successfully updated item in the Database.", "green");
 }
 
@@ -260,7 +266,7 @@ function deleteItem(id) {
 function onDeleteItem(id) {
     clearDisplay();
     // remove corresponding button from list
-    $("#" + id).remove();
+    $("#" + id)[0].remove();
     resultPopup("Item was successfully removed.", "green");
 }
 
@@ -277,6 +283,7 @@ function clearDisplay() {
     $("#detailOptions")[0].style.visibility = "hidden";
     $("#leftButton")[0].style.visibility = "hidden";
     $("#rightButton")[0].style.visibility = "hidden";
+    $("#detailTabBar")[0].style.visibility = "hidden";
     $("#results")[0].style.display = "none";
     $("#itemID")[0].style.backgroundColor = "white";
     $("#itemAvailability")[0].style.backgroundColor = "white";
@@ -293,6 +300,7 @@ function displayAddItem() {
     $("#detailHeading")[0].innerHTML = "Add a New Model";
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTable")[0].style.visibility = "visible";
+    $("#detailTabBar")[0].style.visibility = "visible";
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#itemID")[0].style.backgroundColor = "lightgrey";
@@ -326,26 +334,17 @@ function displayAddItem() {
 
 // Sends input to controller
 function addNewItem() {
-    var name = document.getElementById("itemNameInput").value;
-    var type = document.getElementById("itemTypeInput").value;
-    var area = document.getElementById("itemSbjAreaInput").value;
-    var price = document.getElementById("itemPriceInput").value;
-    var description = document.getElementById("itemDescriptionInput").value;
-    ModelController.AddNewModel(name, type, area, Number(price), description, onAddNewItem);
-
-    /* wrong ids
      ModelController.AddNewModel(
-        $("#itemName")[0].value,
-        $("#itemType")[0].value,
-        $("#itemSbjArea")[0].value,
-        $("#itemPrice")[0].value,
-        $("#itemDescription")[0].value,
+        $("#itemNameInput")[0].value,
+        $("#itemTypeInput")[0].value,
+        $("#itemSbjAreaInput")[0].value,
+         Number($("#itemPriceInput")[0].value),
+        $("#itemDescriptionInput")[0].value,
         onAddNewItem
-    );*/
+    );
 }
 
 function onAddNewItem(item) {
-    console.log(item);
     item = JSON.parse(item);
     clearDisplay();
     // add single new button
@@ -357,6 +356,31 @@ function onAddNewItem(item) {
     button.addEventListener("click", function () {
         displayItemDetails(item);
     });
-    $("#list")[0].append(button);/**/
+    $("#list")[0].append(button);
+    displayItemDetails(item);
     resultPopup("Successfully added to the database.", "green");
+}
+
+function displayItemStores(item) {
+    // set display
+    clearDisplay();
+    $("#detailHeading")[0].innerHTML = item.Name;
+    $("#detailHeading")[0].style.visibility = "visible";
+    $("#detailTabBar")[0].style.visibility = "visible";
+}
+
+function displayItemSuppliers(item) {
+    // set display
+    clearDisplay();
+    $("#detailHeading")[0].innerHTML = item.Name;
+    $("#detailHeading")[0].style.visibility = "visible";
+    $("#detailTabBar")[0].style.visibility = "visible";
+}
+
+function displayItemReviews(item) {
+    // set display
+    clearDisplay();
+    $("#detailHeading")[0].innerHTML = item.Name;
+    $("#detailHeading")[0].style.visibility = "visible";
+    $("#detailTabBar")[0].style.visibility = "visible";
 }

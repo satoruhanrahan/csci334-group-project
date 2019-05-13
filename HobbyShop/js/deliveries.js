@@ -58,6 +58,7 @@ function displayDeliveryDetails(delivery) {
     $("#results")[0].style.display = "none";
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
+    $("#detailTable")[0].style.visibility = "visible";
     /*
     $("#editItem")[0].addEventListener("click", function () {
         editDeliveryDetails(delivery);
@@ -92,6 +93,7 @@ function displayAddDeliveryRecord() {
     $("#detailHeading")[0].innerHTML = "Add a New Delivery Record";
     $("#detailHeading")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
+    $("#detailTable")[0].style.visibility = "visible";
     $("#detailOptions")[0].style.visibility = "hidden";
 
     $("#leftImage").attr("src", "style/add.png");
