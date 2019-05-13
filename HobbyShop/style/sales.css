@@ -1,6 +1,12 @@
 ﻿.userInput, .itemInput {
     background-color: white;
     color: black;
+    width: 70px;
+}
+
+#error {
+    color: red;
+    font-style: italic;
 }
 
 #sale {
