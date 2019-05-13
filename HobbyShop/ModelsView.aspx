@@ -37,10 +37,10 @@
                     </div> 
                 </div>
                 <div id="detailTabBar">
-                    <button type="button" class="tab active" id="detailsTab">Details</button>
-                    <button type="button" class="tab" id="storesTab">Stores</button>
-                    <button type="button" class="tab" id="suppliersTab">Suppliers</button>
-                    <button type="button" class="tab" id="reviewsTab">Reviews</button>
+                    <button type="button" class="tab detailtab active" id="detailsTab">Details</button>
+                    <button type="button" class="tab detailtab" id="storesTab">Stores</button>
+                    <button type="button" class="tab detailtab" id="suppliersTab">Suppliers</button>
+                    <button type="button" class="tab detailtab" id="reviewsTab">Reviews</button>
                 </div>
                 <div id="details">
                     <table id="detailTable">

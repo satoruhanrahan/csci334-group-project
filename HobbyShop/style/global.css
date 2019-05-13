@@ -9,19 +9,19 @@
     color: #ffffff;
 }
 .tab {
-    width: 90px;
+    width: 120px;
     height: 50px;
     font-size: 16px;
     background-color: #00007f;
     color: #ffffff;
-    border: 8px solid #00007f;
+    border: 10px solid #00007f;
     margin-left: 10px;
 }
 .tab:hover {
-    border-bottom: 8px solid #0000ff;
+    border-bottom: 10px solid #0000ff;
 }
 .active {
-    border-bottom: 8px solid #000022;
+    border-bottom: 10px solid #000000;
 }
 #content {
     position: absolute;

@@ -15,6 +15,13 @@
     margin:0;
     border-bottom: 3px solid #000000;
 }
+.detailtab {
+    background-color: #ffffff;
+    border-top: 10px solid #ffffff;
+    border-right: 10px solid #ffffff;
+    border-left: 10px solid #ffffff;
+    color: #000000;
+}
 #details {
     margin: 10px;
 }
@@ -23,7 +30,7 @@
     display: inline-block;
     width:100%;
     font-size:16px;
-    border:0;
+    border:1px solid black;
 }
 #details textarea {
     overflow-y:scroll;
@@ -33,7 +40,7 @@
 #detailTable {
     border-collapse: collapse;
     width: 100%;
-    border: 1px solid black;
+    border: 0;
     visibility:hidden;
 }
 #firstcell {
@@ -41,7 +48,7 @@
 }
 #detailTable td {
     vertical-align: top;
-    border: 1px solid black;
+    border: 0;
 }
 
 #leftButton {
