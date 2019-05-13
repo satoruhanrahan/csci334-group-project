@@ -24,6 +24,7 @@ function displaySaleRecords(sales) {
         let sale = sales[i];
         button.addEventListener("click", function (event) {
             document.getElementById("details").style.visibility = "visible";
+            document.getElementById("detailTable").style.visibility = "visible";
             event.preventDefault();
             displaySaleDetails(sale);
         });
@@ -38,6 +39,7 @@ function displaySaleDetails(sale) {
     $("#results")[0].style.display = "none";
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
+    $("#detailTable")[0].style.visibility = "visible";
     $("#editSale")[0].addEventListener("click", function () {
         editSaleDetails(sale);
     });
@@ -94,6 +96,7 @@ function displayAddSaleRecord() {
     $("#detailHeading")[0].innerHTML = "Add a New Sale Record";
     $("#detailHeading")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
+    $("#detailTable")[0].style.visibility = "visible";
     $("#detailOptions")[0].style.visibility = "hidden";
     $("#itemTable").find("tr:gt(0)").remove(); //delete table except the second row
     insertNewRow(1);
