@@ -6,6 +6,9 @@ using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Web;
+using System.Web.Script.Serialization;
+using HobbyShop.CLASS;
 
 namespace HobbyShop.CONTROLLER
 {
@@ -13,16 +16,21 @@ namespace HobbyShop.CONTROLLER
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class UserController
     {
-        // To use HTTP GET, add [WebGet] attribute. (Default ResponseFormat is WebMessageFormat.Json)
-        // To create an operation that returns XML,
-        //     add [WebGet(ResponseFormat=WebMessageFormat.Xml)],
-        //     and include the following line in the operation body:
-        //         WebOperationContext.Current.OutgoingResponse.ContentType = "text/xml";
         [OperationContract]
-        public void DoWork()
+        public string ReturnUser(string username, string password)
         {
-            // Add your operation implementation here
-            return;
+            User _user = new User();
+            DateTime currentTime = DateTime.Now;
+            List<User> thatUser = _user.loginToAccount(username,password, currentTime);
+            /*
+            if (thatUser.Count == 1)
+            {
+                HttpContext.Current.Response.Redirect("MasterContent.aspx");
+            }
+            */
+            string json = new JavaScriptSerializer().Serialize(thatUser);
+            return json;
+
         }
 
         // Add more operations here and mark them with [OperationContract]

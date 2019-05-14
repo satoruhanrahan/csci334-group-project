@@ -77,6 +77,8 @@
     <Content Include="DeliveriesView.aspx" />
     <Content Include="js\deliveries.js" />
     <Content Include="js\sales.js" />
+    <Content Include="js\user.js" />
+    <Content Include="LogInPage.aspx" />
     <Content Include="MasterContent.aspx" />
     <None Include="packages.config" />
     <Content Include="MasterPage.Master" />
@@ -109,6 +111,7 @@
     <Compile Include="CLASS\Sale.cs" />
     <Compile Include="CLASS\SaleItem.cs" />
     <Compile Include="CLASS\Supplier.cs" />
+    <Compile Include="CLASS\User.cs" />
     <Compile Include="CONTROLLER\DeliveryController.svc.cs">
       <DependentUpon>DeliveryController.svc</DependentUpon>
     </Compile>
@@ -130,6 +133,13 @@
     </Compile>
     <Compile Include="DeliveriesView.aspx.designer.cs">
       <DependentUpon>DeliveriesView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LogInPage.aspx.cs">
+      <DependentUpon>LogInPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LogInPage.aspx.designer.cs">
+      <DependentUpon>LogInPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="ModelsView.aspx.cs">
       <DependentUpon>ModelsView.aspx</DependentUpon>
