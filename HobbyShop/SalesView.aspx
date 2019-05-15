@@ -88,9 +88,14 @@
                         <td id="final"><input type="text" id="finalValue" class="userInput" disabled /></td> 
                     </tr> 
                 </table>
-                <button type="button" id="leftButton" title="Save changes" class="smallbtn greenbtn">
-                    <img id="leftImage" src="style/add.png" />
+                <button type="button" id="leftButton" title="Save changes" class="smallbtn greenbtn" onclick="saveSaleDetails()">
+                    <img id="leftImage" src="style/save.png" />
                 </button>
+
+                <button type="button" id="addRecordButton" title="Add record" class="smallbtn greenbtn" onclick="addSaleRecord()">
+                    <img id="image" src="style/add.png" />
+                </button><%----%>
+
                 <button type="button" id="rightButton" title="Discard changes" class="smallbtn redbtn" style="float:right;"> 
                     <img src="style/close.png" />
                 </button> <br/><br/>

@@ -18,6 +18,7 @@
     /*background-color: white;-----lightgray*/
 }
 
-.readonly {
-    background-color:lightgray;
+#addRecordButton {
+    position: absolute;
+    left: 10px;
 }
