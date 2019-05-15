@@ -98,10 +98,12 @@ namespace HobbyShop
                         bool itemAvail = Convert.ToBoolean(reader["Availability"]);
                         int stockCount = Convert.ToInt32(reader["StockCount"]);
 
-                        _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes);
-                        _model.Id = itemNum;
-                        _model.Availability = itemAvail;
-                        _model.StockCount = stockCount;
+                        _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes)
+                        {
+                            Id = itemNum,
+                            Availability = itemAvail,
+                            StockCount = stockCount
+                        };
 
                     }
                     return _model;

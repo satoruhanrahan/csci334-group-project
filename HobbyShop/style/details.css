@@ -30,12 +30,16 @@
     display: inline-block;
     width:100%;
     font-size:16px;
-    border:1px solid black;
+    border:0;
+    background-color: white;
+    color: black;
 }
 #details textarea {
     overflow-y:scroll;
     font-family:Verdana;
     resize:none;
+    background-color: white;
+    color: black;
 }
 #detailTable {
     border-collapse: collapse;

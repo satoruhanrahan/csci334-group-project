@@ -46,7 +46,7 @@
                     <table id="detailTable">
                         <tr> 
                             <td id="firstcell"> Name </td> 
-                            <td id="itemName"></td> 
+                            <td id="itemName"><input type="text" id="itemNameInput" disabled/></td> 
                         </tr> 
                         <tr> 
                             <td> ID </td> 
@@ -54,18 +54,18 @@
                         </tr> 
                         <tr> 
                             <td> Type </td> 
-                            <td id="itemType"></td> </tr> 
+                            <td id="itemType"><input type="text" id="itemTypeInput" disabled/></td> </tr> 
                         <tr> 
                             <td> Subject Area </td> 
-                            <td id="itemSbjArea"></td> 
+                            <td id="itemSbjArea"><input type="text" id="itemSbjAreaInput" disabled/></td> 
                         </tr>
                         <tr> 
                             <td> Price </td> 
-                            <td id="itemPrice"></td> 
+                            <td id="itemPrice"><input type="text" id="itemPriceInput" disabled/></td> 
                         </tr> 
                         <tr> 
                             <td> Description </td> 
-                            <td id="itemDescription"></td> 
+                            <td id="itemDescription"><textarea id="itemDescriptionInput" disabled/></td> 
                         </tr> 
                         <tr> 
                             <td> Availability </td> 
