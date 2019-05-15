@@ -46,12 +46,12 @@ function displaySaleDetails(sale) {
     });
     //$("editSale").click();
     $("#sale")[0].style.backgroundColor = "white";
-
+    /*
     var itemInputs = document.getElementsByClassName("itemInput");
     for (var i = 0; i < itemInputs.length; i++) {
         itemInputs[i].disabled = true;
     }
-
+    */
     document.getElementById("error").innerText = "";
     var date = new Date(parseInt((sale.Date).substr(6)));
 
