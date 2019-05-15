@@ -98,53 +98,14 @@ function displayItemDetails(item) {
         available = "No";
     }
 
-    $("#itemName")[0].innerHTML = item.Name;
+    $("#itemNameInput")[0].value = item.Name;
     $("#itemID")[0].innerHTML = item.Id;
-    $("#itemType")[0].innerHTML = item.Type;
-    $("#itemSbjArea")[0].innerHTML = item.SbjArea;
-    $("#itemPrice")[0].innerHTML = item.Price;
-    $("#itemDescription")[0].innerHTML = item.Description;
+    $("#itemTypeInput")[0].value = item.Type;
+    $("#itemSbjAreaInput")[0].value = item.SbjArea;
+    $("#itemPriceInput")[0].value = item.Price;
+    $("#itemDescriptionInput")[0].value = item.Description;
     $("#itemAvailability")[0].innerHTML = available;
     $("#itemTotalStock")[0].innerHTML = item.StockCount;
-}
-
-// Generalized input generation for edit and add model menus
-function itemInputs(item) {
-    $("#itemName")[0].innerHTML = "";
-    $("#itemType")[0].innerHTML = "";
-    $("#itemSbjArea")[0].innerHTML = "";
-    $("#itemPrice")[0].innerHTML = "";
-    $("#itemDescription")[0].innerHTML = "";
-
-    var input1 = document.createElement("input");
-    input1.setAttribute("type", "text");
-    input1.setAttribute("id", "itemNameInput");
-    input1.setAttribute("value", item.Name);
-
-    var input2 = document.createElement("input");
-    input2.setAttribute("type", "text");
-    input2.setAttribute("id", "itemTypeInput");
-    input2.setAttribute("value", item.Type);
-
-    var input3 = document.createElement("input");
-    input3.setAttribute("type", "text");
-    input3.setAttribute("id", "itemSbjAreaInput");
-    input3.setAttribute("value", item.SbjArea);
-
-    var input4 = document.createElement("input");
-    input4.setAttribute("type", "text");
-    input4.setAttribute("id", "itemPriceInput");
-    input4.setAttribute("value", item.Price);
-
-    var input5 = document.createElement("textarea");
-    input5.setAttribute("id", "itemDescriptionInput");
-    input5.innerHTML = item.Description;
-
-    $("#itemName")[0].append(input1);
-    $("#itemType")[0].append(input2);
-    $("#itemSbjArea")[0].append(input3);
-    $("#itemPrice")[0].append(input4);
-    $("#itemDescription")[0].append(input5);
 }
 
 // Edit details
@@ -160,7 +121,18 @@ function editItemDetails(item) {
     $("#itemTotalStock")[0].style.backgroundColor = "lightgrey";
     $("#detailHeading")[0].append(item.Name);
 
-    itemInputs(item);
+    $("#itemNameInput").removeAttr("disabled");
+    $("#itemTypeInput").removeAttr("disabled");
+    $("#itemSbjAreaInput").removeAttr("disabled");
+    $("#itemPriceInput").removeAttr("disabled");
+    $("#itemDescriptionInput").removeAttr("disabled");
+
+    $("#itemNameInput")[0].value = item.Name;
+    $("#itemTypeInput")[0].value = item.Type;
+    $("#itemSbjAreaInput")[0].value = item.SbjArea;
+    $("#itemPriceInput")[0].value = item.Price;
+    $("#itemDescriptionInput")[0].value = item.Description;
+    
     var available;
     if (item.Availability == true) {
         available = "Yes";
@@ -201,13 +173,15 @@ function updateItem(id) {
 }
 
 function onUpdateItem(item) {
-    item = JSON.parse(item);
+    /*item = JSON.parse(item);
     //  Refreshes the updated button 
     $("#" + item.Id)[0].innerHTML = item.Name;
     $("#" + item.Id)[0].addEventListener("click", function () {
         displayItemDetails(item);
     });
-    displayItemDetails(item);
+    $("#leftButton").unbind("click");
+    displayItemDetails(item);*/
+    getAllSearchedItems();
     resultPopup("Successfully updated item in the Database.", "green");
 }
 
@@ -266,7 +240,8 @@ function deleteItem(id) {
 function onDeleteItem(id) {
     clearDisplay();
     // remove corresponding button from list
-    $("#" + id)[0].remove();
+    //$("#" + id)[0].remove();
+    getAllSearchedItems();
     resultPopup("Item was successfully removed.", "green");
 }
 
@@ -291,6 +266,17 @@ function clearDisplay() {
     $("#itemID")[0].innerHTML = "";
     $("#itemAvailability")[0].innerHTML = "";
     $("#itemTotalStock")[0].innerHTML = "";
+    $("#itemNameInput").value = "";
+    $("#itemID")[0].innerHTML = "";
+    $("#itemTypeInput").value = "";
+    $("#itemSbjAreaInput").value = "";
+    $("#itemPriceInput").value = "";
+    $("#itemDescriptionInput").value = "";
+    $("#itemNameInput").attr({ "disabled": "disabled" });
+    $("#itemTypeInput").attr({ "disabled": "disabled" });
+    $("#itemSbjAreaInput").attr({ "disabled": "disabled" });
+    $("#itemPriceInput").attr({ "disabled": "disabled" });
+    $("#itemDescriptionInput").attr({ "disabled": "disabled" });
 }
 
 //Add new item to model table
@@ -307,14 +293,11 @@ function displayAddItem() {
     $("#itemAvailability")[0].style.backgroundColor = "lightgrey";
     $("#itemTotalStock")[0].style.backgroundColor = "lightgrey";
 
-    var item = {
-        "Name": "",
-        "Type": "",
-        "SbjArea": "",
-        "Price": "",
-        "Description": ""
-    };
-    itemInputs(item);
+    $("#itemNameInput").removeAttr("disabled");
+    $("#itemTypeInput").removeAttr("disabled");
+    $("#itemSbjAreaInput").removeAttr("disabled");
+    $("#itemPriceInput").removeAttr("disabled");
+    $("#itemDescriptionInput").removeAttr("disabled");
 
     // set details for left button
     var img1 = document.createElement("img");
@@ -322,7 +305,6 @@ function displayAddItem() {
     $("#leftButton")[0].innerHTML = "";
     $("#leftButton")[0].append(img1);
     $("#leftButton")[0].addEventListener("click", function () {
-        //addNewItem(item);
         addNewItem();
     });
 
@@ -334,7 +316,6 @@ function displayAddItem() {
 
 // Sends input to controller
 function addNewItem() {
-    console.log("hey!");
      ModelController.AddNewModel(
         $("#itemNameInput")[0].value,
         $("#itemTypeInput")[0].value,
@@ -349,7 +330,7 @@ function onAddNewItem(result) {
     var item = JSON.parse(result);
     clearDisplay();
     // add single new button
-    var button = document.createElement("button");
+    /*var button = document.createElement("button");
     button.innerHTML = item.Name;
     button.setAttribute("id", item.Id);
     button.setAttribute("type", "button");
@@ -359,6 +340,8 @@ function onAddNewItem(result) {
     });
     $("#list")[0].append(button);
     displayItemDetails(item);
+    $("#leftButton").unbind("click");*/
+    getAllSearchedItems();
     resultPopup("Successfully added to the database.", "green");
 }
 
