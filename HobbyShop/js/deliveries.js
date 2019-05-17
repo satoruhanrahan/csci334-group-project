@@ -32,11 +32,13 @@ function displayDeliveryRecords(deliveries) {
 
 //display delivery details
 function displayDeliveryDetails(delivery) {
-    $("#leftButton")[0].style.visibility = "hidden";
-    $("#rightButton")[0].style.visibility = "hidden";
+    $("#leftButton")[0].style.visibility = "visible";
+    $("#rightButton")[0].style.visibility = "visible";
     $("#results")[0].style.display = "none";
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
+    $("#detailTable")[0].style.visibility = "visible";
+    console.log("Test if it's updated!");
     /*
     $("#editItem")[0].addEventListener("click", function () {
         editDeliveryDetails(delivery);
