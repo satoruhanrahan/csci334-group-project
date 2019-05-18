@@ -149,8 +149,19 @@ function editItemDetails(item) {
 
     $("#leftButton")[0].innerHTML = "";
     $("#leftButton")[0].append(img1);
-    $("#leftButton")[0].addEventListener("click", function () {
-        updateItem(item.Id);
+    $("body").on("click", "#leftButton", function () {
+        var newitem = {
+            "Id": item.Id,
+            "Name": $("#itemNameInput")[0].value,
+            "Type": $("#itemTypeInput")[0].value,
+            "SbjArea": $("#itemSbjAreaInput")[0].value,
+            "Price": $("#itemPriceInput")[0].value,
+            "Description": $("#itemDescriptionInput")[0].value,
+            "Availability": item.Availability,
+            "StockCount": item.StockCount
+        }
+        updateItem(item.Id)
+        displayItemDetails(newitem);
     });
     
     $("#rightButton")[0].addEventListener("click", function () {
@@ -277,6 +288,8 @@ function clearDisplay() {
     $("#itemSbjAreaInput").attr({ "disabled": "disabled" });
     $("#itemPriceInput").attr({ "disabled": "disabled" });
     $("#itemDescriptionInput").attr({ "disabled": "disabled" });
+    $("body").off("click", "#leftButton", updateItem);
+    $("body").off("click", "#leftButton", addNewItem);
 }
 
 //Add new item to model table
@@ -304,9 +317,7 @@ function displayAddItem() {
     img1.src = "style/add.png";
     $("#leftButton")[0].innerHTML = "";
     $("#leftButton")[0].append(img1);
-    $("#leftButton")[0].addEventListener("click", function () {
-        addNewItem();
-    });
+    $("body").on("click", "#leftButton", addNewItem);
 
     // set details for right button
     $("#rightButton")[0].addEventListener("click", function () {

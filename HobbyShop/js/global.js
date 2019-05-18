@@ -56,5 +56,5 @@ function resultPopup(result, color) {
     setTimeout(function () {
         results.style.display = "none";
         results.style.backgroundColor = "white";
-    }, 3000)
+    }, 1000)
 }
