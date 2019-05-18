@@ -1,25 +1,4 @@
-﻿// on Page load...
-$(document).ready(function () {
-    getDeliveryRecords();
-    // prevent form submission on enter
-    $('form').keypress(function (event) {
-        return event.keyCode != 13;
-    });
-    // Search as the user types
-    var searchbar = $("#searchbar")[0];
-    searchbar.addEventListener("keyup", function (event) {
-        event.preventDefault();
-        //getAllSearchedItems();
-    });
-    $("#advSearch")[0].addEventListener("click", function () {
-        displayAdvSearch();
-    });
-    /*$("#addButton")[0].addEventListener("click", function () {
-        displayAddDeliveryRecord();
-    });*/
-});
-
-function getDeliveryRecords() {
+﻿function getDeliveryRecords() {
     DeliveryController.GetDeliveryRecords(onGetDeliveryRecords);
 }
 
@@ -53,12 +32,13 @@ function displayDeliveryRecords(deliveries) {
 
 //display delivery details
 function displayDeliveryDetails(delivery) {
-    $("#leftButton")[0].style.visibility = "hidden";
-    $("#rightButton")[0].style.visibility = "hidden";
+    $("#leftButton")[0].style.visibility = "visible";
+    $("#rightButton")[0].style.visibility = "visible";
     $("#results")[0].style.display = "none";
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
     $("#detailTable")[0].style.visibility = "visible";
+    console.log("Test if it's updated!");
     /*
     $("#editItem")[0].addEventListener("click", function () {
         editDeliveryDetails(delivery);
@@ -93,7 +73,6 @@ function displayAddDeliveryRecord() {
     $("#detailHeading")[0].innerHTML = "Add a New Delivery Record";
     $("#detailHeading")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
-    $("#detailTable")[0].style.visibility = "visible";
     $("#detailOptions")[0].style.visibility = "hidden";
 
     $("#leftImage").attr("src", "style/add.png");
@@ -116,6 +95,8 @@ function displayAddDeliveryRecord() {
     }
 
     $("#leftButton")[0].addEventListener("click", function () {
+        $("#leftButton")[0].style.visibility = "hidden";
+        $("#rightButton")[0].style.visibility = "hidden";
         addDeliveryRecord();
     });
 
@@ -140,23 +121,20 @@ function addDeliveryRecord() {
     var check = false;
     var errorMessage = document.getElementById("error");
     if (store == "" || supplier == "") {
-        errorMessage.innerText = "Input missing from field!";
+        errorMessage.innerText = "No field is empty!";
     }
     else {
         errorMessage.innerText = "";
         check = true;
     }
     if (check == true) {
-        DeliveryController.AddDeliveryRecord(date, store);
-        onAddDeliveryRecord();
+        DeliveryController.AddDeliveryRecord(date, store, onAddDeliveryRecord);
     }
 }
 
-function onAddDeliveryRecord() {
+function onAddDeliveryRecord(result) {
     resultPopup("Successfully added to the database", "green");
     clearDisplay();
-    $("#leftButton")[0].style.visibility = "hidden";
-    $("#rightButton")[0].style.visibility = "hidden";
     getDeliveryRecords();
     // **todo: add single new button to list
 }
@@ -231,6 +209,26 @@ function onDeleteDeliveryRecord(result) {
         getDeliveryRecords();
     }
 }
+
+$(document).ready(function () {
+    getDeliveryRecords();
+    // prevent form submission on enter
+    $('form').keypress(function (event) {
+        return event.keyCode != 13;
+    });
+    // Search as the user types
+    var searchbar = $("#searchbar")[0];
+    searchbar.addEventListener("keyup", function (event) {
+        event.preventDefault();
+        //getAllSearchedItems();
+    });
+    $("#advSearch")[0].addEventListener("click", function () {
+        displayAdvSearch();
+    });
+    /*$("#addButton")[0].addEventListener("click", function () {
+        displayAddDeliveryRecord();
+    });*/
+});
 
 //Advanced search display
 function displayAdvSearch() {

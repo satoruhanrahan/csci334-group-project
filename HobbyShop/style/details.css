@@ -45,7 +45,7 @@
     border-collapse: collapse;
     width: 100%;
     border: 0;
-    visibility:hidden;
+    visibility: hidden;
 }
 #firstcell {
     width:25%;
@@ -55,8 +55,8 @@
     border: 0;
 }
 
-#leftButton {
-    visibility:hidden;
+#leftButton, #addRecordButton {
+    visibility: hidden;
 }
 /**/
 #rightButton {

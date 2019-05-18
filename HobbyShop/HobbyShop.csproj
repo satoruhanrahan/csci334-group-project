@@ -72,6 +72,7 @@
   <ItemGroup>
     <Content Include="CONTROLLER\DeliveryController.svc" />
     <Content Include="CONTROLLER\SaleController.svc" />
+    <Content Include="CONTROLLER\StoreController.svc" />
     <Content Include="CONTROLLER\SupplierController.svc" />
     <Content Include="CONTROLLER\UserController.svc" />
     <Content Include="DeliveriesView.aspx" />
@@ -104,12 +105,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CLASS\Delivery.cs" />
     <Compile Include="CLASS\Customer.cs" />
-    <Compile Include="CLASS\DeliveryItem.cs" />
+    <Compile Include="CLASS\Delivery.cs" />
     <Compile Include="CLASS\Model.cs" />
     <Compile Include="CLASS\Sale.cs" />
     <Compile Include="CLASS\SaleItem.cs" />
+    <Compile Include="CLASS\Store.cs" />
+    <Compile Include="CLASS\StoreInventory.cs" />
     <Compile Include="CLASS\Supplier.cs" />
     <Compile Include="CLASS\User.cs" />
     <Compile Include="CONTROLLER\DeliveryController.svc.cs">
@@ -120,6 +122,9 @@
     </Compile>
     <Compile Include="CONTROLLER\SaleController.svc.cs">
       <DependentUpon>SaleController.svc</DependentUpon>
+    </Compile>
+    <Compile Include="CONTROLLER\StoreController.svc.cs">
+      <DependentUpon>StoreController.svc</DependentUpon>
     </Compile>
     <Compile Include="CONTROLLER\SupplierController.svc.cs">
       <DependentUpon>SupplierController.svc</DependentUpon>

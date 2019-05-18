@@ -18,6 +18,15 @@
     /*background-color: white;-----lightgray*/
 }
 
-.readonly {
-    background-color:lightgray;
+#addRecordButton {
+    position: absolute;
+    left: 10px;
+}
+
+#itemTable td {
+    border: solid 1px;
+}
+
+#itemTable {
+    border-collapse: collapse;
 }
