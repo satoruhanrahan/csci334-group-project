@@ -469,6 +469,7 @@ $(document).ready(function () {
     /*$("#addButton")[0].addEventListener("click", function () {
         displayAddSaleRecord();
     });*/
+    document.getElementById("detailTable").style.visibility = "hidden";
 });
 
 //Advanced search display

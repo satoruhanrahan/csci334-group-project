@@ -22,6 +22,14 @@
     border-left: 10px solid #ffffff;
     color: #000000;
 }
+.detailTabContent {
+    margin: 10px;
+    visibility: hidden;
+    position: absolute;
+    top: 90px;
+    left: 0px;
+    width: calc(75% - 3px);
+}
 #details {
     margin: 10px;
 }
@@ -45,7 +53,6 @@
     border-collapse: collapse;
     width: 100%;
     border: 0;
-    visibility: hidden;
 }
 #firstcell {
     width:25%;
@@ -53,6 +60,10 @@
 #detailTable td {
     vertical-align: top;
     border: 0;
+}
+
+.leftButton {
+    visibility: hidden;
 }
 
 #leftButton, #addRecordButton {

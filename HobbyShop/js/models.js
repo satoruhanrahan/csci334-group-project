@@ -46,7 +46,7 @@ function displayItemNames(items) {
     var button;
     for (var i = items.length - 1; i >= 0; i--) {
         button = document.createElement("button");
-        button.innerHTML = items[i].Name;
+        button.append( items[i].Name );
         button.setAttribute("id", items[i].Id);
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem");
@@ -62,10 +62,11 @@ function displayItemNames(items) {
 function displayItemDetails(item) {
     // set display
     clearDisplay();
+    switchTabs("detailTabBar", "detailsTab");
     $("#detailHeading")[0].innerHTML = item.Name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailOptions")[0].style.visibility = "visible";
-    $("#detailTable")[0].style.visibility = "visible";
+    $("#details")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#detailsTab")[0].addEventListener("click", function () {
         switchTabs("detailTabBar", "detailsTab");
@@ -112,7 +113,7 @@ function displayItemDetails(item) {
 function editItemDetails(item) {
     clearDisplay();
     $("#detailHeading")[0].style.visibility = "visible";
-    $("#detailTable")[0].style.visibility = "visible";
+    $("#details")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
@@ -150,18 +151,7 @@ function editItemDetails(item) {
     $("#leftButton")[0].innerHTML = "";
     $("#leftButton")[0].append(img1);
     $("body").on("click", "#leftButton", function () {
-        var newitem = {
-            "Id": item.Id,
-            "Name": $("#itemNameInput")[0].value,
-            "Type": $("#itemTypeInput")[0].value,
-            "SbjArea": $("#itemSbjAreaInput")[0].value,
-            "Price": $("#itemPriceInput")[0].value,
-            "Description": $("#itemDescriptionInput")[0].value,
-            "Availability": item.Availability,
-            "StockCount": item.StockCount
-        }
-        updateItem(item.Id)
-        displayItemDetails(newitem);
+        updateItem(item);
     });
     
     $("#rightButton")[0].addEventListener("click", function () {
@@ -170,17 +160,29 @@ function editItemDetails(item) {
 }
 
 // Send edited data to controller
-function updateItem(id) {
-    var name = $("#itemNameInput")[0].value;
+function updateItem(item) {
+    var newitem = {
+        "Id": item.Id,
+        "Name": $("#itemNameInput")[0].value,
+        "Type": $("#itemTypeInput")[0].value,
+        "SbjArea": $("#itemSbjAreaInput")[0].value,
+        "Price": $("#itemPriceInput")[0].value,
+        "Description": $("#itemDescriptionInput")[0].value,
+        "Availability": item.Availability,
+        "StockCount": item.StockCount
+    }
+    
     ModelController.UpdateModelDetails(
-        id,
-        name,
+        item.Id,
+        $("#itemNameInput")[0].value,
         $("#itemTypeInput")[0].value,
         $("#itemSbjAreaInput")[0].value,
        Number( $("#itemPriceInput")[0].value),
         $("#itemDescriptionInput")[0].value,
         onUpdateItem
     );
+
+    displayItemDetails(newitem);
 }
 
 function onUpdateItem(item) {
@@ -264,8 +266,11 @@ function closeDelete() {
 // removes any details that are displayed in the details section
 function clearDisplay() {
     $("#detailHeading")[0].innerHTML = "";
+    $("#stores")[0].style.visibility = "hidden"
+    $("#suppliers")[0].style.visibility = "hidden"
+    $("#reviews")[0].style.visibility = "hidden"
     $("#detailHeading")[0].style.visibility = "hidden";
-    $("#detailTable")[0].style.visibility = "hidden";
+    $("#details")[0].style.visibility = "hidden";
     $("#detailOptions")[0].style.visibility = "hidden";
     $("#leftButton")[0].style.visibility = "hidden";
     $("#rightButton")[0].style.visibility = "hidden";
@@ -277,6 +282,8 @@ function clearDisplay() {
     $("#itemID")[0].innerHTML = "";
     $("#itemAvailability")[0].innerHTML = "";
     $("#itemTotalStock")[0].innerHTML = "";
+    $("#stores")[0].innerHTML = ""
+    $("#suppliers")[0].innerHTML = ""
     $("#itemNameInput").value = "";
     $("#itemID")[0].innerHTML = "";
     $("#itemTypeInput").value = "";
@@ -288,8 +295,7 @@ function clearDisplay() {
     $("#itemSbjAreaInput").attr({ "disabled": "disabled" });
     $("#itemPriceInput").attr({ "disabled": "disabled" });
     $("#itemDescriptionInput").attr({ "disabled": "disabled" });
-    $("body").off("click", "#leftButton", updateItem);
-    $("body").off("click", "#leftButton", addNewItem);
+    $("body").off("click", "#leftButton");
 }
 
 //Add new item to model table
@@ -298,7 +304,7 @@ function displayAddItem() {
     clearDisplay();
     $("#detailHeading")[0].innerHTML = "Add a New Model";
     $("#detailHeading")[0].style.visibility = "visible";
-    $("#detailTable")[0].style.visibility = "visible";
+    $("#details")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
@@ -340,18 +346,6 @@ function addNewItem() {
 function onAddNewItem(result) {
     var item = JSON.parse(result);
     clearDisplay();
-    // add single new button
-    /*var button = document.createElement("button");
-    button.innerHTML = item.Name;
-    button.setAttribute("id", item.Id);
-    button.setAttribute("type", "button");
-    button.setAttribute("class", "listItem");
-    button.addEventListener("click", function () {
-        displayItemDetails(item);
-    });
-    $("#list")[0].append(button);
-    displayItemDetails(item);
-    $("#leftButton").unbind("click");*/
     getAllSearchedItems();
     resultPopup("Successfully added to the database.", "green");
 }
@@ -362,6 +356,28 @@ function displayItemStores(item) {
     $("#detailHeading")[0].innerHTML = item.Name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
+    $("#stores")[0].style.visibility = "visible";
+    /* stores = getStoresbyitemid();
+    var button;
+    for (var i = stores.length - 1; i >= 0; i--) {
+        button = document.createElement("button");
+        br = document.createElement("br");
+        button.append(stores[i].Name);
+        button.append(br);
+        button.append(stores[i].Address);
+        button.append(br);
+        button.append(stores[i].Phone);
+        button.append(br);
+        button.append(stores[i].);
+        button.setAttribute("id", stores[i].Id);
+        button.setAttribute("type", "button");
+        button.setAttribute("class", "listItem bigList");
+        let store = stores[i];
+        button.addEventListener("click", function () {
+            loadPage("Stores", store);
+        });
+        $("#stores")[0].append(button);
+    }*/
 }
 
 function displayItemSuppliers(item) {
@@ -370,6 +386,21 @@ function displayItemSuppliers(item) {
     $("#detailHeading")[0].innerHTML = item.Name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
+    $("#suppliers")[0].style.visibility = "visible"
+     /* suppliers = getSuppliersbyitemid();
+    var button;
+    for (var i = suppliers.length - 1; i >= 0; i--) {
+        button = document.createElement("button");
+        button.append(suppliers[i].Name);
+        button.setAttribute("id", suppliers[i].Id);
+        button.setAttribute("type", "button");
+        button.setAttribute("class", "listItem bigList");
+        let supplier = suppliers[i];
+        button.addEventListener("click", function () {
+            loadPage("Suppliers", supplier);
+        });
+        $("#suppliers")[0].append(button);
+    }*/
 }
 
 function displayItemReviews(item) {
@@ -378,4 +409,5 @@ function displayItemReviews(item) {
     $("#detailHeading")[0].innerHTML = item.Name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
+    $("#reviews")[0].style.visibility = "visible"
 }

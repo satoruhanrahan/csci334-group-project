@@ -7,6 +7,7 @@
         <title> Models - Tim's Model Market </title>
 	    <link rel="stylesheet" href="style/details.css"/>
         <link rel="stylesheet" href="style/list.css" />
+	    <link rel="stylesheet" href="style/models.css"/>
         <script type="text/javascript" src="js/models.js"></script>
     </head>
     <body>
@@ -42,7 +43,7 @@
                     <button type="button" class="tab detailtab" id="suppliersTab">Suppliers</button>
                     <button type="button" class="tab detailtab" id="reviewsTab">Reviews</button>
                 </div>
-                <div id="details">
+                <div id="details" class="detailTabContent">
                     <table id="detailTable">
                         <tr> 
                             <td id="firstcell"> Name </td> 
@@ -81,6 +82,12 @@
                     <button type="button" id="rightButton" title="Discard changes" class="smallbtn redbtn" style="float:right;"> 
                         <img src="style/close.png" />
                     </button>
+                </div>
+                <div id="stores" class="detailTabContent">
+                </div>
+                <div id="suppliers" class="detailTabContent">
+                </div>
+                <div id="reviews" class="detailTabContent">
                 </div>
             </div>
 		</div>

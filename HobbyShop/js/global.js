@@ -1,37 +1,37 @@
 ﻿$(document).ready(function () {
     $("#content").load("ModelsView.aspx");
     $("#Models")[0].addEventListener("click", function () {
-        loadPage("Models");
+        loadPage("Models", {});
     });
     $("#Sales")[0].addEventListener("click", function () {
-        loadPage("Sales");
+        loadPage("Sales", {});
     });
     $("#Deliveries")[0].addEventListener("click", function () {
-        loadPage("Deliveries");
+        loadPage("Deliveries", {});
     });
     $("#Suppliers")[0].addEventListener("click", function () {
-        loadPage("Suppliers");
+        loadPage("Suppliers", {});
     });
     $("#Contacts")[0].addEventListener("click", function () {
-        loadPage("Contacts");
+        loadPage("Contacts", {});
     });
     $("#Customers")[0].addEventListener("click", function () {
-        loadPage("Customers");
+        loadPage("Customers", {});
     });
     $("#Stores")[0].addEventListener("click", function () {
-        loadPage("Stores");
+        loadPage("Stores", {});
     });
     $("#Users")[0].addEventListener("click", function () {
-        loadPage("Users");
+        loadPage("Users", {});
     });
     $("#Settings")[0].addEventListener("click", function () {
-        loadPage("Settings");
+        loadPage("Settings", {});
     });
 });
 
-function loadPage(page) {
+function loadPage(page, params) {
     switchTabs("header", page);
-    $("#content").load(page + "View.aspx");
+    $("#content").load(page + "View.aspx", params);
 }
 
 function switchTabs(containerId, activeTab) {
