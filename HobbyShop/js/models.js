@@ -80,10 +80,6 @@ function displayItemDetails(item) {
         switchTabs("detailTabBar", "suppliersTab");
         displayItemSuppliers(item);
     });
-    $("#reviewsTab")[0].addEventListener("click", function () {
-        switchTabs("detailTabBar", "reviewsTab");
-        displayItemReviews(item);
-    });
     $("#editItem")[0].addEventListener("click", function () {
         editItemDetails(item);
     });
@@ -161,28 +157,30 @@ function editItemDetails(item) {
 
 // Send edited data to controller
 function updateItem(item) {
-    var newitem = {
-        "Id": item.Id,
-        "Name": $("#itemNameInput")[0].value,
-        "Type": $("#itemTypeInput")[0].value,
-        "SbjArea": $("#itemSbjAreaInput")[0].value,
-        "Price": $("#itemPriceInput")[0].value,
-        "Description": $("#itemDescriptionInput")[0].value,
-        "Availability": item.Availability,
-        "StockCount": item.StockCount
-    }
-    
-    ModelController.UpdateModelDetails(
-        item.Id,
-        $("#itemNameInput")[0].value,
-        $("#itemTypeInput")[0].value,
-        $("#itemSbjAreaInput")[0].value,
-       Number( $("#itemPriceInput")[0].value),
-        $("#itemDescriptionInput")[0].value,
-        onUpdateItem
-    );
+    if (validateInput()) {
+        var newitem = {
+            "Id": item.Id,
+            "Name": $("#itemNameInput")[0].value,
+            "Type": $("#itemTypeInput")[0].value,
+            "SbjArea": $("#itemSbjAreaInput")[0].value,
+            "Price": $("#itemPriceInput")[0].value,
+            "Description": $("#itemDescriptionInput")[0].value,
+            "Availability": item.Availability,
+            "StockCount": item.StockCount
+        }
 
-    displayItemDetails(newitem);
+        ModelController.UpdateModelDetails(
+            item.Id,
+            $("#itemNameInput")[0].value,
+            $("#itemTypeInput")[0].value,
+            $("#itemSbjAreaInput")[0].value,
+            Number($("#itemPriceInput")[0].value),
+            $("#itemDescriptionInput")[0].value,
+            onUpdateItem
+        );
+
+        displayItemDetails(newitem);
+    }
 }
 
 function onUpdateItem(item) {
@@ -268,7 +266,6 @@ function clearDisplay() {
     $("#detailHeading")[0].innerHTML = "";
     $("#stores")[0].style.visibility = "hidden"
     $("#suppliers")[0].style.visibility = "hidden"
-    $("#reviews")[0].style.visibility = "hidden"
     $("#detailHeading")[0].style.visibility = "hidden";
     $("#details")[0].style.visibility = "hidden";
     $("#detailOptions")[0].style.visibility = "hidden";
@@ -331,16 +328,32 @@ function displayAddItem() {
     });
 }
 
+function validateInput() {
+    var name = $("#itemNameInput")[0].value;
+    var type = $("#itemTypeInput")[0].value;
+    var sbj = $("#itemSbjAreaInput")[0].value;
+    var price = $("#itemPriceInput")[0].value;
+    if (name === '' || type === '' || sbj === '' || price === '') {
+        alert("Please input: Name, Type, Subject Area, or Price!");
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
 // Sends input to controller
 function addNewItem() {
-     ModelController.AddNewModel(
-        $("#itemNameInput")[0].value,
-        $("#itemTypeInput")[0].value,
-        $("#itemSbjAreaInput")[0].value,
-         Number($("#itemPriceInput")[0].value),
-        $("#itemDescriptionInput")[0].value,
-        onAddNewItem
-    );
+    if (validateInput()) {
+         ModelController.AddNewModel(
+            $("#itemNameInput")[0].value,
+            $("#itemTypeInput")[0].value,
+            $("#itemSbjAreaInput")[0].value,
+             Number($("#itemPriceInput")[0].value),
+            $("#itemDescriptionInput")[0].value,
+            onAddNewItem
+        );
+    }
 }
 
 function onAddNewItem(result) {
@@ -369,7 +382,6 @@ function displayItemStores(item) {
         button.append(stores[i].Phone);
         button.append(br);
         button.append(stores[i].);
-        button.setAttribute("id", stores[i].Id);
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem bigList");
         let store = stores[i];
@@ -392,7 +404,6 @@ function displayItemSuppliers(item) {
     for (var i = suppliers.length - 1; i >= 0; i--) {
         button = document.createElement("button");
         button.append(suppliers[i].Name);
-        button.setAttribute("id", suppliers[i].Id);
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem bigList");
         let supplier = suppliers[i];
@@ -401,13 +412,4 @@ function displayItemSuppliers(item) {
         });
         $("#suppliers")[0].append(button);
     }*/
-}
-
-function displayItemReviews(item) {
-    // set display
-    clearDisplay();
-    $("#detailHeading")[0].innerHTML = item.Name;
-    $("#detailHeading")[0].style.visibility = "visible";
-    $("#detailTabBar")[0].style.visibility = "visible";
-    $("#reviews")[0].style.visibility = "visible"
 }

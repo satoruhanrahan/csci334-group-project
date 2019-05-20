@@ -41,7 +41,6 @@
                     <button type="button" class="tab detailtab active" id="detailsTab">Details</button>
                     <button type="button" class="tab detailtab" id="storesTab">Stores</button>
                     <button type="button" class="tab detailtab" id="suppliersTab">Suppliers</button>
-                    <button type="button" class="tab detailtab" id="reviewsTab">Reviews</button>
                 </div>
                 <div id="details" class="detailTabContent">
                     <table id="detailTable">
@@ -62,7 +61,7 @@
                         </tr>
                         <tr> 
                             <td> Price </td> 
-                            <td id="itemPrice"><input type="text" id="itemPriceInput" disabled/></td> 
+                            <td id="itemPrice"><input type="number" id="itemPriceInput" disabled/></td> 
                         </tr> 
                         <tr> 
                             <td> Description </td> 
@@ -86,8 +85,6 @@
                 <div id="stores" class="detailTabContent">
                 </div>
                 <div id="suppliers" class="detailTabContent">
-                </div>
-                <div id="reviews" class="detailTabContent">
                 </div>
             </div>
 		</div>
