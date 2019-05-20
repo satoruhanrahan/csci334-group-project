@@ -16,12 +16,14 @@
     color: #ffffff;
     border: 10px solid #00007f;
     margin-left: 10px;
+    font-weight: normal;
 }
 .tab:hover {
     border-bottom: 10px solid #0000ff;
 }
 .active {
     border-bottom: 10px solid #000000;
+    font-weight: bold;
 }
 #content {
     position: absolute;

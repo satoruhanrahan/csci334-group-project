@@ -54,10 +54,18 @@
                         </tr> 
                         <tr> 
                             <td> Type </td> 
-                            <td id="itemType"><input type="text" id="itemTypeInput" disabled/></td> </tr> 
+                            <td id="itemType">
+                                <input type="text" id="itemTypeInput" list="types" disabled/>
+                                <datalist id="types">
+                                </datalist>
+                            </td> 
+                        </tr> 
                         <tr> 
                             <td> Subject Area </td> 
-                            <td id="itemSbjArea"><input type="text" id="itemSbjAreaInput" disabled/></td> 
+                            <td id="itemSbjArea">
+                                <input type="text" id="itemSbjAreaInput" list="subjects" disabled/>
+                                <datalist id="subjects"></datalist>
+                            </td> 
                         </tr>
                         <tr> 
                             <td> Price </td> 
@@ -70,7 +78,7 @@
                         <tr> 
                             <td> Availability </td> 
                             <td id="itemAvailability"></td> 
-                        </tr>
+                        </tr> 
                         <tr> 
                             <td> Total Stock </td> 
                             <td id="itemTotalStock"></td> 

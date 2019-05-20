@@ -20,7 +20,27 @@ $(document).ready(function () {
     $("#addButton")[0].addEventListener("click", function () {
         displayAddItem();
     });
+    // populateSelect();
 });
+
+// gets Subject area/ model types and populates selects with options
+function populateSelect() {
+    /*get sbjlist;
+      get typelist;
+      for (int i = 0; i < sbjlist.length; i++;) {
+           option = document.createElement("option");
+           option.value = sbjlist[i].Name;
+           option.append(sbjlist[i].Name);
+           $("#subjects").append(option);
+       }
+       for (int j = 0; j < typelist.length; j++;) {
+           option = document.createElement("option");
+           option.value = typelist[j].Name;
+           option.append(typelist[i].Name);
+           $("#types").append(option);
+       }
+    */
+}
 
 // Display items in list based on search
 function getAllSearchedItems() {
@@ -158,41 +178,37 @@ function editItemDetails(item) {
 // Send edited data to controller
 function updateItem(item) {
     if (validateInput()) {
-        var newitem = {
-            "Id": item.Id,
-            "Name": $("#itemNameInput")[0].value,
-            "Type": $("#itemTypeInput")[0].value,
-            "SbjArea": $("#itemSbjAreaInput")[0].value,
-            "Price": $("#itemPriceInput")[0].value,
-            "Description": $("#itemDescriptionInput")[0].value,
-            "Availability": item.Availability,
-            "StockCount": item.StockCount
-        }
 
         ModelController.UpdateModelDetails(
             item.Id,
             $("#itemNameInput")[0].value,
             $("#itemTypeInput")[0].value,
             $("#itemSbjAreaInput")[0].value,
-            Number($("#itemPriceInput")[0].value),
+            $("#itemPriceInput")[0].value,
             $("#itemDescriptionInput")[0].value,
             onUpdateItem
         );
-
-        displayItemDetails(newitem);
     }
 }
 
 function onUpdateItem(item) {
-    /*item = JSON.parse(item);
+    item = JSON.parse(item);
+    var newitem = {
+        "Id": item.Id,
+        "Name": $("#itemNameInput")[0].value,
+        "Type": $("#itemTypeInput")[0].value,
+        "SbjArea": $("#itemSbjAreaInput")[0].value,
+        "Price": $("#itemPriceInput")[0].value,
+        "Description": $("#itemDescriptionInput")[0].value,
+        "Availability": item.Availability,
+        "StockCount": item.StockCount
+    }
     //  Refreshes the updated button 
-    $("#" + item.Id)[0].innerHTML = item.Name;
-    $("#" + item.Id)[0].addEventListener("click", function () {
-        displayItemDetails(item);
+    $("#" + newitem.Id)[0].innerHTML = newitem.Name;
+    $("#" + newitem.Id)[0].addEventListener("click", function () {
+        displayItemDetails(newitem);
     });
-    $("#leftButton").unbind("click");
-    displayItemDetails(item);*/
-    getAllSearchedItems();
+    displayItemDetails(newitem);
     resultPopup("Successfully updated item in the Database.", "green");
 }
 
@@ -251,8 +267,7 @@ function deleteItem(id) {
 function onDeleteItem(id) {
     clearDisplay();
     // remove corresponding button from list
-    //$("#" + id)[0].remove();
-    getAllSearchedItems();
+    $("#" + id)[0].remove();
     resultPopup("Item was successfully removed.", "green");
 }
 
@@ -286,6 +301,11 @@ function clearDisplay() {
     $("#itemTypeInput").value = "";
     $("#itemSbjAreaInput").value = "";
     $("#itemPriceInput").value = "";
+    $("#itemNameInput")[0].value = "";
+    $("#itemTypeInput")[0].value = "";
+    $("#itemSbjAreaInput")[0].value = "";
+    $("#itemPriceInput")[0].value = "";
+    $("#itemDescriptionInput")[0].value = "";
     $("#itemDescriptionInput").value = "";
     $("#itemNameInput").attr({ "disabled": "disabled" });
     $("#itemTypeInput").attr({ "disabled": "disabled" });
@@ -349,7 +369,7 @@ function addNewItem() {
             $("#itemNameInput")[0].value,
             $("#itemTypeInput")[0].value,
             $("#itemSbjAreaInput")[0].value,
-             Number($("#itemPriceInput")[0].value),
+            $("#itemPriceInput")[0].value,
             $("#itemDescriptionInput")[0].value,
             onAddNewItem
         );

@@ -22,7 +22,7 @@
     width: 25px;
 }
 .listItem {
-    width: calc(100% - 1px);
+    width: 100%;
     font-family: Verdana;
     text-align: left;
     background-color:#444444;
