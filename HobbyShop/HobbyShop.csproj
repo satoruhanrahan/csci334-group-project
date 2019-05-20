@@ -114,6 +114,7 @@
     <Compile Include="CLASS\Store.cs" />
     <Compile Include="CLASS\StoreInventory.cs" />
     <Compile Include="CLASS\Supplier.cs" />
+    <Compile Include="CLASS\SupplierContact.cs" />
     <Compile Include="CLASS\User.cs" />
     <Compile Include="CONTROLLER\DeliveryController.svc.cs">
       <DependentUpon>DeliveryController.svc</DependentUpon>
