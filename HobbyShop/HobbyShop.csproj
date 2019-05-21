@@ -101,7 +101,6 @@
     <Content Include="style\global.css" />
     <Content Include="style\list.css" />
     <Content Include="style\details.css" />
-    <Content Include="style\models.css" />
     <Content Include="style\sales.css" />
     <Content Include="Web.config" />
   </ItemGroup>

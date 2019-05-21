@@ -107,6 +107,8 @@ function displayItemDetails(item) {
         displayDeleteItem(item);
     });
 
+    activeItem(item.Id);
+
     var available;
     if (item.Availability == true) {
         available = "Yes";
@@ -169,8 +171,7 @@ function editItemDetails(item) {
     $("body").on("click", "#leftButton", function () {
         updateItem(item);
     });
-    
-    $("#rightButton")[0].addEventListener("click", function () {
+    $("body").on("click", "#rightButton", function () {
         displayItemDetails(item);
     });
 }
@@ -266,6 +267,7 @@ function deleteItem(id) {
 
 function onDeleteItem(id) {
     clearDisplay();
+    activeItem("");
     // remove corresponding button from list
     $("#" + id)[0].remove();
     resultPopup("Item was successfully removed.", "green");
@@ -313,6 +315,7 @@ function clearDisplay() {
     $("#itemPriceInput").attr({ "disabled": "disabled" });
     $("#itemDescriptionInput").attr({ "disabled": "disabled" });
     $("body").off("click", "#leftButton");
+    $("body").off("click", "#rightButton");
 }
 
 //Add new item to model table
@@ -328,6 +331,7 @@ function displayAddItem() {
     $("#itemID")[0].style.backgroundColor = "lightgrey";
     $("#itemAvailability")[0].style.backgroundColor = "lightgrey";
     $("#itemTotalStock")[0].style.backgroundColor = "lightgrey";
+    activeItem("");
 
     $("#itemNameInput").removeAttr("disabled");
     $("#itemTypeInput").removeAttr("disabled");
@@ -341,11 +345,7 @@ function displayAddItem() {
     $("#leftButton")[0].innerHTML = "";
     $("#leftButton")[0].append(img1);
     $("body").on("click", "#leftButton", addNewItem);
-
-    // set details for right button
-    $("#rightButton")[0].addEventListener("click", function () {
-        clearDisplay();
-    });
+    $("body").on("click", "#rightButton", clearDisplay);
 }
 
 function validateInput() {

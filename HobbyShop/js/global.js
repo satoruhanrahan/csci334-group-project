@@ -42,6 +42,16 @@ function switchTabs(containerId, activeTab) {
     document.getElementById(activeTab).className += " active";
 }
 
+function activeItem(item) {
+    var items = document.getElementsByClassName("listItem");
+    for (i = 0; i < items.length; i++) {
+        items[i].className = items[i].className.replace(" activeItem", "");
+    }
+    if (item != "") {
+        document.getElementById(item).className += " activeItem";
+    }
+}
+
 function resultPopup(result, color) {
     var results = $("#results")[0];
     var bg = "light" + color;
