@@ -20,26 +20,32 @@ $(document).ready(function () {
     $("#addButton")[0].addEventListener("click", function () {
         displayAddItem();
     });
-    // populateSelect();
+    //populateSelect();
 });
 
 // gets Subject area/ model types and populates selects with options
 function populateSelect() {
-    /*get sbjlist;
-      get typelist;
-      for (int i = 0; i < sbjlist.length; i++;) {
-           option = document.createElement("option");
-           option.value = sbjlist[i].Name;
-           option.append(sbjlist[i].Name);
-           $("#subjects").append(option);
-       }
-       for (int j = 0; j < typelist.length; j++;) {
-           option = document.createElement("option");
-           option.value = typelist[j].Name;
-           option.append(typelist[i].Name);
-           $("#types").append(option);
-       }
-    */
+    ModelController.ReturnSubjectAreaList(onPopulateSelect1);
+    ModelController.ReturnTypeList(onPopulateSelect2);
+}
+
+function onPopulateSelect1(result) {
+    var sbjlist = JSON.parse(result);
+    for (var i = 0; i < sbjlist.length ; i++) {
+        option = document.createElement("option");
+        option.value = sbjlist[i];
+        option.append(sbjlist[i]);
+        $("#subjects").append(option);
+    }
+}
+function onPopulateSelect2(result) {
+    var typelist = JSON.parse(result);
+    for (var j = 0; j < typelist.length; j++) {
+        option = document.createElement("option");
+        option.value = typelist[j];
+        option.append(typelist[j]);
+        $("#types").append(option);
+    }
 }
 
 // Display items in list based on search
@@ -384,24 +390,27 @@ function onAddNewItem(result) {
 }
 
 function displayItemStores(item) {
+    ModelController.ReturnStores(item.Id, onDisplayItemStores);
+}
+
+function onDisplayItemStores(result) {
     // set display
     clearDisplay();
-    $("#detailHeading")[0].innerHTML = item.Name;
+    //$("#detailHeading")[0].innerHTML = item.Name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#stores")[0].style.visibility = "visible";
-    /* stores = getStoresbyitemid();
+
+    var stores = JSON.parse(result);
+    console.log(stores); 
     var button;
     for (var i = stores.length - 1; i >= 0; i--) {
         button = document.createElement("button");
         br = document.createElement("br");
-        button.append(stores[i].Name);
+        button.append("Store: " + stores[i].StoreID +", ");
         button.append(br);
         button.append(stores[i].Address);
         button.append(br);
-        button.append(stores[i].Phone);
-        button.append(br);
-        button.append(stores[i].);
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem bigList");
         let store = stores[i];
@@ -409,17 +418,27 @@ function displayItemStores(item) {
             loadPage("Stores", store);
         });
         $("#stores")[0].append(button);
-    }*/
+    }
 }
 
+
+// OLIVER: be careful at this- different names used, need a pre-step to retrieve before display so I changed the names
 function displayItemSuppliers(item) {
+    ModelController.ReturnCorrespondingSupplier(item.Id, onDisplayItemSuppliers);
+   
+}
+function onDisplayItemSuppliers(result) {
+    var suppliers = JSON.parse(result);
     // set display
     clearDisplay();
-    $("#detailHeading")[0].innerHTML = item.Name;
+    console.log(result);
+    //$("#detailHeading")[0].innerHTML = item.Name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#suppliers")[0].style.visibility = "visible"
-     /* suppliers = getSuppliersbyitemid();
+    
+    
+    console.log(suppliers);
     var button;
     for (var i = suppliers.length - 1; i >= 0; i--) {
         button = document.createElement("button");
@@ -431,5 +450,5 @@ function displayItemSuppliers(item) {
             loadPage("Suppliers", supplier);
         });
         $("#suppliers")[0].append(button);
-    }*/
+    }
 }

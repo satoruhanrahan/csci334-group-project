@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HobbyShop.CLASS;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
@@ -80,6 +81,95 @@ namespace HobbyShop.CONTROLLER
                 _model.Id = id;
                 _model.DeleteModel();
                 return id.ToString();
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+
+        [OperationContract]
+        public string ReturnCorrespondingSupplier(int id)
+        {
+            try
+            {
+                Model _model = new Model();
+                _model.Id = id;
+                List<Supplier> supList = new List<Supplier>();
+                supList=_model.returnSuppliers();
+
+                string json = new JavaScriptSerializer().Serialize(supList);
+                return json;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+        [OperationContract]
+        public string ReturnCorrespondingStores(int id)
+        {
+            try
+            {
+                Model _model = new Model();
+                _model.Id = id;
+                List<Store> storeList = new List<Store>();
+                storeList = _model.returnStores();
+
+                string json = new JavaScriptSerializer().Serialize(storeList);
+                return json;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+        [OperationContract]
+        public string ReturnStores(int id)
+        {
+            try
+            {
+                Model _model = new Model();
+                _model.Id = id;
+                List<Store> storeList = new List<Store>();
+                storeList = _model.returnStores();
+
+                string json = new JavaScriptSerializer().Serialize(storeList);
+                return json;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+        [OperationContract]
+        public string ReturnSubjectAreaList()
+        {
+            try
+            {
+                Model _model = new Model();
+                List<String> areas = new List<String>();
+                areas = _model.returnSubjectAreas();
+
+                string json = new JavaScriptSerializer().Serialize(areas);
+                return json;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+        [OperationContract]
+        public string ReturnTypeList()
+        {
+            try
+            {
+                Model _model = new Model();
+                List<String> types = new List<String>();
+                types = _model.returnTypes();
+
+                string json = new JavaScriptSerializer().Serialize(types);
+                return json;
             }
             catch (Exception e)
             {

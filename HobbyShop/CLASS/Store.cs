@@ -11,12 +11,10 @@ namespace HobbyShop.CLASS
     public class Store
     {
         private int storeID;
-        private string storeName;
         private string address;
         private ArrayList items;
 
         public int StoreID { get { return storeID; } }
-        public string StoreName { get { return storeName; } }
         public string Address { get { return address; } }
         public ArrayList Items { get { return items; } set { items = value; } }
 
@@ -27,16 +25,14 @@ namespace HobbyShop.CLASS
             this.storeID = storeID;
         }
 
-        public Store(string storeName, string address)
+        public Store(string address)
         {
-            this.storeName = storeName;
             this.address = address;
         }
 
-        public Store(int storeID, string storeName, string address)
+        public Store(int storeID, string address)
         {
             this.storeID = storeID;
-            this.storeName = storeName;
             this.address = address;
         }
 
@@ -59,10 +55,10 @@ namespace HobbyShop.CLASS
                     while (reader.Read())
                     {
                         int storeID = Convert.ToInt32(reader["StoreID"]);
-                        string name = Convert.ToString(reader["StoreName"]);
+                     
                         string address = Convert.ToString(reader["StoreAddress"]);
 
-                        Store store = new Store(storeID, name, address);
+                        Store store = new Store(storeID, address);
                         storeList.Add(store);
                     }
                     con.Close();
@@ -107,9 +103,9 @@ namespace HobbyShop.CLASS
                 try
                 {
                     con.Open();
-                    string query = "INSERT INTO Stores (StoreName, StoreAddress) VALUES (@name, @address)";
+                    string query = "INSERT INTO Stores (StoreAddress) VALUES (@address)";
                     OleDbCommand cmd = new OleDbCommand(query, con);
-                    cmd.Parameters.AddWithValue("@name", storeName);
+                    //cmd.Parameters.AddWithValue("@name", storeName);
                     cmd.Parameters.AddWithValue("@address", address);
                     cmd.ExecuteNonQuery();
                 }
