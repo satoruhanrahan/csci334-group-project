@@ -98,7 +98,8 @@ namespace HobbyShop.CLASS
                         {
                             string name = Convert.ToString(itemReader["Name"]);
                             int quantity = Convert.ToInt32(itemReader["ItemAmount"]);
-                            double price = Convert.ToDouble(itemReader["ItemPrice"]);
+                            //double price = Convert.ToDouble(itemReader["ItemPrice"]);
+                            double price = Convert.ToDouble(itemReader["CurrentRetailPrice"]);
                             SaleItem item = new SaleItem(name, quantity, price);
                             itemList.Add(item);
                         }
@@ -112,9 +113,6 @@ namespace HobbyShop.CLASS
                 }
             }
         }
-
-
-
 
         public void AddSaleRecord()
         {
@@ -158,16 +156,15 @@ namespace HobbyShop.CLASS
                         {
                             itemNumber = Convert.ToInt32(reader["ItemNumber"]);
                         }
-                        string itemQuery = "INSERT INTO SaleItems VALUES (@saleID, @itemNumber, @itemAmount, @itemPrice)";
+                        string itemQuery = "INSERT INTO SaleItems VALUES (@saleID, @itemNumber, @itemAmount)";
                         OleDbCommand itemCmd = new OleDbCommand(itemQuery, con);
                         itemCmd.Parameters.AddWithValue("@saleID", saleID);
                         itemCmd.Parameters.AddWithValue("@itemNumber", itemNumber);
                         itemCmd.Parameters.AddWithValue("@itemAmount", item.Quantity);
-                        itemCmd.Parameters.AddWithValue("@itemPrice", item.Price);
+                        //itemCmd.Parameters.AddWithValue("@itemPrice", item.Price);
                         itemCmd.ExecuteNonQuery();
                     }
                 }
-                
                 catch (Exception ex)
                 {
                     string itemQuery = "DELETE FROM SaleItems WHERE SaleID=@saleID";
@@ -234,12 +231,13 @@ namespace HobbyShop.CLASS
                         {
                             itemNumber = Convert.ToInt32(reader["ItemNumber"]);
                         }
-                        string itemQuery = "INSERT INTO SaleItems VALUES (@saleID, @itemNumber, @itemAmount, @itemPrice)";
+                        //string itemQuery = "INSERT INTO SaleItems VALUES (@saleID, @itemNumber, @itemAmount, @itemPrice)";
+                        string itemQuery = "INSERT INTO SaleItems VALUES (@saleID, @itemNumber, @itemAmount)";
                         OleDbCommand itemCmd = new OleDbCommand(itemQuery, con);
                         itemCmd.Parameters.AddWithValue("@saleID", saleID);
                         itemCmd.Parameters.AddWithValue("@itemNumber", itemNumber);
                         itemCmd.Parameters.AddWithValue("@itemAmount", item.Quantity);
-                        itemCmd.Parameters.AddWithValue("@itemPrice", item.Price);
+                        //itemCmd.Parameters.AddWithValue("@itemPrice", item.Price);
                         itemCmd.ExecuteNonQuery();
                     }
                     //UpdateModel(item, number);
