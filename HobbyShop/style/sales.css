@@ -30,3 +30,7 @@
 #itemTable {
     border-collapse: collapse;
 }
+
+#details input {
+    border: 0;
+}

@@ -13,6 +13,7 @@ namespace HobbyShop.CLASS
         private int saleID;
         private DateTime date;
         private int customerID;
+        private int storeID;
         private double totalValue;
         private double discount;
         private double finalTotal;
@@ -21,6 +22,7 @@ namespace HobbyShop.CLASS
         public int SaleID { get { return saleID; } }
         public DateTime Date { get { return date; } set { date = value; } }
         public int CustomerID { get { return customerID; } set { customerID = value; } }
+        public int StoreID { get { return storeID; } set { storeID = value; } }
         public double TotalValue { get { return totalValue; } set { totalValue = value; } }
         public double Discount { get { return discount; } set { discount = value; } }
         public double FinalTotal { get { return finalTotal; } set { finalTotal = value; } }
@@ -30,20 +32,22 @@ namespace HobbyShop.CLASS
 
         public Sale(int saleID) { this.saleID = saleID; }
 
-        public Sale(DateTime date, int customerID, double totalValue, double discount, double finalTotal)
+        public Sale(DateTime date, int customerID, int storeID, double totalValue, double discount, double finalTotal)
         {
             this.date = date;
             this.customerID = customerID;
+            this.storeID = storeID;
             this.totalValue = totalValue;
             this.discount = discount;
             this.finalTotal = finalTotal;
         }
 
-        public Sale(int saleID, DateTime date, int customerID, double totalValue, double discount, double finalTotal)
+        public Sale(int saleID, DateTime date, int customerID, int storeID, double totalValue, double discount, double finalTotal)
         {
             this.saleID = saleID;
             this.date = date;
             this.customerID = customerID;
+            this.storeID = storeID;
             this.totalValue = totalValue;
             this.discount = discount;
             this.finalTotal = finalTotal;
@@ -69,14 +73,15 @@ namespace HobbyShop.CLASS
                     OleDbDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        int id = Convert.ToInt32(reader["SaleID"]);
+                        int saleID = Convert.ToInt32(reader["SaleID"]);
+                        int storeID = Convert.ToInt32(reader["StoreID"]);
                         DateTime date = Convert.ToDateTime(reader["DateOfSale"]);
                         int customerID = Convert.ToInt32(reader["CustomerNumber"]);
                         double totalValue = Convert.ToDouble(reader["TotalValue"]);
                         double discount = Convert.ToDouble(reader["Discount"]);
                         double finalTotal = Convert.ToDouble(reader["FinalTotal"]);
                         
-                        Sale sale = new Sale(id, date, customerID, totalValue, discount, finalTotal);
+                        Sale sale = new Sale(saleID, date, customerID, storeID, totalValue, discount, finalTotal);
                         saleList.Add(sale);
                     }
                     con.Close();
@@ -121,13 +126,14 @@ namespace HobbyShop.CLASS
                 try
                 {
                     con.Open();
-                    string query = "INSERT INTO Sales (DateOfSale, CustomerNumber, TotalValue, Discount, FinalTotal) VALUES (@date, @customerID, @totalValue, @discount, @finalTotal)";
+                    string query = "INSERT INTO Sales (DateOfSale, CustomerNumber, TotalValue, Discount, FinalTotal, StoreID) VALUES (@date, @customerID, @totalValue, @discount, @finalTotal, @store)";
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.Parameters.AddWithValue("@date", date);
                     cmd.Parameters.AddWithValue("@customerID", customerID);
                     cmd.Parameters.AddWithValue("@totalValue", totalValue);
                     cmd.Parameters.AddWithValue("@discount", discount);
                     cmd.Parameters.AddWithValue("@finalTotal", finalTotal);
+                    cmd.Parameters.AddWithValue("@store", storeID);
                     cmd.ExecuteNonQuery();
 
                     con.Close();
@@ -244,13 +250,14 @@ namespace HobbyShop.CLASS
                     //UpdateItem(item, number);
                     con.Close();
                     con.Open();
-                    string saleQuery = "UPDATE Sales SET DateOfSale=@date, CustomerNumber=@customerID, TotalValue=@totalValue, Discount=@discount, FinalTotal=@finalTotal WHERE SaleID=@id";
+                    string saleQuery = "UPDATE Sales SET DateOfSale=@date, CustomerNumber=@customerID, TotalValue=@totalValue, Discount=@discount, FinalTotal=@finalTotal, StoreID=@store WHERE SaleID=@id";
                     OleDbCommand saleCmd = new OleDbCommand(saleQuery, con);
                     saleCmd.Parameters.AddWithValue("@date", date);
                     saleCmd.Parameters.AddWithValue("@customerID", customerID);
                     saleCmd.Parameters.AddWithValue("@totalValue", totalValue);
                     saleCmd.Parameters.AddWithValue("@discount", discount);
                     saleCmd.Parameters.AddWithValue("@finalTotal", finalTotal);
+                    saleCmd.Parameters.AddWithValue("@store", storeID);
                     saleCmd.Parameters.AddWithValue("@id", saleID);
                     saleCmd.ExecuteNonQuery();
                     con.Close();
