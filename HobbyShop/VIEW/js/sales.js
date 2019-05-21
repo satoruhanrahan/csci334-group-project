@@ -1,4 +1,6 @@
-﻿function getSaleRecords() {
+﻿var itemList = [];
+
+function getSaleRecords() {
     var keywords = document.getElementById("searchbar").value;
     SaleController.GetSaleRecords(keywords, onGetSaleRecords);
 }
@@ -7,6 +9,35 @@
 function onGetSaleRecords(result) {
     var sales = JSON.parse(result);
     displaySaleRecords(sales);
+}
+
+//get all model items
+function getAllSearchedItems() {
+    var searchInput = document.getElementById("searchbar").value;
+    ModelController.SearchDatabase(searchInput, onSearchItems);
+}
+function onSearchItems(result) {
+    items = JSON.parse(result);
+    for (var i = 0; i < items.length; i++) {
+        itemList.push(items[i]);
+    }
+
+    /*get sbjlist;
+      get typelist;
+      for (int i = 0; i < sbjlist.length; i++;) {
+           option = document.createElement("option");
+           option.value = sbjlist[i].Name;
+           option.append(sbjlist[i].Name);
+           $("#subjects").append(option);
+       }
+       for (int j = 0; j < typelist.length; j++;) {
+           option = document.createElement("option");
+           option.value = typelist[j].Name;
+           option.append(typelist[i].Name);
+           $("#types").append(option);
+       }
+    */
+    //displayItemNames(items);
 }
 
 //display a list of sales
@@ -110,7 +141,9 @@ function displayAddSaleRecord() {
     $("#itemTable").find("tr:gt(0)").remove(); //delete table except the second row
     insertNewRow(1);
     $("#sale")[0].style.backgroundColor = "lightgray";
-    
+    //$(".priceInput")[0].style.backgroundColor = "lightgray";
+    $(".priceInput").prop("disabled", true);
+
     $("#addRecordButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
 
@@ -159,7 +192,7 @@ function addSaleRecord() {
         errorMessage.innerText = "";
         check = true;
     }
-
+    
     if (check) {
         var listOfItems = [];
         for (var i = 0; i < nameInput.length; i++) {
@@ -173,7 +206,7 @@ function addSaleRecord() {
         }
         var itemListString = JSON.stringify(listOfItems);
         SaleController.AddSaleRecord(date, customer, Number(total), Number(discount), Number(final), itemListString, onAddSaleRecord);
-    }
+    }/**/
 }
 
 function onAddSaleRecord(result) {
@@ -307,8 +340,12 @@ function insertNewRow(index) {
     nameInput.setAttribute("type", "text");
     nameInput.setAttribute("class", "itemInput nameInput");
     nameInput.setAttribute("id", "nameInput" + index);
+    nameInput.setAttribute("list", "itemName" + index);
+    var datalist = document.createElement("datalist");
+    datalist.setAttribute("id", "itemName" + index);
     name.appendChild(nameInput);
-
+    name.appendChild(datalist);
+    
     var quantity = document.createElement("td");
     var quantityInput = document.createElement("input");
     quantityInput.setAttribute("type", "text");
@@ -322,6 +359,22 @@ function insertNewRow(index) {
     priceInput.setAttribute("class", "itemInput priceInput");
     priceInput.setAttribute("id", "priceInput" + index);
     price.appendChild(priceInput);
+
+    console.log("Item list: " + itemList);
+    for (var i = 0; i < itemList.length; i++) {
+        var option = document.createElement("option");
+        option.setAttribute("value", itemList[i].Name);
+        option.setAttribute("id", i);
+        datalist.appendChild(option);
+        
+    }
+    //$("#nameInput" + index).on("input", function () {
+    nameInput.addEventListener("input", function () {
+        var opt = $("option[value='" + $(this).val() + "']");
+        var index = opt.attr("id");
+        //console.log("Index: " + itemList[index].Price);
+        priceInput.value = itemList[index].Price;
+    });
 
     var total = document.createElement("td");
     var totalInput = document.createElement("input");
@@ -392,11 +445,14 @@ function deleteRow() {
 
 // removes any details that are displayed in the details section
 function clearDisplay() {
+    $("#detailContainer")[0].style.visibility = "hidden";
     $("#detailHeading")[0].style.visibility = "hidden";
     $("#details")[0].style.visibility = "hidden";
     $("#detailOptions")[0].style.visibility = "hidden";
+    $("#detailTable")[0].style.visibility = "hidden";
     $("#leftButton")[0].style.visibility = "hidden";
     $("#rightButton")[0].style.visibility = "hidden";
+    $("#addRecordButton")[0].style.visibility = "hidden";
 }
 
 function displayConfirmDelete() {
@@ -452,6 +508,7 @@ function closeDelete() {
 
 $(document).ready(function () {
     getSaleRecords();
+    getAllSearchedItems();
     // prevent form submission on enter
     $('form').keypress(function (event) {
         return event.keyCode != 13;

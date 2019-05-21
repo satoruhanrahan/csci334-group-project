@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="style/sales.css"/>
         <link rel="stylesheet" href="style/list.css" />
         <script type="text/javascript" src="js/sales.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </head>
 <body>
     <div id="listContainer">
@@ -66,9 +67,9 @@
                                     <td>Total Price</td>
                                 </tr>
                                 <tr>
-                                    <td><input class="itemInput nameInput" /></td>
+                                    <td><input class="itemInput nameInput" list="itemName"/><datalist id="itemName"></datalist></td>
                                     <td><input class="itemInput quantityInput" /></td>
-                                    <td><input class="itemInput priceInput" /></td>
+                                    <td><input class="itemInput priceInput" disabled/></td>
                                     <td><input class="itemInput totalInput" /></td>
                                 </tr>
                             </table>
@@ -107,6 +108,7 @@
             <asp:scriptmanager runat="server">
                 <Services>
                     <asp:ServiceReference Path="~/CONTROLLER/SaleController.svc" />
+                    <asp:ServiceReference Path="~/CONTROLLER/ModelController.svc" />
                 </Services>
             </asp:scriptmanager>
         </form>
