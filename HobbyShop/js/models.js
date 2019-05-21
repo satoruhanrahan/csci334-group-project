@@ -20,7 +20,7 @@ $(document).ready(function () {
     $("#addButton")[0].addEventListener("click", function () {
         displayAddItem();
     });
-    //populateSelect();
+    populateSelect();
 });
 
 // gets Subject area/ model types and populates selects with options
@@ -94,15 +94,18 @@ function displayItemDetails(item) {
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
-    $("#detailsTab")[0].addEventListener("click", function () {
+    $("body").off("click", "#detailsTab");
+    $("body").off("click", "#storesTab");
+    $("body").off("click", "#suppliersTab");
+    $("body").on("click", "#detailsTab", function () {
         switchTabs("detailTabBar", "detailsTab");
         displayItemDetails(item);
     });
-    $("#storesTab")[0].addEventListener("click", function () {
+    $("body").on("click", "#storesTab", function () {
         switchTabs("detailTabBar", "storesTab");
         displayItemStores(item);
     });
-    $("#suppliersTab")[0].addEventListener("click", function () {
+    $("body").on("click", "#suppliersTab", function () {
         switchTabs("detailTabBar", "suppliersTab");
         displayItemSuppliers(item);
     });
@@ -238,6 +241,7 @@ function displayDeleteItem(item) {
     var img1 = document.createElement("img");
     img1.src = "style/delete.png";
     button1.append(img1);
+    button1.append(br);
     button1.append("Delete");
 
     var button2 = document.createElement("button");
@@ -251,6 +255,7 @@ function displayDeleteItem(item) {
     var img2 = document.createElement("img");
     img2.src = "style/close.png";
     button2.append(img2);
+    button2.append(br.cloneNode());
     button2.append("Cancel");
 
     $("#results")[0].append("Are you sure you want to delete this model ");
@@ -259,8 +264,8 @@ function displayDeleteItem(item) {
     span.append("permanently");
     $("#results")[0].append(span);
     $("#results")[0].append(" from the database?");
-    $("#results")[0].append(br);
-    $("#results")[0].append(br);
+    $("#results")[0].append(br.cloneNode());
+    $("#results")[0].append(br.cloneNode());
     $("#results")[0].append(button1);
     $("#results")[0].append(button2);
 }
@@ -395,8 +400,9 @@ function displayItemStores(item) {
 
 function onDisplayItemStores(result) {
     // set display
+    var name = $("#detailHeading")[0].innerHTML;
     clearDisplay();
-    //$("#detailHeading")[0].innerHTML = item.Name;
+    $("#detailHeading")[0].innerHTML = name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#stores")[0].style.visibility = "visible";
@@ -408,9 +414,8 @@ function onDisplayItemStores(result) {
         button = document.createElement("button");
         br = document.createElement("br");
         button.append("Store: " + stores[i].StoreID +", ");
-        button.append(br);
+        button.appendChild(br);
         button.append(stores[i].Address);
-        button.append(br);
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem bigList");
         let store = stores[i];
@@ -430,9 +435,10 @@ function displayItemSuppliers(item) {
 function onDisplayItemSuppliers(result) {
     var suppliers = JSON.parse(result);
     // set display
+    var name = $("#detailHeading")[0].innerHTML;
     clearDisplay();
     console.log(result);
-    //$("#detailHeading")[0].innerHTML = item.Name;
+    $("#detailHeading")[0].innerHTML = name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#suppliers")[0].style.visibility = "visible"

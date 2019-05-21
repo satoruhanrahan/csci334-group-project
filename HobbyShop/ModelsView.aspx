@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ModelsView.aspx.cs" Inherits="HobbyShop.ModelsView" %>
 ﻿<!DOCTYPE>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
     <head runat="server">
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
 	    <meta content="utf-8" http-equiv="encoding"/>
@@ -28,21 +28,21 @@
             </div>
         </div>
 		<div id="detailContainer">
-            <div class="scrollable" style="width:100%;">
-                <h3 id="detailHeading"></h3>
-                <div id="detailOptions" class="dropdown">
-                    <button type="button" class="smallbtn"> <img src="style/options.png" /></button>
-                    <div class="dropdown-content">
-                        <button type="button" class="dropdown-button" id="editItem">Edit Details</button>
-                        <button type="button" class="dropdown-button" id="deleteItem">Delete Item</button>
-                    </div> 
-                </div>
-                <div id="detailTabBar">
-                    <button type="button" class="tab detailtab active" id="detailsTab">Details</button>
-                    <button type="button" class="tab detailtab" id="storesTab">Stores</button>
-                    <button type="button" class="tab detailtab" id="suppliersTab">Suppliers</button>
-                </div>
-                <div id="details" class="detailTabContent">
+            <h3 id="detailHeading"></h3>
+            <div id="detailOptions" class="dropdown">
+                <button type="button" class="smallbtn"> <img src="style/options.png" /></button>
+                <div class="dropdown-content">
+                    <button type="button" class="dropdown-button" id="editItem">Edit Details</button>
+                    <button type="button" class="dropdown-button" id="deleteItem">Delete Item</button>
+                </div> 
+            </div>
+            <div id="detailTabBar">
+                <button type="button" class="tab detailtab active" id="detailsTab">Details</button>
+                <button type="button" class="tab detailtab" id="storesTab">Stores</button>
+                <button type="button" class="tab detailtab" id="suppliersTab">Suppliers</button>
+            </div>
+            <div id="details" class="detailTabContent">
+                <div class="scrollable">
                     <table id="detailTable">
                         <tr> 
                             <td id="firstcell"> Name </td> 
@@ -90,9 +90,13 @@
                         <img src="style/close.png" />
                     </button>
                 </div>
-                <div id="stores" class="detailTabContent">
+            </div>
+            <div class ="detailTabContent">
+                <div id="stores" class="scrollable">
                 </div>
-                <div id="suppliers" class="detailTabContent">
+            </div>
+            <div class ="detailTabContent">
+                <div id="suppliers" class="scrollable">
                 </div>
             </div>
 		</div>

@@ -37,6 +37,12 @@
 .activeItem {
     background-color: #000000;
 }
+#bigList {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    line-height: 100%;
+}
 .bigList {
     width: 100%;
     height:100px;
