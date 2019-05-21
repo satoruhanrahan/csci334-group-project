@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="MasterContent.aspx.cs" Inherits="HobbyShop.WebForm1" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/VIEW/MasterPage.Master" AutoEventWireup="true" CodeBehind="MasterContent.aspx.cs" Inherits="HobbyShop.WebForm1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/global.js"></script>

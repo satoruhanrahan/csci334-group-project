@@ -364,8 +364,9 @@ function validateInput() {
     var type = $("#itemTypeInput")[0].value;
     var sbj = $("#itemSbjAreaInput")[0].value;
     var price = $("#itemPriceInput")[0].value;
-    if (name === '' || type === '' || sbj === '' || price === '') {
-        alert("Please input: Name, Type, Subject Area, or Price!");
+    var desc = $("#itemDescriptionInput")[0].value;
+    if (name === '' || type === '' || sbj === '' || price === '' || desc === '') {
+        alert("Please input: Name, Type, Subject Area, Price or Description!");
         return false;
     }
     else {
@@ -388,7 +389,6 @@ function addNewItem() {
 }
 
 function onAddNewItem(result) {
-    var item = JSON.parse(result);
     clearDisplay();
     getAllSearchedItems();
     resultPopup("Successfully added to the database.", "green");
@@ -408,12 +408,11 @@ function onDisplayItemStores(result) {
     $("#stores")[0].style.visibility = "visible";
 
     var stores = JSON.parse(result);
-    console.log(stores); 
     var button;
     for (var i = stores.length - 1; i >= 0; i--) {
         button = document.createElement("button");
         br = document.createElement("br");
-        button.append("Store: " + stores[i].StoreID +", ");
+        button.append("Store " + stores[i].StoreID);
         button.appendChild(br);
         button.append(stores[i].Address);
         button.setAttribute("type", "button");
@@ -437,14 +436,11 @@ function onDisplayItemSuppliers(result) {
     // set display
     var name = $("#detailHeading")[0].innerHTML;
     clearDisplay();
-    console.log(result);
     $("#detailHeading")[0].innerHTML = name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#suppliers")[0].style.visibility = "visible"
     
-    
-    console.log(suppliers);
     var button;
     for (var i = suppliers.length - 1; i >= 0; i--) {
         button = document.createElement("button");
