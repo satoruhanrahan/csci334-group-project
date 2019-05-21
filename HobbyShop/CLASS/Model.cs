@@ -9,6 +9,7 @@ using System.Data;
 using System.Collections;
 using System.Web.Script.Serialization;
 using System.Configuration;
+using HobbyShop.CLASS;
 
 namespace HobbyShop
 {
@@ -197,6 +198,127 @@ namespace HobbyShop
                 }
             }
         }
+        public List<Supplier> returnSuppliers()
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    string query = "SELECT Suppliers.SupplierID, SupplierName,SupplierAddress,CreditLine FROM Suppliers INNER JOIN SupplierItems ON Suppliers.SupplierID = SupplierItems.SupplierID WHERE ItemNumber="+itemNum;
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.ExecuteNonQuery();
 
+                    List<Supplier> sups = new List<Supplier>();
+
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int supID = Convert.ToInt32(reader["SupplierID"]);
+                        string supName = Convert.ToString(reader["SupplierName"]);
+                        string supAddress = Convert.ToString(reader["SupplierAddress"]);
+                        double creditLine = Convert.ToDouble(reader["CreditLine"]);
+
+                        Supplier _supplier = new Supplier(supName, supAddress, creditLine)
+                        {
+                            Id = supID
+                        };
+
+                        sups.Add(_supplier);
+                        Console.WriteLine(_supplier.Name);
+                    
+                    }
+                    return sups;
+                }
+                catch (Exception e)
+                {
+                    throw new System.ApplicationException(e.Message);
+                }
+            }
+        }
+        
+        public List<Store> returnStores()
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    string query = "SELECT Stores.StoreID, StoreAddress FROM Stores INNER JOIN StoreInventory ON Stores.StoreID = StoreInventory.StoreID WHERE ItemNumber=" + itemNum;
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.ExecuteNonQuery();
+
+                    List<Store> stores = new List<Store>();
+
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int storeID = Convert.ToInt32(reader["StoreID"]);
+                        string storeAdd = Convert.ToString(reader["StoreAddress"]);
+
+                        Store _store = new Store(storeID, storeAdd);
+
+                        stores.Add(_store);
+                    }
+                    return stores;
+                }
+                catch (Exception e)
+                {
+                    throw new System.ApplicationException(e.Message);
+                }
+            }
+        }
+        public List<String> returnSubjectAreas()
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    string query = "SELECT SubjectArea FROM SubjectAreas";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.ExecuteNonQuery();
+
+                    List<string> areaList = new List<String>();
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        string area = Convert.ToString(reader["SubjectArea"]);
+                        areaList.Add(area);
+                    }
+                    return areaList;
+                }
+                catch (Exception e)
+                {
+                    throw new System.ApplicationException(e.Message);
+                }
+            }
+        }
+        public List<String> returnTypes()
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    string query = "SELECT Type FROM ModelTypes";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.ExecuteNonQuery();
+
+                    List<string> typeList = new List<String>();
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        string type = Convert.ToString(reader["Type"]);
+                        typeList.Add(type);
+                    }
+                    return typeList;
+                }
+                catch (Exception e)
+                {
+                    throw new System.ApplicationException(e.Message);
+                }
+            }
+        }
     }
 }

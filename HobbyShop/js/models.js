@@ -20,26 +20,32 @@ $(document).ready(function () {
     $("#addButton")[0].addEventListener("click", function () {
         displayAddItem();
     });
-    // populateSelect();
+    populateSelect();
 });
 
 // gets Subject area/ model types and populates selects with options
 function populateSelect() {
-    /*get sbjlist;
-      get typelist;
-      for (int i = 0; i < sbjlist.length; i++;) {
-           option = document.createElement("option");
-           option.value = sbjlist[i].Name;
-           option.append(sbjlist[i].Name);
-           $("#subjects").append(option);
-       }
-       for (int j = 0; j < typelist.length; j++;) {
-           option = document.createElement("option");
-           option.value = typelist[j].Name;
-           option.append(typelist[i].Name);
-           $("#types").append(option);
-       }
-    */
+    ModelController.ReturnSubjectAreaList(onPopulateSelect1);
+    ModelController.ReturnTypeList(onPopulateSelect2);
+}
+
+function onPopulateSelect1(result) {
+    var sbjlist = JSON.parse(result);
+    for (var i = 0; i < sbjlist.length ; i++) {
+        option = document.createElement("option");
+        option.value = sbjlist[i];
+        option.append(sbjlist[i]);
+        $("#subjects").append(option);
+    }
+}
+function onPopulateSelect2(result) {
+    var typelist = JSON.parse(result);
+    for (var j = 0; j < typelist.length; j++) {
+        option = document.createElement("option");
+        option.value = typelist[j];
+        option.append(typelist[j]);
+        $("#types").append(option);
+    }
 }
 
 // Display items in list based on search
@@ -88,15 +94,18 @@ function displayItemDetails(item) {
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
-    $("#detailsTab")[0].addEventListener("click", function () {
+    $("body").off("click", "#detailsTab");
+    $("body").off("click", "#storesTab");
+    $("body").off("click", "#suppliersTab");
+    $("body").on("click", "#detailsTab", function () {
         switchTabs("detailTabBar", "detailsTab");
         displayItemDetails(item);
     });
-    $("#storesTab")[0].addEventListener("click", function () {
+    $("body").on("click", "#storesTab", function () {
         switchTabs("detailTabBar", "storesTab");
         displayItemStores(item);
     });
-    $("#suppliersTab")[0].addEventListener("click", function () {
+    $("body").on("click", "#suppliersTab", function () {
         switchTabs("detailTabBar", "suppliersTab");
         displayItemSuppliers(item);
     });
@@ -106,6 +115,8 @@ function displayItemDetails(item) {
     $("#deleteItem")[0].addEventListener("click", function () {
         displayDeleteItem(item);
     });
+
+    activeItem(item.Id);
 
     var available;
     if (item.Availability == true) {
@@ -169,8 +180,7 @@ function editItemDetails(item) {
     $("body").on("click", "#leftButton", function () {
         updateItem(item);
     });
-    
-    $("#rightButton")[0].addEventListener("click", function () {
+    $("body").on("click", "#rightButton", function () {
         displayItemDetails(item);
     });
 }
@@ -231,6 +241,7 @@ function displayDeleteItem(item) {
     var img1 = document.createElement("img");
     img1.src = "style/delete.png";
     button1.append(img1);
+    button1.append(br);
     button1.append("Delete");
 
     var button2 = document.createElement("button");
@@ -244,6 +255,7 @@ function displayDeleteItem(item) {
     var img2 = document.createElement("img");
     img2.src = "style/close.png";
     button2.append(img2);
+    button2.append(br.cloneNode());
     button2.append("Cancel");
 
     $("#results")[0].append("Are you sure you want to delete this model ");
@@ -252,8 +264,8 @@ function displayDeleteItem(item) {
     span.append("permanently");
     $("#results")[0].append(span);
     $("#results")[0].append(" from the database?");
-    $("#results")[0].append(br);
-    $("#results")[0].append(br);
+    $("#results")[0].append(br.cloneNode());
+    $("#results")[0].append(br.cloneNode());
     $("#results")[0].append(button1);
     $("#results")[0].append(button2);
 }
@@ -266,6 +278,7 @@ function deleteItem(id) {
 
 function onDeleteItem(id) {
     clearDisplay();
+    activeItem("");
     // remove corresponding button from list
     $("#" + id)[0].remove();
     resultPopup("Item was successfully removed.", "green");
@@ -313,6 +326,7 @@ function clearDisplay() {
     $("#itemPriceInput").attr({ "disabled": "disabled" });
     $("#itemDescriptionInput").attr({ "disabled": "disabled" });
     $("body").off("click", "#leftButton");
+    $("body").off("click", "#rightButton");
 }
 
 //Add new item to model table
@@ -328,6 +342,7 @@ function displayAddItem() {
     $("#itemID")[0].style.backgroundColor = "lightgrey";
     $("#itemAvailability")[0].style.backgroundColor = "lightgrey";
     $("#itemTotalStock")[0].style.backgroundColor = "lightgrey";
+    activeItem("");
 
     $("#itemNameInput").removeAttr("disabled");
     $("#itemTypeInput").removeAttr("disabled");
@@ -341,11 +356,7 @@ function displayAddItem() {
     $("#leftButton")[0].innerHTML = "";
     $("#leftButton")[0].append(img1);
     $("body").on("click", "#leftButton", addNewItem);
-
-    // set details for right button
-    $("#rightButton")[0].addEventListener("click", function () {
-        clearDisplay();
-    });
+    $("body").on("click", "#rightButton", clearDisplay);
 }
 
 function validateInput() {
@@ -384,24 +395,27 @@ function onAddNewItem(result) {
 }
 
 function displayItemStores(item) {
+    ModelController.ReturnStores(item.Id, onDisplayItemStores);
+}
+
+function onDisplayItemStores(result) {
     // set display
+    var name = $("#detailHeading")[0].innerHTML;
     clearDisplay();
-    $("#detailHeading")[0].innerHTML = item.Name;
+    $("#detailHeading")[0].innerHTML = name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#stores")[0].style.visibility = "visible";
-    /* stores = getStoresbyitemid();
+
+    var stores = JSON.parse(result);
+    console.log(stores); 
     var button;
     for (var i = stores.length - 1; i >= 0; i--) {
         button = document.createElement("button");
         br = document.createElement("br");
-        button.append(stores[i].Name);
-        button.append(br);
+        button.append("Store: " + stores[i].StoreID +", ");
+        button.appendChild(br);
         button.append(stores[i].Address);
-        button.append(br);
-        button.append(stores[i].Phone);
-        button.append(br);
-        button.append(stores[i].);
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem bigList");
         let store = stores[i];
@@ -409,17 +423,28 @@ function displayItemStores(item) {
             loadPage("Stores", store);
         });
         $("#stores")[0].append(button);
-    }*/
+    }
 }
 
+
+// OLIVER: be careful at this- different names used, need a pre-step to retrieve before display so I changed the names
 function displayItemSuppliers(item) {
+    ModelController.ReturnCorrespondingSupplier(item.Id, onDisplayItemSuppliers);
+   
+}
+function onDisplayItemSuppliers(result) {
+    var suppliers = JSON.parse(result);
     // set display
+    var name = $("#detailHeading")[0].innerHTML;
     clearDisplay();
-    $("#detailHeading")[0].innerHTML = item.Name;
+    console.log(result);
+    $("#detailHeading")[0].innerHTML = name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#suppliers")[0].style.visibility = "visible"
-     /* suppliers = getSuppliersbyitemid();
+    
+    
+    console.log(suppliers);
     var button;
     for (var i = suppliers.length - 1; i >= 0; i--) {
         button = document.createElement("button");
@@ -431,5 +456,5 @@ function displayItemSuppliers(item) {
             loadPage("Suppliers", supplier);
         });
         $("#suppliers")[0].append(button);
-    }*/
+    }
 }
