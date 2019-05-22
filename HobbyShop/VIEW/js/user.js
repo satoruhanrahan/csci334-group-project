@@ -1,5 +1,6 @@
 ﻿var user;
 function loginToAccount() {
+    console.log(document.getElementById("eBox").value, document.getElementById("pBox").value);
     var username = document.getElementById("eBox").value;
     var password = document.getElementById("pBox").value;
     UserController.ReturnUser(username, password, onReturnUser);

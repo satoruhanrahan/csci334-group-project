@@ -13,7 +13,7 @@ namespace HobbyShop {
     public partial class LogInPage {
         
         /// <summary>
-        /// form2 control.
+        /// form1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
