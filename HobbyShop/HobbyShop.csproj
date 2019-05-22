@@ -77,6 +77,7 @@
     <Content Include="CONTROLLER\UserController.svc" />
     <Content Include="VIEW\DeliveriesView.aspx" />
     <Content Include="VIEW\js\deliveries.js" />
+    <Content Include="VIEW\js\suppliers.js" />
     <Content Include="VIEW\js\sales.js" />
     <Content Include="VIEW\js\user.js" />
     <Content Include="VIEW\LogInPage.aspx" />
@@ -93,6 +94,7 @@
   <ItemGroup>
     <Content Include="CONTROLLER\ModelController.svc" />
     <Content Include="VIEW\js\global.js" />
+    <Content Include="VIEW\SuppliersView.aspx" />
     <Content Include="VIEW\ModelsView.aspx" />
     <Content Include="VIEW\js\models.js" />
     <Content Include="VIEW\js\jquery.js" />
@@ -146,6 +148,13 @@
     </Compile>
     <Compile Include="VIEW\LogInPage.aspx.designer.cs">
       <DependentUpon>LogInPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VIEW\SuppliersView.aspx.cs">
+      <DependentUpon>SuppliersView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VIEW\SuppliersView.aspx.designer.cs">
+      <DependentUpon>SuppliersView.aspx</DependentUpon>
     </Compile>
     <Compile Include="VIEW\ModelsView.aspx.cs">
       <DependentUpon>ModelsView.aspx</DependentUpon>

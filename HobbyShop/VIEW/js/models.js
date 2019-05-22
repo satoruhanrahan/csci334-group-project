@@ -444,7 +444,10 @@ function onDisplayItemSuppliers(result) {
     var button;
     for (var i = suppliers.length - 1; i >= 0; i--) {
         button = document.createElement("button");
+        br = document.createElement("br");
         button.append(suppliers[i].Name);
+        button.append(br);
+        button.append(suppliers[i].Address);
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem bigList");
         let supplier = suppliers[i];
