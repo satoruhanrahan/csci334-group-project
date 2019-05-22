@@ -77,11 +77,11 @@ function displaySupplierDetails(supplier) {
     });
     $("body").on("click", "#itemsTab", function () {
         switchTabs("detailTabBar", "itemsTab");
-        //displaySupplierItems(supplier);
+        displaySupplierItems(supplier);
     });
     $("body").on("click", "#contactsTab", function () {
         switchTabs("detailTabBar", "contactsTab");
-        //displaySupplierContacts(supplier);
+        displaySupplierContacts(supplier);
     });
     $("#editSupplier")[0].addEventListener("click", function () {
         editSupplierDetails(supplier);
@@ -311,6 +311,7 @@ function onAddNewSupplier(result) {
 }
 
 function displaySupplierItems(supplier) {
+    console.log(supplier.Id);
     SupplierController.ReturnItems(supplier.Id, onDisplaySupplierItems);
 }
 
@@ -324,11 +325,12 @@ function onDisplaySupplierItems(result) {
     $("#items")[0].style.visibility = "visible";
 
     var items = JSON.parse(result);
+
     var button;
     for (var i = items.length - 1; i >= 0; i--) {
         button = document.createElement("button");
         br = document.createElement("br");
-        button.append("Item " + items[i].itemID);
+        button.append("Item: " + items[i].Name);
         button.appendChild(br);
         //button.append(item[i].Address);
         button.setAttribute("type", "button");
@@ -347,6 +349,7 @@ function displaySupplierContacts(supplier) {
 
 }
 function onDisplaySupplierContacts(result) {
+    console.log(result);
     var contacts = JSON.parse(result);
     // set display
     var name = $("#detailHeading")[0].innerHTML;

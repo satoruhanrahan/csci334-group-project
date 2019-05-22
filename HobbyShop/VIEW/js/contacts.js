@@ -25,7 +25,7 @@ $(document).ready(function () {
 // Display contacts in list based on search
 function getAllSearchedContacts() {
     var searchInput = document.getElementById("searchbar").value;
-    ContactController.Search(searchInput, onSearchContacts);
+    ContactsController.Search(searchInput, onSearchContacts);
 }
 
 function onSearchContacts(result) {
@@ -46,7 +46,7 @@ function displayContactNames(contacts) {
     var button;
     for (var i = contacts.length - 1; i >= 0; i--) {
         button = document.createElement("button");
-        button.append(contacts[i].FullName);
+        button.append(contacts[i].Name);
         button.setAttribute("id", contacts[i].Id);
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem");
@@ -62,7 +62,7 @@ function displayContactNames(contacts) {
 function displayContactDetails(contact) {
     // set display
     clearDisplay();
-    $("#detailHeading")[0].innerHTML = contact.FullName;
+    $("#detailHeading")[0].innerHTML = contact.Name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
@@ -75,8 +75,9 @@ function displayContactDetails(contact) {
 
     activeItem(contact.Id);
     $("#contactID")[0].innerHTML = contact.Id;
-    $("#contactFullNameInput")[0].value = contact.FullName;
-    $("#contactPhoneNoInput")[0].value = contact.PhoneNo;
+    $("#contactSupIDInput")[0].value = contact.SupID;
+    $("#contactFullNameInput")[0].value = contact.Name;
+    $("#contactPhoneNoInput")[0].value = contact.Phone;
 }
 
 // Edit details
@@ -87,13 +88,15 @@ function editContactDetails(contact) {
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#contactID")[0].style.backgroundColor = "lightgrey";
-    $("#detailHeading")[0].append(contact.FullName);
+    $("#detailHeading")[0].append(contact.Name);
 
+    $("#contactSupIDInput").removeAttr("disabled");
     $("#contactFullNameInput").removeAttr("disabled");
     $("#contactPhoneNoInput").removeAttr("disabled");
 
-    $("#contactFullNameInput")[0].value = contact.FullName;
-    $("#contactPhoneNoInput")[0].value = contact.PhoneNo;
+    $("#contactSupIDInput")[0].value = contact.SupID;
+    $("#contactFullNameInput")[0].value = contact.Name;
+    $("#contactPhoneNoInput")[0].value = contact.Phone;
 
     $("#contactID")[0].append(contact.Id);
 
@@ -113,28 +116,35 @@ function editContactDetails(contact) {
 // Send edited data to controller
 function updateContact(contact) {
     if (validateInput()) {
-        ContactController.Update(
+        ContactsController.Update(
             contact.Id,
+            $("#contactSupIDInput")[0].value,
             $("#contactFullNameInput")[0].value,
             $("#contactPhoneNoInput")[0].value,
             onUpdateContact
         );
     }
+    console.log(contact.Id,
+        $("#contactSupIDInput")[0].value,
+        $("#contactFullNameInput")[0].value,
+        $("#contactPhoneNoInput")[0].value);
 }
 
-function onUpdateContact(contact) {
-    contact = JSON.parse(contact);
+function onUpdateContact(result) {
+    console.log(result);
+    var contact = JSON.parse(result);
     var newcontact = {
         "Id": contact.Id,
-        "FullName": $("#contactFullNameInput")[0].value,
-        "PhoneNo": $("#contactPhoneNoInput")[0].value
+        "SupID": contact.SupID,
+        "FullName": contact.Name,
+        "PhoneNo":contact.Phone
     }
     //  Refreshes the updated button 
-    $("#" + newcontact.Id)[0].innerHTML = newcontact.FullName;
+    $("#" + newcontact.Id)[0].innerHTML = newcontact.Name;
     $("#" + newcontact.Id)[0].addEventListener("click", function () {
-        displayContactDetails(newcontact);
+        displayContactDetails(contact);
     });
-    displayContactDetails(newcontact);
+    displayContactDetails(contact);
     resultPopup("Successfully updated contact in the Database.", "green");
 }
 
@@ -174,7 +184,7 @@ function displayDeleteContact(contact) {
     button2.append(br.cloneNode());
     button2.append("Cancel");
 
-    $("#results")[0].append("Are you sure you want to delete this model ");
+    $("#results")[0].append("Are you sure you want to delete this contact ");
     var span = document.createElement("span");
     span.style.fontWeight = "bold";
     span.append("permanently");
@@ -189,7 +199,7 @@ function displayDeleteContact(contact) {
 // sends id of contact to be deleted to controller
 function deleteContact(id) {
     results.style.display = "none";
-    ContactController.Delete(id, onDeleteContact);
+    ContactsController.Delete(id, onDeleteContact);
 }
 
 function onDeleteContact(id) {
@@ -236,6 +246,7 @@ function displayAddContact() {
     $("#contactID")[0].style.backgroundColor = "lightgrey";
     activeItem("");
 
+    $("#contactSupIDInput").removeAttr("disabled");
     $("#contactFullNameInput").removeAttr("disabled");
     $("#contactPhoneNoInput").removeAttr("disabled");
 
@@ -249,9 +260,10 @@ function displayAddContact() {
 }
 
 function validateInput() {
+    var supid = $("#contactSupIDInput")[0].value;
     var name = $("#contactFullNameInput")[0].value;
     var phoneno = $("#contactPhoneNoInput")[0].value;
-    if (name === '' || phoneno === '') {
+    if (supid === '' || name === '' || phoneno === '') {
         alert("Please input: Full Name or Phone Number!");
         return false;
     }
@@ -263,7 +275,8 @@ function validateInput() {
 // Sends input to controller
 function addNewContact() {
     if (validateInput()) {
-        ContactController.Add(
+        ContactsController.Add(
+            $("#contactSupIDInput")[0].value,
             $("#contactFullNameInput")[0].value,
             $("#contactPhoneNoInput")[0].value,
             onAddNewContact

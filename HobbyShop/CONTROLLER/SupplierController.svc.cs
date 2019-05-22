@@ -87,6 +87,42 @@ namespace HobbyShop.CONTROLLER
                 return e.Message;
             }
         }
+        [OperationContract]
+        public string ReturnItems(int id) 
+        {
+            try
+            {
+                Supplier _s = new Supplier();
+                _s.Id = id;
+                List<Model> modelList = new List<Model>();
+                modelList = _s.returnModels();
+
+                string json = new JavaScriptSerializer().Serialize(modelList);
+                return json;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+        [OperationContract]
+        public string ReturnCorrespondingContacts(int id)
+        {
+            try
+            {
+                Supplier _s = new Supplier();
+                _s.Id = id;
+                List<SupplierContact> contacts = new List<SupplierContact>();
+                contacts = _s.returnContacts();
+
+                string json = new JavaScriptSerializer().Serialize(contacts);
+                return json;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
     }
 }
 

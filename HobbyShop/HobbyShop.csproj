@@ -83,12 +83,15 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CONTROLLER\ContactsController.svc" />
     <Content Include="CONTROLLER\DeliveryController.svc" />
     <Content Include="CONTROLLER\SaleController.svc" />
     <Content Include="CONTROLLER\StoreController.svc" />
     <Content Include="CONTROLLER\SupplierController.svc" />
     <Content Include="CONTROLLER\UserController.svc" />
+    <Content Include="VIEW\ContactsView.aspx" />
     <Content Include="VIEW\DeliveriesView.aspx" />
+    <Content Include="VIEW\js\contacts.js" />
     <Content Include="VIEW\js\deliveries.js" />
     <Content Include="VIEW\js\sales.js" />
     <Content Include="VIEW\js\suppliers.js" />
@@ -120,6 +123,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CONTROLLER\ContactsController.svc.cs">
+      <DependentUpon>ContactsController.svc</DependentUpon>
+    </Compile>
     <Compile Include="CONTROLLER\SupplierController.svc.cs">
       <DependentUpon>SupplierController.svc</DependentUpon>
     </Compile>
@@ -147,6 +153,13 @@
     </Compile>
     <Compile Include="CONTROLLER\UserController.svc.cs">
       <DependentUpon>UserController.svc</DependentUpon>
+    </Compile>
+    <Compile Include="VIEW\ContactsView.aspx.cs">
+      <DependentUpon>ContactsView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VIEW\ContactsView.aspx.designer.cs">
+      <DependentUpon>ContactsView.aspx</DependentUpon>
     </Compile>
     <Compile Include="VIEW\DeliveriesView.aspx.cs">
       <DependentUpon>DeliveriesView.aspx</DependentUpon>

@@ -46,6 +46,10 @@
                             <td id="contactID"></td> 
                         </tr> 
                         <tr> 
+                            <td > Supplier ID </td> 
+                            <td id="contactSupID"><input type="text" id="contactSupIDInput" disabled/></td>
+                        </tr> 
+                        <tr> 
                             <td> Name </td> 
                             <td id="contactFullName"><input type="text" id="contactFullNameInput" disabled/></td> 
                         </tr> 
@@ -67,7 +71,7 @@
         <form id="form1" runat="server">
             <asp:scriptmanager runat="server">
                 <Services>
-                   <asp:ServiceReference Path="~/CONTROLLER/ContactController.svc" />
+                   <asp:ServiceReference Path="~/CONTROLLER/ContactsController.svc" />
                 </Services>
             </asp:scriptmanager>
         </form>
