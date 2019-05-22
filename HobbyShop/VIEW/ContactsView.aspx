@@ -42,25 +42,19 @@
                 <div class="scrollable">
                     <table id="detailTable">
                         <tr> 
-                            <td id="firstcell"> Name </td> 
-                            <td id="supplierName"><input type="text" id="supplierNameInput" disabled/></td> 
+                            <td id="firstcell"> ID </td> 
+                            <td id="contactID"></td> 
                         </tr> 
                         <tr> 
-                            <td> ID </td> 
-                            <td id="supplierID"></td> 
+                            <td> Name </td> 
+                            <td id="contactFullName"><input type="text" id="contactFullNameInput" disabled/></td> 
                         </tr> 
                         <tr> 
-                            <td> Address </td> 
-                            <td id="supplierAddress">
-                                <input type="text" id="supplierAddressInput" disabled/>
+                            <td> Phone Number </td> 
+                            <td id="contactPhoneNo">
+                                <input type="text" id="contactPhoneNoInput" disabled/>
                             </td> 
                         </tr> 
-                        <tr> 
-                            <td> Credit Line </td> 
-                            <td id="supplierCreditLine">
-                                <input type="text" id="supplierCreditLineInput" disabled/>
-                            </td> 
-                        </tr>
                     </table>
                     <button type="button" id="leftButton" title="Save changes" class="smallbtn greenbtn"> 
                     </button>
@@ -69,19 +63,11 @@
                     </button>
                 </div>
             </div>
-            <div class ="detailTabContent">
-                <div id="items" class="scrollable">
-                </div>
-            </div>
-            <div class ="detailTabContent">
-                <div id="contacts" class="scrollable">
-                </div>
-            </div>
 		</div>
         <form id="form1" runat="server">
             <asp:scriptmanager runat="server">
                 <Services>
-                   <asp:ServiceReference Path="~/CONTROLLER/SupplierController.svc" />
+                   <asp:ServiceReference Path="~/CONTROLLER/ContactController.svc" />
                 </Services>
             </asp:scriptmanager>
         </form>

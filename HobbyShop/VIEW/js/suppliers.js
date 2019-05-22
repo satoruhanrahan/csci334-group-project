@@ -244,8 +244,8 @@ function clearDisplay() {
     $("#supplierCreditLine")[0].style.backgroundColor = "white";
     $("#supplierID")[0].innerHTML = "";
     $("#supplierCreditLine")[0].innerHTML = "";
-    $("#items")[0].innerHTML = ""
-    $("#contacts")[0].innerHTML = ""
+    $("#items")[0].innerHTML = "";
+    $("#contacts")[0].innerHTML = "";
     $("#supplierNameInput")[0].value = "";
     $("#supplierAddressInput")[0].value = "";
     $("#supplierNameInput").attr({ "disabled": "disabled" });
@@ -258,7 +258,7 @@ function clearDisplay() {
 function displayAddSupplier() {
     //reset detail display to have correct elements for this menu.
     clearDisplay();
-    $("#detailHeading")[0].innerHTML = "Add a New Model";
+    $("#detailHeading")[0].innerHTML = "Add a New Supplier";
     $("#detailHeading")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";

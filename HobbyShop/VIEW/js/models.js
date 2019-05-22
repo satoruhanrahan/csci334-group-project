@@ -307,8 +307,8 @@ function clearDisplay() {
     $("#itemID")[0].innerHTML = "";
     $("#itemAvailability")[0].innerHTML = "";
     $("#itemTotalStock")[0].innerHTML = "";
-    $("#stores")[0].innerHTML = ""
-    $("#suppliers")[0].innerHTML = ""
+    $("#stores")[0].innerHTML = "";
+    $("#suppliers")[0].innerHTML = "";
     $("#itemNameInput").value = "";
     $("#itemID")[0].innerHTML = "";
     $("#itemTypeInput").value = "";
