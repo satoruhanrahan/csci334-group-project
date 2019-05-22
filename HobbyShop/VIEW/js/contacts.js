@@ -140,7 +140,7 @@ function onUpdateContact(result) {
         "PhoneNo":contact.Phone
     }
     //  Refreshes the updated button 
-    $("#" + newcontact.Id)[0].innerHTML = newcontact.Name;
+    $("#" + newcontact.Id)[0].innerHTML = contact.Name;
     $("#" + newcontact.Id)[0].addEventListener("click", function () {
         displayContactDetails(contact);
     });
