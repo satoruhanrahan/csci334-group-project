@@ -6,8 +6,6 @@
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
 	    <meta content="utf-8" http-equiv="encoding"/>
         <title> Suppliers - Tim's Model Market </title>
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <link rel="stylesheet" href="style/global.css" />  
 	    <link rel="stylesheet" href="style/details.css"/>
         <link rel="stylesheet" href="style/list.css" />
         <script type="text/javascript" src="js/contacts.js"></script>

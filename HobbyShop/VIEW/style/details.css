@@ -68,6 +68,11 @@
     width: 100%;
     border: 0;
 }
+.detailTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 0;
+}
 #firstcell {
     width:25%;
 }
