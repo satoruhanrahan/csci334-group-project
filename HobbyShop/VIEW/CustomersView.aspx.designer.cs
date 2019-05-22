@@ -7,13 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HobbyShop {
+namespace HobbyShop.VIEW {
     
     
-    public partial class LogInPage {
+    public partial class CustomersView {
         
         /// <summary>
-        /// form2 control.
+        /// form1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.

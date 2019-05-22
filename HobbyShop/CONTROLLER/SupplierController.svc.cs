@@ -20,7 +20,7 @@ namespace HobbyShop.CONTROLLER
     public class SupplierController
     {
         [OperationContract]
-        public string Add(string name,string address, double credit)
+        public string Add(string name, string address, double credit)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string Update(int id, string name,string address, double credit)
+        public string Update(int id, string name, string address, double credit)
         {
             try
             {

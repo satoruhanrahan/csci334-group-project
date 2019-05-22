@@ -20,7 +20,7 @@ namespace HobbyShop.CONTROLLER
         {
             try
             {
-                Customer _cus = new Customer(cusName,cusAddress,cusPhone,cusCreditLine,cusBalance,cusMemberStatus,cusJoinDate,cusEmail);
+                Customer _cus = new Customer(cusName, cusAddress, cusPhone, cusCreditLine, cusBalance, cusMemberStatus, cusJoinDate, cusEmail);
                 _cus.Add();
 
                 string json = new JavaScriptSerializer().Serialize(_cus);

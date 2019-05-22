@@ -307,8 +307,8 @@ function clearDisplay() {
     $("#itemID")[0].innerHTML = "";
     $("#itemAvailability")[0].innerHTML = "";
     $("#itemTotalStock")[0].innerHTML = "";
-    $("#stores")[0].innerHTML = ""
-    $("#suppliers")[0].innerHTML = ""
+    $("#stores")[0].innerHTML = "";
+    $("#suppliers")[0].innerHTML = "";
     $("#itemNameInput").value = "";
     $("#itemID")[0].innerHTML = "";
     $("#itemTypeInput").value = "";
@@ -444,7 +444,10 @@ function onDisplayItemSuppliers(result) {
     var button;
     for (var i = suppliers.length - 1; i >= 0; i--) {
         button = document.createElement("button");
+        br = document.createElement("br");
         button.append(suppliers[i].Name);
+        button.append(br);
+        button.append(suppliers[i].Address);
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem bigList");
         let supplier = suppliers[i];
