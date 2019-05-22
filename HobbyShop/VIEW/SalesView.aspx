@@ -51,6 +51,10 @@
                         <td> Sale ID </td> 
                         <td id="saleID"><input type="text" id="sale" class="userInput" disabled/></td> 
                     </tr>
+                    <tr> 
+                        <td> Store ID </td> 
+                        <td id="storeID"><input type="text" id="store" class="userInput" disabled/></td> 
+                    </tr>
                     <tr id="customerIDRow"> 
                         <td> Customer ID </td> 
                         <td id="customerID"><input type="text" id="customer" class="userInput" disabled/></td> 

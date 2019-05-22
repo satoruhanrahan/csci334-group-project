@@ -29,7 +29,7 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string AddSaleRecord(string date, int customerID, double totalValue, double discount, double finalTotal, string itemList)
+        public string AddSaleRecord(string date, int customerID, int storeID, double totalValue, double discount, double finalTotal, string itemList)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace HobbyShop.CONTROLLER
                 var list = serializer.Deserialize<SaleItem[]>(itemList);
                 
                 ArrayList items = new ArrayList(list);
-                Sale sale = new Sale(formatedDate, customerID, totalValue, discount, finalTotal);
+                Sale sale = new Sale(formatedDate, customerID, storeID, totalValue, discount, finalTotal);
                 sale.Items = items;
                 sale.AddSaleRecord();
                 return "";
@@ -53,7 +53,7 @@ namespace HobbyShop.CONTROLLER
         //public static void NotifyOfCrossThreadDependency();
 
         [OperationContract]
-        public string EditSaleDetails(int saleID, string date, int customerID, double totalValue, double discount, double finalTotal, string itemList)
+        public string EditSaleDetails(int saleID, string date, int customerID, int storeID, double totalValue, double discount, double finalTotal, string itemList)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace HobbyShop.CONTROLLER
                 //BlogSites blogObject = js.Deserialize<BlogSites>(jsonData);
                 //var items = new JavaScriptSerializer().Deserialize<List<SaleItem>>(itemList);
                 ArrayList items = new ArrayList(list);
-                Sale sale = new Sale(saleID, formatedDate, customerID, totalValue, discount, finalTotal);
+                Sale sale = new Sale(saleID, formatedDate, customerID, storeID, totalValue, discount, finalTotal);
                 sale.Items = items;
                 sale.EditSaleDetails();
                 string json = new JavaScriptSerializer().Serialize(sale);

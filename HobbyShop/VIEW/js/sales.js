@@ -102,6 +102,7 @@ function displaySaleDetails(sale) {
     document.getElementById("date").value = format;
     document.getElementById("sale").value = sale.SaleID;
     document.getElementById("customer").value = sale.CustomerID;
+    document.getElementById("store").value = sale.StoreID;
     document.getElementById("totalValue").value = sale.TotalValue;
     document.getElementById("discountValue").value = sale.Discount;
     document.getElementById("finalValue").value = sale.FinalTotal;
@@ -168,6 +169,7 @@ function displayAddSaleRecord() {
 function addSaleRecord() {
     var date = document.getElementById("date").value;
     var customer = document.getElementById("customer").value;
+    var store = document.getElementById("store").value;
     var total = document.getElementById("totalValue").value;
     var discount = document.getElementById("discountValue").value;
     var final = document.getElementById("finalValue").value;
@@ -182,10 +184,10 @@ function addSaleRecord() {
 
     var check = false;
     var errorMessage = document.getElementById("error");
-    if (date == "" || customer == "" || total == "" || discount == "" || final == "" || name == "" || quantity == "" || price == "") {
+    if (date == "" || customer == "" || store == "" || total == "" || discount == "" || final == "" || name == "" || quantity == "" || price == "") {
         errorMessage.innerText = "Please input date, customerID, discount and at least 1 item!";
     }
-    else if (!(Number(total)) || (!(Number(discount)) && discount != 0) || !(Number(final)) || !(Number(quantity)) || !(Number(price))) {
+    else if (!(Number(store)) || !(Number(total)) || (!(Number(discount)) && discount != 0) || !(Number(final)) || !(Number(quantity)) || !(Number(price))) {
         errorMessage.innerText = "Please input the right format!";
     }
     else {
@@ -205,13 +207,21 @@ function addSaleRecord() {
             }
         }
         var itemListString = JSON.stringify(listOfItems);
-        SaleController.AddSaleRecord(date, customer, Number(total), Number(discount), Number(final), itemListString, onAddSaleRecord);
-    }/**/
+        SaleController.AddSaleRecord(date, customer, store, Number(total), Number(discount), Number(final), itemListString, onAddSaleRecord);
+    }
 }
 
 function onAddSaleRecord(result) {
     if (result == "") {
         resultPopup("Successfully added to the database", "green");
+        var elements = document.getElementsByTagName("input");
+        for (var j = 0; j < elements.length; j++) {
+            elements[j].value = "";
+            var id = elements[j].id;
+            if (id != "sale") {
+                elements[j].disabled = true;
+            }
+        }
         clearDisplay();
         getSaleRecords();
     }
@@ -244,9 +254,10 @@ function editSaleDetails(sale) {
 }
 
 function saveSaleDetails() {
-    var id = document.getElementById("sale").value;
+    var saleID = document.getElementById("sale").value;
     var date = document.getElementById("date").value;
     var customer = document.getElementById("customer").value;
+    var storeID = document.getElementById("store").value;
     var total = document.getElementById("totalValue").value;
     var discount = document.getElementById("discountValue").value;
     var final = document.getElementById("finalValue").value;
@@ -261,10 +272,10 @@ function saveSaleDetails() {
     
     var check = false;
     var errorMessage = document.getElementById("error");
-    if (date == "" || customer == "" || total == "" || discount == "" || final == "" || name == "" || quantity == "" || price == "") {
+    if (date == "" || customer == "" || storeID == "" || total == "" || discount == "" || final == "" || name == "" || quantity == "" || price == "") {
         errorMessage.innerText = "Please input date, customerID, discount and at least 1 item!";
     }
-    else if (!(Number(total)) || (discount != "0" && !(Number(discount))) || !(Number(final)) || !(Number(quantity)) || !(Number(price))) {
+    else if (!(Number(storeID)) || !(Number(total)) || (discount != "0" && !(Number(discount))) || !(Number(final)) || !(Number(quantity)) || !(Number(price))) {
         errorMessage.innerText = "Please input the right format!";
     }
     else {
@@ -284,7 +295,7 @@ function saveSaleDetails() {
             }
         }
         var itemListString = JSON.stringify(listOfItems);
-        SaleController.EditSaleDetails(Number(id), date, Number(customer), Number(total), Number(discount), Number(final), itemListString, onEditSaleDetails);
+        SaleController.EditSaleDetails(Number(saleID), date, Number(customer), Number(storeID), Number(total), Number(discount), Number(final), itemListString, onEditSaleDetails);
     }
 }
 
@@ -359,8 +370,7 @@ function insertNewRow(index) {
     priceInput.setAttribute("class", "itemInput priceInput");
     priceInput.setAttribute("id", "priceInput" + index);
     price.appendChild(priceInput);
-
-    console.log("Item list: " + itemList);
+    
     for (var i = 0; i < itemList.length; i++) {
         var option = document.createElement("option");
         option.setAttribute("value", itemList[i].Name);
@@ -368,11 +378,9 @@ function insertNewRow(index) {
         datalist.appendChild(option);
         
     }
-    //$("#nameInput" + index).on("input", function () {
     nameInput.addEventListener("input", function () {
         var opt = $("option[value='" + $(this).val() + "']");
         var index = opt.attr("id");
-        //console.log("Index: " + itemList[index].Price);
         priceInput.value = itemList[index].Price;
     });
 
