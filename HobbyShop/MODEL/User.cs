@@ -36,9 +36,54 @@ namespace HobbyShop.CLASS
             this.userType = userType;
         }
         string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
+        
 
+
+        public List<User> SearchDatabase(string input)
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    string query = "SELECT* FROM Users WHERE GivenName LIKE '%" + input + "%' OR LastName LIKE '%" + input + "%' OR UserName LIKE '%" + input + "%' ORDER BY GivenName";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.ExecuteNonQuery();
+
+
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    List<User> users = new List<User>();
+                    while (reader.Read())
+                    {
+                        string userName = Convert.ToString(reader["UserName"]);
+                        string passWord = Convert.ToString(reader["Password"]);
+                        string firstName = Convert.ToString(reader["GivenName"]);
+                        string lastName = Convert.ToString(reader["LastName"]);
+                        string userType = Convert.ToString(reader["UserType"]);
+                        int id = Convert.ToInt32(reader["ID"]);
+                        DateTime? lastLogged = Convert.ToDateTime(reader["LastLoginDate"]);
+
+                        User _user = new User();
+                        _user.UserName = userName;
+                        _user.PassWord = passWord;
+                        _user.FirstName = firstName;
+                        _user.LastName = lastName;
+                        _user.UserType = userType;
+                        _user.lastLogged = lastLogged;
+                        _user.Id = id;
+                        users.Add(_user);
+                    }
+                    return users;
+                }
+                catch (Exception e)
+                {
+                    throw new System.ApplicationException(e.Message);
+                }
+            }
+
+        }
         // can be used to displayed all Users in Users tab
-        public List<User> returnUsers(string username, string password)
+        public List<User> returnUsersCheck(string username, string password)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {

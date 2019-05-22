@@ -120,6 +120,7 @@
     <Content Include="VIEW\style\details.css" />
     <Content Include="VIEW\style\sales.css" />
     <Content Include="VIEW\SuppliersView.aspx" />
+    <Content Include="VIEW\UsersView.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +211,13 @@
     </Compile>
     <Compile Include="VIEW\SuppliersView.aspx.designer.cs">
       <DependentUpon>SuppliersView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VIEW\UsersView.aspx.cs">
+      <DependentUpon>UsersView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VIEW\UsersView.aspx.designer.cs">
+      <DependentUpon>UsersView.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

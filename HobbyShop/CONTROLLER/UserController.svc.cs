@@ -15,11 +15,22 @@ namespace HobbyShop.CONTROLLER
     [ServiceContract(Namespace = "")]
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
 
-
-    // NOTE (TO OLIVER) : USERNAME IS UNIQUE, PLEASE DO NOT USE ID WHEN RETRIEVING INFO IN JS
-    // NO UPDATE
+    //use Username to retrieve info
+    // NO UPDATE YET
     public class UserController
     {
+        
+        [OperationContract]
+        public string ReturnAll(string input)
+        {
+            User _user = new User();
+            List<User> allUsers = _user.SearchDatabase(input);
+
+            string json = new JavaScriptSerializer().Serialize(allUsers);
+            return json;
+        }
+
+
         [OperationContract]
         public string ReturnUser(string username, string password) // is currently used to validate users
         // Note: can be used to displayed all users, can not be used for search, don't need to worry about search at the moment
@@ -27,7 +38,7 @@ namespace HobbyShop.CONTROLLER
             User _user = new User();
             DateTime currentTime = DateTime.Now;
             _user.updateLoginTime(username, currentTime);
-            List<User> thatUser = _user.returnUsers(username,password);
+            List<User> thatUser = _user.returnUsersCheck(username,password);
             
             string json = new JavaScriptSerializer().Serialize(thatUser);
             return json;
