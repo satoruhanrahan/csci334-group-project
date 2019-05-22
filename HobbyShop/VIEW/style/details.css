@@ -16,7 +16,10 @@
     position:absolute;
     top:30px;
     width:100%;
+    display:flex;
+    flex-direction:row;
     border-bottom: 3px solid #000000;
+    overflow-x:auto;
 }
 .detailtab {
     background-color: #ffffff;

@@ -1,10 +1,13 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SuppliersView.aspx.cs" Inherits="HobbyShop.ModelsView" %>
-﻿<!DOCTYPE>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SuppliersView.aspx.cs" Inherits="HobbyShop.VIEW.SupplierView" %>
+
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head runat="server">
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
 	    <meta content="utf-8" http-equiv="encoding"/>
         <title> Suppliers - Tim's Model Market </title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <link rel="stylesheet" href="style/global.css" />  
 	    <link rel="stylesheet" href="style/details.css"/>
         <link rel="stylesheet" href="style/list.css" />
         <script type="text/javascript" src="js/suppliers.js"></script>
@@ -31,14 +34,14 @@
             <div id="detailOptions" class="dropdown">
                 <button type="button" class="smallbtn"> <img src="style/options.png" /></button>
                 <div class="dropdown-content">
-                    <button type="button" class="dropdown-button" id="editItem">Edit Details</button>
-                    <button type="button" class="dropdown-button" id="deleteItem">Delete Item</button>
+                    <button type="button" class="dropdown-button" id="editSupplier">Edit Details</button>
+                    <button type="button" class="dropdown-button" id="deleteSupplier">Delete Supplier</button>
                 </div> 
             </div>
             <div id="detailTabBar">
                 <button type="button" class="tab detailtab active" id="detailsTab">Details</button>
-                <button type="button" class="tab detailtab" id="storesTab">Models</button>
-                <button type="button" class="tab detailtab" id="suppliersTab">Contacts</button>
+                <button type="button" class="tab detailtab" id="itemsTab">Models</button>
+                <button type="button" class="tab detailtab" id="contactsTab">Contacts</button>
             </div>
             <div id="details" class="detailTabContent">
                 <div class="scrollable">

@@ -1,4 +1,4 @@
-// on Page load...
+﻿// on Page load...
 $(document).ready(function () {
     // display all suppliers
     var suppliers;
@@ -7,7 +7,7 @@ $(document).ready(function () {
     // prevent form submission on enter
     $('form').keypress(function (event) {
         return event.keyCode != 13;
-    }); 
+    });
     // Search as the user types
     var searchbar = $("#searchbar")[0];
     searchbar.addEventListener("keyup", function (event) {
@@ -25,7 +25,7 @@ $(document).ready(function () {
 // Display suppliers in list based on search
 function getAllSearchedSuppliers() {
     var searchInput = document.getElementById("searchbar").value;
-    SupplierController.SearchDatabase(searchInput, onSearchSuppliers);
+    SupplierController.Search(searchInput, onSearchSuppliers);
 }
 
 function onSearchSuppliers(result) {
@@ -46,7 +46,7 @@ function displaySupplierNames(suppliers) {
     var button;
     for (var i = suppliers.length - 1; i >= 0; i--) {
         button = document.createElement("button");
-        button.append( suppliers[i].Name );
+        button.append(suppliers[i].Name);
         button.setAttribute("id", suppliers[i].Id);
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem");
@@ -77,11 +77,11 @@ function displaySupplierDetails(supplier) {
     });
     $("body").on("click", "#itemsTab", function () {
         switchTabs("detailTabBar", "itemsTab");
-        displaySupplierStores(supplier);
+        //displaySupplierItems(supplier);
     });
     $("body").on("click", "#contactsTab", function () {
         switchTabs("detailTabBar", "contactsTab");
-        displaySupplierSuppliers(supplier);
+        //displaySupplierContacts(supplier);
     });
     $("#editSupplier")[0].addEventListener("click", function () {
         editSupplierDetails(supplier);
@@ -91,11 +91,10 @@ function displaySupplierDetails(supplier) {
     });
 
     activeItem(supplier.Id);
-
     $("#supplierNameInput")[0].value = supplier.Name;
     $("#supplierID")[0].innerHTML = supplier.Id;
     $("#supplierAddressInput")[0].value = supplier.Address;
-    $("#supplierCreditLineInput")[0].value = supplier.CreditLine;
+    $("#supplierCreditLine")[0].innerHTML = supplier.CreditLine;
 }
 
 // Edit details
@@ -115,7 +114,7 @@ function editSupplierDetails(supplier) {
 
     $("#supplierNameInput")[0].value = supplier.Name;
     $("#supplierAddressInput")[0].value = supplier.Address;
-    
+
     $("#supplierID")[0].append(supplier.Id);
     $("#supplierCreditLine")[0].append(supplier.CreditLine);
 
@@ -295,7 +294,7 @@ function validateInput() {
 // Sends input to controller
 function addNewSupplier() {
     if (validateInput()) {
-         SupplierController.AddNewSupplier(
+        SupplierController.AddNewSupplier(
             $("#supplierNameInput")[0].value,
             $("#supplierTypeInput")[0].value,
             $("#supplierSbjAreaInput")[0].value,
@@ -346,7 +345,7 @@ function onDisplaySupplierItems(result) {
 
 function displaySupplierContacts(supplier) {
     SupplierController.ReturnCorrespondingContacts(supplier.Id, onDisplaySupplierContacts);
-   
+
 }
 function onDisplaySupplierContacts(result) {
     var contacts = JSON.parse(result);
@@ -357,7 +356,7 @@ function onDisplaySupplierContacts(result) {
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#contacts")[0].style.visibility = "visible"
-    
+
     var button;
     for (var i = contacts.length - 1; i >= 0; i--) {
         button = document.createElement("button");

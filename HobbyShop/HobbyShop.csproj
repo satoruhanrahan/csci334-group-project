@@ -49,6 +49,13 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
@@ -61,6 +68,12 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.4\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -77,8 +90,8 @@
     <Content Include="CONTROLLER\UserController.svc" />
     <Content Include="VIEW\DeliveriesView.aspx" />
     <Content Include="VIEW\js\deliveries.js" />
-    <Content Include="VIEW\js\suppliers.js" />
     <Content Include="VIEW\js\sales.js" />
+    <Content Include="VIEW\js\suppliers.js" />
     <Content Include="VIEW\js\user.js" />
     <Content Include="VIEW\LogInPage.aspx" />
     <Content Include="VIEW\MasterContent.aspx" />
@@ -94,7 +107,6 @@
   <ItemGroup>
     <Content Include="CONTROLLER\ModelController.svc" />
     <Content Include="VIEW\js\global.js" />
-    <Content Include="VIEW\SuppliersView.aspx" />
     <Content Include="VIEW\ModelsView.aspx" />
     <Content Include="VIEW\js\models.js" />
     <Content Include="VIEW\js\jquery.js" />
@@ -104,9 +116,13 @@
     <Content Include="VIEW\style\list.css" />
     <Content Include="VIEW\style\details.css" />
     <Content Include="VIEW\style\sales.css" />
+    <Content Include="VIEW\SuppliersView.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CONTROLLER\SupplierController.svc.cs">
+      <DependentUpon>SupplierController.svc</DependentUpon>
+    </Compile>
     <Compile Include="MODEL\Customer.cs" />
     <Compile Include="MODEL\Delivery.cs" />
     <Compile Include="MODEL\Model.cs" />
@@ -129,9 +145,6 @@
     <Compile Include="CONTROLLER\StoreController.svc.cs">
       <DependentUpon>StoreController.svc</DependentUpon>
     </Compile>
-    <Compile Include="CONTROLLER\SupplierController.svc.cs">
-      <DependentUpon>SupplierController.svc</DependentUpon>
-    </Compile>
     <Compile Include="CONTROLLER\UserController.svc.cs">
       <DependentUpon>UserController.svc</DependentUpon>
     </Compile>
@@ -148,13 +161,6 @@
     </Compile>
     <Compile Include="VIEW\LogInPage.aspx.designer.cs">
       <DependentUpon>LogInPage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="VIEW\SuppliersView.aspx.cs">
-      <DependentUpon>SuppliersView.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="VIEW\SuppliersView.aspx.designer.cs">
-      <DependentUpon>SuppliersView.aspx</DependentUpon>
     </Compile>
     <Compile Include="VIEW\ModelsView.aspx.cs">
       <DependentUpon>ModelsView.aspx</DependentUpon>
@@ -185,14 +191,19 @@
     <Compile Include="VIEW\SalesView.aspx.designer.cs">
       <DependentUpon>SalesView.aspx</DependentUpon>
     </Compile>
+    <Compile Include="VIEW\SuppliersView.aspx.cs">
+      <DependentUpon>SuppliersView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VIEW\SuppliersView.aspx.designer.cs">
+      <DependentUpon>SuppliersView.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>CONTROLLER\SupplierController.svc.cs</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
