@@ -20,6 +20,12 @@ $(document).ready(function () {
     $("#addButton")[0].addEventListener("click", function () {
         displayAddContact();
     });
+    setTimeout(function () {
+        if (loaded != "") {
+            displayContactDetails(loaded);
+            loaded = "";
+        }
+    }, 250);
 });
 
 // Display contacts in list based on search
@@ -226,8 +232,10 @@ function clearDisplay() {
     $("#results")[0].style.display = "none";
     $("#contactID")[0].style.backgroundColor = "white";
     $("#contactID")[0].innerHTML = "";
+    $("#contactSupIDInput")[0].value = "";
     $("#contactFullNameInput")[0].value = "";
     $("#contactPhoneNoInput")[0].value = "";
+    $("#contactSupIDInput").attr({ "disabled": "disabled" });
     $("#contactFullNameInput").attr({ "disabled": "disabled" });
     $("#contactPhoneNoInput").attr({ "disabled": "disabled" });
     $("body").off("click", "#leftButton");

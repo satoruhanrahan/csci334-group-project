@@ -38,7 +38,7 @@
                     <button type="button" class="dropdown-button" id="deleteContact">Delete Contact</button>
                 </div> 
             </div>
-            <div id="details" class="detailTabContent">
+            <div id="details" class="detailTabContent noTabs">
                 <div class="scrollable">
                     <table id="detailTable">
                         <tr> 

@@ -21,6 +21,16 @@ $(document).ready(function () {
         displayAddItem();
     });
     populateSelect();
+    setTimeout(function () {
+        try {
+            if (loaded != undefined) {
+                if (loaded != "") {
+                    displayItemDetails(loaded);
+                    loaded = "";
+                }
+            }
+        } catch (ReferenceError) {    }
+    }, 250);
 });
 
 // gets Subject area/ model types and populates selects with options

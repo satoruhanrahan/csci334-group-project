@@ -39,6 +39,10 @@
     visibility: hidden;
     width: calc(100% - 20px);
 }
+.noTabs {
+    top: 20px;
+    left: 0px;
+}
 #details {
     margin: 10px;
 }

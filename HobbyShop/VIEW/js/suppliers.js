@@ -20,6 +20,12 @@ $(document).ready(function () {
     $("#addButton")[0].addEventListener("click", function () {
         displayAddSupplier();
     });
+    setTimeout(function () {
+        if (loaded != "") {
+            displaySupplierDetails(loaded);
+            loaded = "";
+        }
+    }, 250);
 });
 
 // Display suppliers in list based on search
@@ -337,7 +343,7 @@ function onDisplaySupplierItems(result) {
         button.setAttribute("class", "listItem bigList");
         let item = items[i];
         button.addEventListener("click", function () {
-            loadPage("Items", item);
+            loadPage("Models", item);
         });
         $("#items")[0].append(button);
     }
