@@ -100,7 +100,7 @@ function displaySupplierDetails(supplier) {
     $("#supplierNameInput")[0].value = supplier.Name;
     $("#supplierID")[0].innerHTML = supplier.Id;
     $("#supplierAddressInput")[0].value = supplier.Address;
-    $("#supplierCreditLine")[0].innerHTML = supplier.CreditLine;
+    $("#supplierCreditLineInput")[0].value = supplier.CreditLine;
 }
 
 // Edit details
@@ -112,17 +112,17 @@ function editSupplierDetails(supplier) {
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#supplierID")[0].style.backgroundColor = "lightgrey";
-    $("#supplierCreditLine")[0].style.backgroundColor = "lightgrey";
     $("#detailHeading")[0].append(supplier.Name);
 
     $("#supplierNameInput").removeAttr("disabled");
     $("#supplierAddressInput").removeAttr("disabled");
+    $("#supplierCreditLineInput").removeAttr("disabled");
 
     $("#supplierNameInput")[0].value = supplier.Name;
     $("#supplierAddressInput")[0].value = supplier.Address;
+    $("#supplierCreditLineInput")[0].value = supplier.CreditLine;
 
     $("#supplierID")[0].append(supplier.Id);
-    $("#supplierCreditLine")[0].append(supplier.CreditLine);
 
     var img1 = document.createElement("img");
     img1.src = "style/save.png";
@@ -144,7 +144,7 @@ function updateSupplier(supplier) {
             supplier.Id,
             $("#supplierNameInput")[0].value,
             $("#supplierAddressInput")[0].value,
-            supplier.CreditLine,
+            $("#supplierCreditLineInput")[0].value,
             onUpdateSupplier
         );
     }
@@ -156,7 +156,7 @@ function onUpdateSupplier(supplier) {
         "Id": supplier.Id,
         "Name": $("#supplierNameInput")[0].value,
         "Address": $("#supplierAddressInput")[0].value,
-        "CreditLine": supplier.CreditLine
+        "CreditLine": $("#supplierCreditLineInput")[0].value
     }
     //  Refreshes the updated button 
     $("#" + newsupplier.Id)[0].innerHTML = newsupplier.Name;
@@ -247,15 +247,15 @@ function clearDisplay() {
     $("#detailTabBar")[0].style.visibility = "hidden";
     $("#results")[0].style.display = "none";
     $("#supplierID")[0].style.backgroundColor = "white";
-    $("#supplierCreditLine")[0].style.backgroundColor = "white";
     $("#supplierID")[0].innerHTML = "";
-    $("#supplierCreditLine")[0].innerHTML = "";
     $("#items")[0].innerHTML = "";
     $("#contacts")[0].innerHTML = "";
     $("#supplierNameInput")[0].value = "";
     $("#supplierAddressInput")[0].value = "";
+    $("#supplierCreditLineInput")[0].value = "";
     $("#supplierNameInput").attr({ "disabled": "disabled" });
     $("#supplierAddressInput").attr({ "disabled": "disabled" });
+    $("#supplierCreditLineInput").attr({ "disabled": "disabled" });
     $("body").off("click", "#leftButton");
     $("body").off("click", "#rightButton");
 }
@@ -271,11 +271,11 @@ function displayAddSupplier() {
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#supplierID")[0].style.backgroundColor = "lightgrey";
-    $("#supplierCreditLine")[0].style.backgroundColor = "lightgrey";
     activeItem("");
 
     $("#supplierNameInput").removeAttr("disabled");
     $("#supplierAddressInput").removeAttr("disabled");
+    $("#supplierCreditLineInput").removeAttr("disabled");
 
     // set details for left button
     var img1 = document.createElement("img");
@@ -304,7 +304,7 @@ function addNewSupplier() {
         SupplierController.Add(
             $("#supplierNameInput")[0].value,
             $("#supplierAddressInput")[0].value,
-            0,
+            $("#supplierCreditLineInput")[0].value,
             onAddNewSupplier
         );
     }
