@@ -18,7 +18,7 @@ namespace HobbyShop
         private double cusCreditLine;
         private double cusBalance;
         private string cusMemberStatus;
-        private DateTime cusJoinDate;
+        private DateTime? cusJoinDate = null;
 
         public int Id { get { return cusNum; } set { cusNum = value; } }
         public string Name { get { return cusName; } set { cusName = value; } }
@@ -28,13 +28,13 @@ namespace HobbyShop
         public double CreditLine { get { return cusCreditLine; } set { cusCreditLine = value; } }
         public double Balance { get { return cusBalance; } set { cusBalance = value; } }
         public string MemberStatus { get { return cusMemberStatus; } set { cusMemberStatus = value; } }
-        public DateTime JoinDate { get { return cusJoinDate; } set { cusJoinDate = value; } }
+        public DateTime? JoinDate { get { return cusJoinDate; } set { cusJoinDate = value; } }
 
         public Customer ()
         {
 
         }
-        public Customer(string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime cusJoinDate, string cusEmail)    
+        public Customer(string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime? cusJoinDate, string cusEmail)    
         {
             this.cusName = cusName;
             this.cusPhone = cusPhone;
@@ -96,7 +96,7 @@ namespace HobbyShop
                         double cusCredit = Convert.ToDouble(reader["CreditLine"]);
                         double cusBalance = Convert.ToDouble(reader["CurrentBalance"]);
                         string cusStatus = Convert.ToString(reader["ClubMemberStatus"]);
-                        DateTime cusJoin = Convert.ToDateTime(reader["ClubMemberJoinDate"]);
+                        DateTime? cusJoin = Convert.ToDateTime(reader["ClubMemberJoinDate"]);
                         string cusEmail = Convert.ToString(reader["EmailAddress"]);
 
                         _cus = new Customer(cusName, cusAddress, cusPhone, cusCredit, cusBalance, cusStatus, cusJoin, cusEmail);
@@ -118,7 +118,7 @@ namespace HobbyShop
                 try
                 {
                     con.Open();
-                    string query = "SELECT * FROM Customer WHERE Name LIKE '%" + input + "%' OR Address LIKE '%" + input + "%'  ORDER BY Name";
+                    string query = "SELECT * FROM Customer WHERE Name LIKE '%" + input + "%' OR Address LIKE '%" + input + "%' OR EmailAddress LIKE '%" + input + "%'  ORDER BY Name";
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.ExecuteNonQuery();
 
@@ -134,14 +134,27 @@ namespace HobbyShop
                         double cusCredit = Convert.ToDouble(reader["CreditLine"]);
                         double cusBalance = Convert.ToDouble(reader["CurrentBalance"]);
                         string cusStatus = Convert.ToString(reader["ClubMemberStatus"]);
-                        DateTime cusJoin = Convert.ToDateTime(reader["ClubMemberJoinDate"]);
-                        string cusEmail = Convert.ToString(reader["EmailAddress"]);
+                        //DateTime? cusJoin = Convert.ToDateTime(reader["ClubMemberJoinDate"])
+                        //DateTime? cusJoin = reader.IsDBNull(1) ? (DateTime?)null : (DateTime?)reader["ClubMemberJoinDate"];
+                        DateTime? cusJoin;
+                        if (!reader.IsDBNull(reader.GetOrdinal("ClubMemberJoinDate")) ){
 
-                        Customer _cus = new Customer(cusName, cusAddress, cusPhone, cusCredit, cusBalance, cusStatus, cusJoin, cusEmail)
+                            cusJoin = reader.GetDateTime(reader.GetOrdinal("ClubMemberJoinDate"));
+                        }
+                        else
                         {
-                            Id = cusNum
-                        };
-                        cusList.Add(_cus);
+                           cusJoin = null;
+                        }
+                        string cusEmail = Convert.ToString(reader["EmailAddress"]);
+                        
+                      
+                            Customer _cus = new Customer(cusName, cusAddress, cusPhone, cusCredit, cusBalance, cusStatus, cusJoin, cusEmail)
+                            {
+                                Id = cusNum
+                            };
+                            cusList.Add(_cus);
+                        
+                       
 
                     }
                     return cusList;
@@ -191,6 +204,63 @@ namespace HobbyShop
                     cmd.Parameters.AddWithValue("@id", cusNum);
 
                     cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    throw new System.ApplicationException(e.Message);
+                }
+            }
+        }
+        public List<String> returnStatus()
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    string query = "SELECT Status FROM ClubMemberStatus";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.ExecuteNonQuery();
+
+                    List<string> statusList = new List<String>();
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        string status = Convert.ToString(reader["Status"]);
+                        statusList.Add(status);
+                    }
+                    return statusList;
+                }
+                catch (Exception e)
+                {
+                    throw new System.ApplicationException(e.Message);
+                }
+            }
+        }
+        public List<String> returnInterests()
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    string query = "SELECT Stores.StoreID, StoreAddress FROM Stores INNER JOIN StoreInventory ON Stores.StoreID = StoreInventory.StoreID WHERE ItemNumber=" + itemNum;
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.ExecuteNonQuery();
+
+                    List<Store> stores = new List<Store>();
+
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int storeID = Convert.ToInt32(reader["StoreID"]);
+                        string storeAdd = Convert.ToString(reader["StoreAddress"]);
+
+                        Store _store = new Store(storeID, storeAdd);
+
+                        stores.Add(_store);
+                    }
+                    return stores;
                 }
                 catch (Exception e)
                 {

@@ -88,6 +88,23 @@ namespace HobbyShop.CONTROLLER
                 return e.Message;
             }
         }
+        [OperationContract]
+        public string ReturnMemberStatusList ()
+        {
+            try
+            {
+                Customer _cus = new Customer();
+                List<String> all = new List<String>();
+                all = _cus.returnStatus();
+
+                string json = new JavaScriptSerializer().Serialize(all);
+                return json;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
     }
 }
 
