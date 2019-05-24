@@ -317,7 +317,6 @@ function onAddNewSupplier(result) {
 }
 
 function displaySupplierItems(supplier) {
-    console.log(supplier.Id);
     SupplierController.ReturnItems(supplier.Id, onDisplaySupplierItems);
 }
 
@@ -355,7 +354,6 @@ function displaySupplierContacts(supplier) {
 
 }
 function onDisplaySupplierContacts(result) {
-    console.log(result);
     var contacts = JSON.parse(result);
     // set display
     var name = $("#detailHeading")[0].innerHTML;

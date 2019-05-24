@@ -46,7 +46,7 @@
 #details {
     margin: 10px;
 }
-#details input, #details textarea, #details input:disabled, #details textarea:disabled {
+#details input, #details textarea, #details input:disabled, #details textarea:disabled, #details select, #details select:disabled{
     position: relative;
     display: inline-block;
     width: 100%;
@@ -64,7 +64,7 @@
 #details textarea, #details input, #details select {
     border:1px solid black;
 }
-#details textarea:disabled, #details input:disabled {
+#details textarea:disabled, #details input:disabled, #details select:disabled{
     border:0;
 }
 #detailTable {
@@ -73,6 +73,9 @@
     border: 0;
 }
 #firstcell {
+    width:25%;
+}
+.firstcell {
     width:25%;
 }
 #detailTable td {
@@ -86,6 +89,9 @@
 
 #leftButton, #addRecordButton {
     visibility: hidden;
+}
+#addInventory {
+    width: 100%;
 }
 /**/
 #rightButton {
