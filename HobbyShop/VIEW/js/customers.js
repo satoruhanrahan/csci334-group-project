@@ -30,7 +30,7 @@ function getAllSearchedCustomers() {
 
 function onSearchCustomers(result) {
     customers = JSON.parse(result);
-    console.log(customers);
+   // console.log(customers);
     displayCustomerNames(customers);
 }
 
@@ -61,7 +61,7 @@ function displayCustomerNames(customers) {
 
 // Displays an customers details
 function displayCustomerDetails(customer) {
-    console.log(customer);
+    //console.log(customer);
     // set display
     clearDisplay();
     switchTabs("detailTabBar", "detailsTab");
@@ -145,6 +145,7 @@ function editCustomerDetails(customer) {
     $("#customerNameInput")[0].value = customer.Name;
     $("#customerAddressInput")[0].value = customer.Address;
     $("#customerPhoneNoInput")[0].value = customer.Phone;
+    $("#customerBalInput")[0].value = customer.Balance;
     $("#customerCreditLineInput")[0].value = customer.CreditLine;
     $("#customerMemberStatusInput")[0].value = customer.MemberStatus;
     $("#customerJoinDateInput")[0].value = customer.JoinDate;
@@ -167,23 +168,36 @@ function editCustomerDetails(customer) {
 
 // Send edited data to controller
 function updateCustomer(customer) {
+    
     if (validateInput()) {
-        CustomerController.Update(
+
+        CustomerController.UpdateCustomer(
             customer.Id,
             $("#customerNameInput")[0].value,
             $("#customerAddressInput")[0].value,
             $("#customerPhoneNoInput")[0].value,
             $("#customerCreditLineInput")[0].value,
+            $("#customerBalInput")[0].value,
             $("#customerMemberStatusInput")[0].value,
             $("#customerJoinDateInput")[0].value,
             $("#customerEmailInput")[0].value,
             onUpdateCustomer
         );
+        console.log(customer.Id,
+            $("#customerNameInput")[0].value,
+            $("#customerAddressInput")[0].value,
+            $("#customerPhoneNoInput")[0].value,
+            $("#customerCreditLineInput")[0].value,
+            $("#customerBalInput")[0].value,
+            $("#customerMemberStatusInput")[0].value,
+            $("#customerJoinDateInput")[0].value,
+            $("#customerEmailInput")[0].value);
     }
 }
 
 function onUpdateCustomer(customer) {
     customer = JSON.parse(customer);
+    console.log(customer);
     var newcustomer = {
         "Id": customer.Id,
         "Name": $("#customerNameInput")[0].value,
@@ -319,11 +333,12 @@ function displayAddCustomer() {
 
     $("#customerNameInput").removeAttr("disabled");
     $("#customerAddressInput").removeAttr("disabled");
-    $("#customerPhoneNoInput").attr({ "disabled": "disabled" });
-    $("#customerCreditLineInput").attr({ "disabled": "disabled" });
-    $("#customerMemberStatusInput").attr({ "disabled": "disabled" });
-    $("#customerJoinDateInput").attr({ "disabled": "disabled" });
-    $("#customerEmailInput").attr({ "disabled": "disabled" });
+    $("#customerPhoneNoInput").removeAttr("disabled");
+    $("#customerCreditLineInput").removeAttr("disabled");
+    $("#customerBalInput").removeAttr( "disabled" );
+    $("#customerMemberStatusInput").removeAttr("disabled");
+    $("#customerJoinDateInput").removeAttr("disabled");
+    $("#customerEmailInput").removeAttr("disabled");
 
     // set details for left button
     var img1 = document.createElement("img");
@@ -357,15 +372,25 @@ function addNewCustomer() {
             $("#customerAddressInput")[0].value,
             $("#customerPhoneNoInput")[0].value,
             $("#customerCreditLineInput")[0].value,
+            $("#customerBalInput")[0].value,
             $("#customerMemberStatusInput")[0].value,
             $("#customerJoinDateInput")[0].value,
             $("#customerEmailInput")[0].value,
             onAddNewCustomer
         );
+        console.log($("#customerNameInput")[0].value,
+            $("#customerAddressInput")[0].value,
+            $("#customerPhoneNoInput")[0].value,
+            $("#customerCreditLineInput")[0].value,
+            $("#customerBalInput")[0].value,
+            $("#customerMemberStatusInput")[0].value,
+            $("#customerJoinDateInput")[0].value,
+            $("#customerEmailInput")[0].value);
     }
 }
 
 function onAddNewCustomer(result) {
+    console.log(result);
     clearDisplay();
     getAllSearchedCustomers();
     resultPopup("Successfully added to the database.", "green");

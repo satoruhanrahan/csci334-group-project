@@ -96,7 +96,16 @@ namespace HobbyShop
                         double cusCredit = Convert.ToDouble(reader["CreditLine"]);
                         double cusBalance = Convert.ToDouble(reader["CurrentBalance"]);
                         string cusStatus = Convert.ToString(reader["ClubMemberStatus"]);
-                        DateTime? cusJoin = Convert.ToDateTime(reader["ClubMemberJoinDate"]);
+                        DateTime? cusJoin;
+                        if (!reader.IsDBNull(reader.GetOrdinal("ClubMemberJoinDate")))
+                        {
+
+                            cusJoin = reader.GetDateTime(reader.GetOrdinal("ClubMemberJoinDate"));
+                        }
+                        else
+                        {
+                            cusJoin = null;
+                        }
                         string cusEmail = Convert.ToString(reader["EmailAddress"]);
 
                         _cus = new Customer(cusName, cusAddress, cusPhone, cusCredit, cusBalance, cusStatus, cusJoin, cusEmail);
@@ -172,7 +181,7 @@ namespace HobbyShop
                 try
                 {
                     con.Open();
-                    string query = "UPDATE Customer SET Name=@name,Address=@add,PhoneNumber=@phone,CreditLine=@credit,CurrentBalance=@balance,ClubMemberStatus=@status,ClubMemberJoinDate=@join,EmailAddress=@email WHERE ItemNumber=@id";
+                    string query = "UPDATE Customer SET Name=@name,Address=@add,PhoneNumber=@phone,CreditLine=@credit,CurrentBalance=@balance,ClubMemberStatus=@status,ClubMemberJoinDate=@join,EmailAddress=@email WHERE CustomerNumber=@id";
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.Parameters.AddWithValue("@name", cusName);
                     cmd.Parameters.AddWithValue("@add", cusAddress);
