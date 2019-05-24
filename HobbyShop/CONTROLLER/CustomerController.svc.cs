@@ -16,7 +16,7 @@ namespace HobbyShop.CONTROLLER
     public class CustomerController
     {
         [OperationContract]
-        public string Add(string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime cusJoinDate, string cusEmail)
+        public string Add(string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime? cusJoinDate, string cusEmail)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace HobbyShop.CONTROLLER
             }
             catch (Exception e)
             {
-                return e.Message;
+                throw new System.ApplicationException(e.Message);
             }
         }
 
@@ -42,14 +42,13 @@ namespace HobbyShop.CONTROLLER
             string json = new JavaScriptSerializer().Serialize(cusList);
             return json;
         }
-
-        [OperationContract]
-        public string Update(int id, string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime cusJoinDate, string cusEmail)
+        [OperationContract] 
+        public string UpdateCustomer(int id, string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime? cusJoinDate, string cusEmail)
         {
             try
             {
                 Customer _cus = new Customer();
-                _cus = _cus.SearchByID(id);
+                _cus.Id = id;
                 _cus.Name = cusName;
                 _cus.Address = cusAddress;
                 _cus.Phone = cusPhone;
@@ -66,7 +65,7 @@ namespace HobbyShop.CONTROLLER
             }
             catch (Exception e)
             {
-                return e.Message;
+                throw new System.ApplicationException(e.Message);
             }
         }
 
@@ -85,7 +84,24 @@ namespace HobbyShop.CONTROLLER
             }
             catch (Exception e)
             {
-                return e.Message;
+                throw new System.ApplicationException(e.Message);
+            }
+        }
+        [OperationContract]
+        public string ReturnMemberStatusList ()
+        {
+            try
+            {
+                Customer _cus = new Customer();
+                List<String> all = new List<String>();
+                all = _cus.returnStatus();
+
+                string json = new JavaScriptSerializer().Serialize(all);
+                return json;
+            }
+            catch (Exception e)
+            {
+                throw new System.ApplicationException(e.Message);
             }
         }
     }
