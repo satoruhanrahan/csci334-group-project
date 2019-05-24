@@ -75,6 +75,9 @@
 #firstcell {
     width:25%;
 }
+.firstcell {
+    width:25%;
+}
 #detailTable td {
     vertical-align: top;
     border: 0;
@@ -86,6 +89,9 @@
 
 #leftButton, #addRecordButton {
     visibility: hidden;
+}
+#addInventory {
+    width: 100%;
 }
 /**/
 #rightButton {
