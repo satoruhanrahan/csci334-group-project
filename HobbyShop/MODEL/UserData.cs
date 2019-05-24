@@ -36,7 +36,16 @@ namespace HobbyShop.CLASS
                         string lastName = Convert.ToString(reader["LastName"]);
                         string userType = Convert.ToString(reader["UserType"]);
                         int id = Convert.ToInt32(reader["ID"]);
-                        DateTime? lastLogged = Convert.ToDateTime(reader["LastLoginDate"]);
+                        DateTime? lastLogged;
+                        if (!reader.IsDBNull(reader.GetOrdinal("LastLoginDate")))
+                        {
+
+                            lastLogged = reader.GetDateTime(reader.GetOrdinal("LastLoginDate"));
+                        }
+                        else
+                        {
+                            lastLogged = null;
+                        }
 
                         SystemUserFactory _userFactory = null;
 
@@ -64,9 +73,9 @@ namespace HobbyShop.CLASS
             }
 
         }
-        /*
-        // can be used to displayed all Users in Users tab
-        public List<User> returnUsersCheck(string username, string password)
+        
+        
+        public SystemUser returnUsersCheck(string username, string password)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
@@ -79,7 +88,7 @@ namespace HobbyShop.CLASS
 
 
                     OleDbDataReader reader = cmd.ExecuteReader();
-                    List<User> users = new List<User>();
+                    SystemUser _user = null;
                     while (reader.Read())
                     {
                         string userName = Convert.ToString(reader["UserName"]);
@@ -90,17 +99,24 @@ namespace HobbyShop.CLASS
                         int id = Convert.ToInt32(reader["ID"]);
                         DateTime? lastLogged = Convert.ToDateTime(reader["LastLoginDate"]);
 
-                        User _user = new User();
-                        _user.UserName = userName;
-                        _user.PassWord = passWord;
-                        _user.FirstName = firstName;
-                        _user.LastName = lastName;
-                        _user.UserType = userType;
-                        _user.lastLogged = lastLogged;
+                        SystemUserFactory _userFactory = null;
+
+                        switch (userType.ToLower())
+                        {
+                            case "admin":
+                                _userFactory = new AdminFactory(userName, passWord, firstName, lastName);
+                                break;
+                            case "staff":
+                                _userFactory = new StaffFactory(userName, passWord, firstName, lastName);
+                                break;
+                        }
+
+                        _user = _userFactory.GetUser();
+                        _user.LastLogged = lastLogged;
                         _user.Id = id;
-                        users.Add(_user);
+                        
                     }
-                    return users;
+                    return _user;
                 }
                 catch (Exception e)
                 {
@@ -127,13 +143,14 @@ namespace HobbyShop.CLASS
                 }
             }
         }
-
-        public List<String> createAccount(string username, string password, string lastname, string firstname, string usertype)
+        
+        public String createAccount(string username, string password, string firstname, string lastname, string usertype)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
                 try
                 {
+                    string results="";
                     OleDbCommand cmd = new OleDbCommand();
                     cmd.Connection = con;
                     con.Open();
@@ -141,9 +158,9 @@ namespace HobbyShop.CLASS
                     string sql = "SELECT * from Users where UserName='" + username + "'";
                     cmd.CommandText = sql;
                     OleDbDataReader reader = cmd.ExecuteReader();
-                    List<String> results = new List<String>();
+                   
                     int count = 0;
-                    User _user = new User();
+                    SystemUser _user = null;
                     while (reader.Read())
                     {
                         string userName = Convert.ToString(reader["UserName"]);
@@ -153,35 +170,53 @@ namespace HobbyShop.CLASS
                         string userType = Convert.ToString(reader["UserType"]);
                         DateTime? lastLogged = Convert.ToDateTime(reader["LastLoginDate"]);
                         int id = Convert.ToInt32(reader["ID"]);
+
+                        SystemUserFactory _userFactory = null;
+
+                        switch (userType.ToLower())
+                        {
+                            case "admin":
+                                _userFactory = new AdminFactory(userName, passWord, firstName, lastName);
+                                break;
+                            case "staff":
+                                _userFactory = new StaffFactory(userName, passWord, firstName, lastName);
+                                break;
+                        }
+
+                        _user = _userFactory.GetUser();
+                        _user.LastLogged = lastLogged;
                         _user.Id = id;
-                        _user.UserName = userName;
-                        _user.PassWord = passWord;
-                        _user.FirstName = firstName;
-                        _user.LastName = lastName;
-                        _user.UserType = userType;
-                        _user.lastLogged = lastLogged;
+
                         count += 1;
-                        string json = new JavaScriptSerializer().Serialize(_user);
-                        results.Add(json);
+                        
                     }
 
                     con.Close();
                     if (count == 1)
                     {
-                        results.Add("User already exists");
+                       
+                        results="UserName already exists";
+                        
                     }
 
                     else if (count == 0)
                     {
                         con.Open();
-                        sql = "INSERT INTO Users(UserName,Password,GivenName,LastName,UserType) VALUES (@username,@password,@given,@last,@type)";
+                        sql = "INSERT INTO Users ([UserName],[Password],[GivenName],[LastName],[UserType]) VALUES (@username,@password,@given,@last,@type)";
+                        
+                        cmd.Parameters.AddWithValue("@username", username);
+                        
+                        cmd.Parameters.AddWithValue("@password", password);
+                        cmd.Parameters.AddWithValue("@given", firstname);
+                        cmd.Parameters.AddWithValue("@last", lastname);
+                        cmd.Parameters.AddWithValue("@type", usertype);
+
                         cmd.CommandText = sql;
                         cmd.ExecuteNonQuery();
                         con.Close();
-                        _user = new User(username, password, firstname, lastname, usertype);
-                        string json = new JavaScriptSerializer().Serialize(_user);
-                        results.Add(json);
-                        results.Add("New account successfully created");
+
+                        results ="New account successfully created";
+                        
                     }
                     return results;
 
@@ -192,6 +227,7 @@ namespace HobbyShop.CLASS
                 }
             }
         }
+        /*
         public User SearchByUsername(string username)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
@@ -229,16 +265,17 @@ namespace HobbyShop.CLASS
                 }
             }
         }
-        public void DeleteUser()
+        */
+        public void DeleteUser(int id)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
                 try
                 {
                     con.Open();
-                    string query = "DELETE FROM Users WHERE UserName=@username";
+                    string query = "DELETE FROM Users WHERE ID=@id";
                     OleDbCommand cmd = new OleDbCommand(query, con);
-                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@id",id );
 
                     cmd.ExecuteNonQuery();
                 }
@@ -247,6 +284,6 @@ namespace HobbyShop.CLASS
                     throw new System.ApplicationException(e.Message);
                 }
             }
-        } */
+        } 
     }
 }

@@ -90,6 +90,7 @@
     <Content Include="CONTROLLER\StoreController.svc" />
     <Content Include="CONTROLLER\SupplierController.svc" />
     <Content Include="CONTROLLER\UserController.svc" />
+    <Content Include="VIEW\MasterPageStaff.aspx" />
     <Content Include="VIEW\ContactsView.aspx" />
     <Content Include="VIEW\CustomersView.aspx" />
     <Content Include="VIEW\DeliveriesView.aspx" />
@@ -140,6 +141,13 @@
     </Compile>
     <Compile Include="CONTROLLER\SupplierController.svc.cs">
       <DependentUpon>SupplierController.svc</DependentUpon>
+    </Compile>
+    <Compile Include="VIEW\MasterPageStaff.aspx.cs">
+      <DependentUpon>MasterPageStaff.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VIEW\MasterPageStaff.aspx.designer.cs">
+      <DependentUpon>MasterPageStaff.aspx</DependentUpon>
     </Compile>
     <Compile Include="MODEL\AllUser\Admin.cs" />
     <Compile Include="MODEL\AllUser\AdminFactory.cs" />

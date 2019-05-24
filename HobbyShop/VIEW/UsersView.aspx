@@ -31,8 +31,8 @@
             <div id="detailOptions" class="dropdown">
                 <button type="button" class="smallbtn"> <img src="style/options.png" /></button>
                 <div class="dropdown-content">
-                    <button type="button" class="dropdown-button" id="editItem">Edit Details</button>
-                    <button type="button" class="dropdown-button" id="deleteItem">Delete Accounts</button>
+                    <button type="button" class="dropdown-button" id="editUser">Edit Details</button>
+                    <button type="button" class="dropdown-button" id="deleteUser">Delete Accounts</button>
                 </div> 
             </div>
             <div id="detailTabBar">
