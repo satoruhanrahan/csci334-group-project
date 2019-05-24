@@ -44,7 +44,7 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string Update(int id, string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime cusJoinDate, string cusEmail)
+        public string Update(int id, string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime? cusJoinDate, string cusEmail)
         {
             try
             {

@@ -237,6 +237,7 @@ namespace HobbyShop
                 }
             }
         }
+        /*
         public List<String> returnInterests()
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
@@ -268,5 +269,6 @@ namespace HobbyShop
                 }
             }
         }
+        */
     }
 }

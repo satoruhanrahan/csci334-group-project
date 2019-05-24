@@ -136,6 +136,7 @@ function editCustomerDetails(customer) {
     $("#customerNameInput").removeAttr("disabled");
     $("#customerAddressInput").removeAttr("disabled");
     $("#customerPhoneNoInput").removeAttr("disabled");
+    $("#customerBalInput").removeAttr("disabled");
     $("#customerCreditLineInput").removeAttr("disabled");
     $("#customerMemberStatusInput").removeAttr("disabled");
     $("#customerJoinDateInput").removeAttr("disabled");
@@ -143,7 +144,7 @@ function editCustomerDetails(customer) {
 
     $("#customerNameInput")[0].value = customer.Name;
     $("#customerAddressInput")[0].value = customer.Address;
-    $("#customerPhoneNoInput")[0].value = customer.PhoneNo;
+    $("#customerPhoneNoInput")[0].value = customer.Phone;
     $("#customerCreditLineInput")[0].value = customer.CreditLine;
     $("#customerMemberStatusInput")[0].value = customer.MemberStatus;
     $("#customerJoinDateInput")[0].value = customer.JoinDate;
