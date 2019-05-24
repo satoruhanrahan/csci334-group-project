@@ -135,6 +135,9 @@
     <Compile Include="CONTROLLER\CustomerController.svc.cs">
       <DependentUpon>CustomerController.svc</DependentUpon>
     </Compile>
+    <Compile Include="CONTROLLER\StoreController.svc.cs">
+      <DependentUpon>StoreController.svc</DependentUpon>
+    </Compile>
     <Compile Include="CONTROLLER\SupplierController.svc.cs">
       <DependentUpon>SupplierController.svc</DependentUpon>
     </Compile>
@@ -156,9 +159,6 @@
     </Compile>
     <Compile Include="CONTROLLER\SaleController.svc.cs">
       <DependentUpon>SaleController.svc</DependentUpon>
-    </Compile>
-    <Compile Include="CONTROLLER\StoreController.svc.cs">
-      <DependentUpon>StoreController.svc</DependentUpon>
     </Compile>
     <Compile Include="CONTROLLER\UserController.svc.cs">
       <DependentUpon>UserController.svc</DependentUpon>

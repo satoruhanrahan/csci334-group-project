@@ -27,7 +27,7 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string AddStore( string address)
+        public string AddStore(string address)
         {
             try
             {

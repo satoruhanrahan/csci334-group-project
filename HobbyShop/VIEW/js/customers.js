@@ -30,7 +30,6 @@ function getAllSearchedCustomers() {
 
 function onSearchCustomers(result) {
     customers = JSON.parse(result);
-   // console.log(customers);
     displayCustomerNames(customers);
 }
 
@@ -61,7 +60,6 @@ function displayCustomerNames(customers) {
 
 // Displays an customers details
 function displayCustomerDetails(customer) {
-    //console.log(customer);
     // set display
     clearDisplay();
     switchTabs("detailTabBar", "detailsTab");
@@ -79,11 +77,11 @@ function displayCustomerDetails(customer) {
     });
     $("body").on("click", "#interestsTab", function () {
         switchTabs("detailTabBar", "interestsTab");
-        //displayCustomerInterests(customer);
+        displayCustomerInterests(customer);
     });
     $("body").on("click", "#ordersTab", function () {
         switchTabs("detailTabBar", "ordersTab");
-        //displayCustomerOrders(customer);
+        displayCustomerOrders(customer);
     });
     $("#editCustomer")[0].addEventListener("click", function () {
         editCustomerDetails(customer);
@@ -106,9 +104,6 @@ function displayCustomerDetails(customer) {
         var format = year + "-" + month + "-" + day;
         $("#customerJoinDateInput")[0].value = format;
     }
-    else {
-        $("#customerJoinDateInput")[0].value.toString = "Not applicable"; // I don't really know how to convert this since u've set the attribute as datetime
-    }
 
     activeItem(customer.Id);
     $("#customerID")[0].innerHTML = customer.Id;
@@ -118,7 +113,7 @@ function displayCustomerDetails(customer) {
     
     $("#customerCreditLineInput")[0].value = customer.CreditLine;
     $("#customerBalInput")[0].value = customer.Balance;
-    $("#customerMemberStatusInput")[0].value = customer.MemberStatus; // I already make a controller call that returns every member status in ClubMemberStatus table which is ReturnMemberStatusList()
+    $("#customerMemberStatusInput")[0].value = customer.MemberStatus; 
     $("#customerEmailInput")[0].value = customer.Email;
 }
 
@@ -148,7 +143,21 @@ function editCustomerDetails(customer) {
     $("#customerBalInput")[0].value = customer.Balance;
     $("#customerCreditLineInput")[0].value = customer.CreditLine;
     $("#customerMemberStatusInput")[0].value = customer.MemberStatus;
-    $("#customerJoinDateInput")[0].value = customer.JoinDate;
+    if (customer.JoinDate != null) {
+        var date = new Date(parseInt((customer.JoinDate).substr(6)));
+
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var year = date.getFullYear();
+        if (month.toString().length == 1) {
+            month = "0" + month;
+        }
+        if (day.toString().length == 1) {
+            day = "0" + day;
+        }
+        var format = year + "-" + month + "-" + day;
+        $("#customerJoinDateInput")[0].value = format;
+    }
     $("#customerEmailInput")[0].value = customer.Email;
 
     $("#customerID")[0].append(customer.Id);
@@ -305,12 +314,14 @@ function clearDisplay() {
     $("#customerPhoneNoInput")[0].value = "";
     $("#customerCreditLineInput")[0].value = "";
     $("#customerMemberStatusInput")[0].value = "";
+    $("#customerBalInput")[0].value = "";
     $("#customerJoinDateInput")[0].value = "";
     $("#customerEmailInput")[0].value = "";
     $("#customerNameInput").attr({ "disabled": "disabled" });
     $("#customerAddressInput").attr({ "disabled": "disabled" });
     $("#customerPhoneNoInput").attr({ "disabled": "disabled" });
     $("#customerCreditLineInput").attr({ "disabled": "disabled" });
+    $("#customerBalInput").attr({ "disabled": "disabled" });
     $("#customerMemberStatusInput").attr({ "disabled": "disabled" });
     $("#customerJoinDateInput").attr({ "disabled": "disabled" });
     $("#customerEmailInput").attr({ "disabled": "disabled" });

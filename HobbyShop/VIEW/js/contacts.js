@@ -130,14 +130,9 @@ function updateContact(contact) {
             onUpdateContact
         );
     }
-    console.log(contact.Id,
-        $("#contactSupIDInput")[0].value,
-        $("#contactFullNameInput")[0].value,
-        $("#contactPhoneNoInput")[0].value);
 }
 
 function onUpdateContact(result) {
-    console.log(result);
     var contact = JSON.parse(result);
     var newcontact = {
         "Id": contact.Id,
