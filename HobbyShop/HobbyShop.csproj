@@ -138,16 +138,22 @@
     <Compile Include="CONTROLLER\SupplierController.svc.cs">
       <DependentUpon>SupplierController.svc</DependentUpon>
     </Compile>
+    <Compile Include="MODEL\AllUser\Admin.cs" />
+    <Compile Include="MODEL\AllUser\AdminFactory.cs" />
     <Compile Include="MODEL\Customer.cs" />
     <Compile Include="MODEL\Delivery.cs" />
     <Compile Include="MODEL\Model.cs" />
     <Compile Include="MODEL\Sale.cs" />
     <Compile Include="MODEL\SaleItem.cs" />
+    <Compile Include="MODEL\AllUser\Staff.cs" />
+    <Compile Include="MODEL\AllUser\StaffFactory.cs" />
     <Compile Include="MODEL\Store.cs" />
     <Compile Include="MODEL\StoreInventory.cs" />
     <Compile Include="MODEL\Supplier.cs" />
     <Compile Include="MODEL\SupplierContact.cs" />
-    <Compile Include="MODEL\User.cs" />
+    <Compile Include="MODEL\AllUser\SystemUser.cs" />
+    <Compile Include="MODEL\AllUser\SystemUserFactory.cs" />
+    <Compile Include="MODEL\UserData.cs" />
     <Compile Include="CONTROLLER\DeliveryController.svc.cs">
       <DependentUpon>DeliveryController.svc</DependentUpon>
     </Compile>

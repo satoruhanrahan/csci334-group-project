@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.OleDb;
@@ -8,38 +9,12 @@ using System.Web.Script.Serialization;
 
 namespace HobbyShop.CLASS
 {
-    public class User
+    public class UserData
     {
-        private string username;
-        private string password;
-        private DateTime? lastLogged = null;
-        private string firstName;
-        private string lastName;
-        private string userType;
-        private int ID;
-
-        public int Id { get { return ID; } set { ID = value; } }
-        public string UserName { get { return username; } set { username = value; } }
-        public string PassWord { get { return password; } set { password = value; } }
-        public DateTime? LastLogged { get { return lastLogged; } set { lastLogged = value; } }
-        public string FirstName { get { return firstName; } set { firstName = value; } }
-        public string LastName { get { return lastName; } set { lastName = value; } }
-        public string UserType { get { return userType; } set { userType = value; } }
-
-        public User() { }
-        public User(string username, string password, string firstName, string lastName, string userType)
-        {
-            this.username = username;
-            this.password = password;
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.userType = userType;
-        }
+       
         string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
-        
 
-
-        public List<User> SearchDatabase(string input)
+        public List<SystemUser> SearchDatabase(string input)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
@@ -52,7 +27,7 @@ namespace HobbyShop.CLASS
 
 
                     OleDbDataReader reader = cmd.ExecuteReader();
-                    List<User> users = new List<User>();
+                    List<SystemUser> users = new List<SystemUser>();
                     while (reader.Read())
                     {
                         string userName = Convert.ToString(reader["UserName"]);
@@ -63,13 +38,20 @@ namespace HobbyShop.CLASS
                         int id = Convert.ToInt32(reader["ID"]);
                         DateTime? lastLogged = Convert.ToDateTime(reader["LastLoginDate"]);
 
-                        User _user = new User();
-                        _user.UserName = userName;
-                        _user.PassWord = passWord;
-                        _user.FirstName = firstName;
-                        _user.LastName = lastName;
-                        _user.UserType = userType;
-                        _user.lastLogged = lastLogged;
+                        SystemUserFactory _userFactory = null;
+
+                        switch (userType.ToLower())
+                        {
+                            case "admin":
+                                _userFactory = new AdminFactory(userName, passWord, firstName, lastName);
+                                break;
+                            case "staff":
+                                _userFactory = new StaffFactory(userName, passWord, firstName, lastName);
+                                break;
+                        }
+
+                        SystemUser _user = _userFactory.GetUser();
+                        _user.LastLogged = lastLogged;
                         _user.Id = id;
                         users.Add(_user);
                     }
@@ -82,6 +64,7 @@ namespace HobbyShop.CLASS
             }
 
         }
+        /*
         // can be used to displayed all Users in Users tab
         public List<User> returnUsersCheck(string username, string password)
         {
@@ -264,6 +247,6 @@ namespace HobbyShop.CLASS
                     throw new System.ApplicationException(e.Message);
                 }
             }
-        }
+        } */
     }
 }

@@ -23,13 +23,13 @@ namespace HobbyShop.CONTROLLER
         [OperationContract]
         public string ReturnAll(string input)
         {
-            User _user = new User();
-            List<User> allUsers = _user.SearchDatabase(input);
+            UserData _userData = new UserData();
+            List<SystemUser> allUsers = _userData.SearchDatabase(input);
 
             string json = new JavaScriptSerializer().Serialize(allUsers);
             return json;
         }
-
+         /*
 
         [OperationContract]
         public string ReturnUser(string username, string password) // is currently used to validate users
@@ -70,7 +70,7 @@ namespace HobbyShop.CONTROLLER
             {
                 return e.Message;
             }
-        }
+        } */
 
     }
 }
