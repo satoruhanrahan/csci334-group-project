@@ -183,16 +183,15 @@ function editItemDetails(item) {
 // Send edited data to controller
 function updateItem(item) {
     if (validateInput()) {
-
+        var checked = document.getElementById("itemAvailabilityInput");
         ModelController.UpdateModelDetails(
             item.Id,
             $("#itemNameInput")[0].value,
             $("#itemTypeInput")[0].value,
             $("#itemSbjAreaInput")[0].value,
             $("#itemPriceInput")[0].value,
-            
             $("#itemDescriptionInput")[0].value,
-            $("#itemAvailabilityInput")[0].value,
+            checked,
             onUpdateItem
         );
     }
@@ -375,14 +374,14 @@ function validateInput() {
 // Sends input to controller
 function addNewItem() {
     if (validateInput()) {
+        var checked = document.getElementById("itemAvailabilityInput");
          ModelController.AddNewModel(
             $("#itemNameInput")[0].value,
             $("#itemTypeInput")[0].value,
             $("#itemSbjAreaInput")[0].value,
             $("#itemPriceInput")[0].value,
-           
              $("#itemDescriptionInput")[0].value,
-             $("#itemAvailabilityInput")[0].value,
+             checked,
             onAddNewItem
         );
     }
