@@ -21,11 +21,11 @@ namespace HobbyShop.CONTROLLER
     public class ModelController
     {
         [OperationContract]
-        public string AddNewModel(string name, string type, string area, double price, string des)
+        public string AddNewModel(string name, string type, string area, double price, string des, bool avail)
         {
             try
             {
-                Model _model = new Model(name,type,area,price,des);
+                Model _model = new Model(name,type,area,price,des,avail);
                 _model.AddNewModel();
 
                 string json = new JavaScriptSerializer().Serialize(_model);
@@ -49,7 +49,7 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string UpdateModelDetails(int id, string name, string type, string area, double price, string des)
+        public string UpdateModelDetails(int id, string name, string type, string area, double price, string des, bool avail)
         {
             try
             {
@@ -61,6 +61,7 @@ namespace HobbyShop.CONTROLLER
                 modelOnSearch.SbjArea = area;
                 modelOnSearch.Price = price;
                 modelOnSearch.Description = des;
+                modelOnSearch.Availability = avail;
                 modelOnSearch.UpdateModelDetails();
 
                 string json = new JavaScriptSerializer().Serialize(modelOnSearch);
