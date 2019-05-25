@@ -62,7 +62,8 @@ namespace HobbyShop.CONTROLLER
                 modelOnSearch.Price = price;
                 modelOnSearch.Description = des;
                 modelOnSearch.Availability = avail;
-                modelOnSearch.UpdateModelDetails();
+
+                modelOnSearch.UpdateModelDetail();
 
                 string json = new JavaScriptSerializer().Serialize(modelOnSearch);
                 return json;
