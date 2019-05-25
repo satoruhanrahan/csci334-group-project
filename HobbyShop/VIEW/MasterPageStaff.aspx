@@ -1,4 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/VIEW/MasterPage.Master" AutoEventWireup="true" CodeBehind="MasterContent.aspx.cs" Inherits="HobbyShop.WebForm1" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/VIEW/MasterPage.Master" AutoEventWireup="true" CodeBehind="MasterPageStaff.aspx.cs" Inherits="HobbyShop.MasterPageStaff" %>
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/global.js"></script>
@@ -13,7 +15,6 @@
         <button type="button" class="tab" id="Contacts">Contacts</button>
         <button type="button" class="tab" id="Customers">Customers</button>
         <button type="button" class="tab" id="Stores">Stores</button>
-        <button type="button" class="tab" id="Users">Users</button>
         <button type="button" class="tab" id="Settings">Settings</button>
         <button type="button" class="tab" id="LogOut">Log Out</button>
     </div>
@@ -22,4 +23,3 @@
     <div id="content"></div>
     <div id="results"></div>
 </asp:Content>
-

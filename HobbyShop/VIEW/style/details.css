@@ -46,7 +46,7 @@
 #details {
     margin: 10px;
 }
-#details input, #details textarea, #details input:disabled, #details textarea:disabled {
+#details input, #details textarea, #details input:disabled, #details textarea:disabled, #details select, #details select:disabled{
     position: relative;
     display: inline-block;
     width: 100%;
@@ -64,7 +64,7 @@
 #details textarea, #details input, #details select {
     border:1px solid black;
 }
-#details textarea:disabled, #details input:disabled {
+#details textarea:disabled, #details input:disabled, #details select:disabled{
     border:0;
 }
 #detailTable {
@@ -75,6 +75,9 @@
 #firstcell {
     width:25%;
 }
+.firstcell {
+    width:25%;
+}
 #detailTable td {
     vertical-align: top;
     border: 0;
@@ -83,11 +86,17 @@
 .leftButton {
     visibility: hidden;
 }
-
+#addBar input{
+    width:calc(100% - 34px);
+    border:1px solid black;
+    height:28px;
+}
 #leftButton, #addRecordButton {
     visibility: hidden;
 }
-/**/
+#addInventory {
+    width: 100%;
+}
 #rightButton {
     float: right;
     visibility: hidden; /**/

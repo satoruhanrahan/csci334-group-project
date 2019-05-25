@@ -90,6 +90,7 @@
     <Content Include="CONTROLLER\StoreController.svc" />
     <Content Include="CONTROLLER\SupplierController.svc" />
     <Content Include="CONTROLLER\UserController.svc" />
+    <Content Include="VIEW\MasterPageStaff.aspx" />
     <Content Include="VIEW\ContactsView.aspx" />
     <Content Include="VIEW\CustomersView.aspx" />
     <Content Include="VIEW\DeliveriesView.aspx" />
@@ -135,9 +136,21 @@
     <Compile Include="CONTROLLER\CustomerController.svc.cs">
       <DependentUpon>CustomerController.svc</DependentUpon>
     </Compile>
+    <Compile Include="CONTROLLER\StoreController.svc.cs">
+      <DependentUpon>StoreController.svc</DependentUpon>
+    </Compile>
     <Compile Include="CONTROLLER\SupplierController.svc.cs">
       <DependentUpon>SupplierController.svc</DependentUpon>
     </Compile>
+    <Compile Include="VIEW\MasterPageStaff.aspx.cs">
+      <DependentUpon>MasterPageStaff.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VIEW\MasterPageStaff.aspx.designer.cs">
+      <DependentUpon>MasterPageStaff.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MODEL\AllUser\Admin.cs" />
+    <Compile Include="MODEL\AllUser\AdminFactory.cs" />
     <Compile Include="MODEL\Customer.cs" />
     <Compile Include="MODEL\Delivery.cs" />
     <Compile Include="MODEL\Model.cs" />
@@ -147,7 +160,9 @@
     <Compile Include="MODEL\StoreInventory.cs" />
     <Compile Include="MODEL\Supplier.cs" />
     <Compile Include="MODEL\SupplierContact.cs" />
-    <Compile Include="MODEL\User.cs" />
+    <Compile Include="MODEL\AllUser\Staff.cs" />
+    <Compile Include="MODEL\AllUser\StaffFactory.cs" />
+    <Compile Include="MODEL\UserData.cs" />
     <Compile Include="CONTROLLER\DeliveryController.svc.cs">
       <DependentUpon>DeliveryController.svc</DependentUpon>
     </Compile>
@@ -156,9 +171,6 @@
     </Compile>
     <Compile Include="CONTROLLER\SaleController.svc.cs">
       <DependentUpon>SaleController.svc</DependentUpon>
-    </Compile>
-    <Compile Include="CONTROLLER\StoreController.svc.cs">
-      <DependentUpon>StoreController.svc</DependentUpon>
     </Compile>
     <Compile Include="CONTROLLER\UserController.svc.cs">
       <DependentUpon>UserController.svc</DependentUpon>

@@ -39,14 +39,14 @@ namespace HobbyShop
         public Model()
         { 
         }
-        public Model(string name, string type, string sbjArea, double price, string description)
+        public Model(string name, string type, string sbjArea, double price, string description,bool avail)
         {
             this.itemName = name;
             this.itemType = type;
             this.itemSbjArea = sbjArea;
             this.itemPrice = price;
             this.itemDes = description;
-            this.itemAvail = false; // while adding a new item, total count is 0 as it needs to be automatically increased by stock in stores
+            this.itemAvail = avail; // while adding a new item, total count is 0 as it needs to be automatically increased by stock in stores
             this.stockCount = 0; // same reason for availability, if there is stock in any store, automatically change to true
         }
         public void AddNewModel()
@@ -56,16 +56,16 @@ namespace HobbyShop
                 try
                 {
                     con.Open();
-                    //string query = "INSERT INTO Models (Name,Type,SubjectArea,CurrentRetailPrice,Description,Availability,StockCount) VALUES (@name,@type,@area,@price,@des,@avail,@count)";
-                    string query = "INSERT INTO Models (Name,Type,SubjectArea,CurrentRetailPrice,Description) VALUES (@name,@type,@area,@price,@des)";
+                    
+                    string query = "INSERT INTO Models (Name,Type,SubjectArea,CurrentRetailPrice,Description,Availability) VALUES (@name,@type,@area,@price,@des,@avai)";
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.Parameters.AddWithValue("@name", itemName);
                     cmd.Parameters.AddWithValue("@type", itemType);
                     cmd.Parameters.AddWithValue("@area", itemSbjArea);
                     cmd.Parameters.AddWithValue("@price", itemPrice);
                     cmd.Parameters.AddWithValue("@des", itemDes);
-                    //cmd.Parameters.AddWithValue("@avail", itemAvail);
-                    //cmd.Parameters.AddWithValue("@count", stockCount);
+                    cmd.Parameters.AddWithValue("@avai", itemAvail);
+
 
                     cmd.ExecuteNonQuery();
                 }
@@ -99,10 +99,10 @@ namespace HobbyShop
                         bool itemAvail = Convert.ToBoolean(reader["Availability"]);
                         int stockCount = Convert.ToInt32(reader["StockCount"]);
 
-                        _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes)
+                        _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes,itemAvail)
                         {
                             Id = itemNum,
-                            Availability = itemAvail,
+                           
                             StockCount = stockCount
                         };
 
@@ -140,9 +140,9 @@ namespace HobbyShop
                         bool itemAvail = Convert.ToBoolean(reader["Availability"]);
                         int stockCount = Convert.ToInt32(reader["StockCount"]);
 
-                        Model _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes);
+                        Model _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes,itemAvail);
                         _model.Id = itemNum;
-                        _model.Availability = itemAvail;
+                       
                         _model.StockCount = stockCount;
 
                         objects.Add(_model);
@@ -162,7 +162,7 @@ namespace HobbyShop
                 try
                 {
                     con.Open();
-                    string query = "UPDATE Models SET Name=@name,Type=@type,SubjectArea=@area,CurrentRetailPrice=@price ,Description=@des WHERE ItemNumber=@id";
+                    string query = "UPDATE Models SET Name=@name,Type=@type,SubjectArea=@area,CurrentRetailPrice=@price ,Description=@des, Availability=@avai WHERE ItemNumber=@id";
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.Parameters.AddWithValue("@name", itemName);
                     cmd.Parameters.AddWithValue("@type", itemType);
@@ -170,6 +170,7 @@ namespace HobbyShop
                     cmd.Parameters.AddWithValue("@price", itemPrice);
                     cmd.Parameters.AddWithValue("@des", itemDes);
                     cmd.Parameters.AddWithValue("@id", itemNum);
+                    cmd.Parameters.AddWithValue("@avai", itemAvail);
 
                     cmd.ExecuteNonQuery();
                 }

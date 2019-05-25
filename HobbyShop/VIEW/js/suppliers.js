@@ -245,6 +245,7 @@ function clearDisplay() {
     $("#leftButton")[0].style.visibility = "hidden";
     $("#rightButton")[0].style.visibility = "hidden";
     $("#detailTabBar")[0].style.visibility = "hidden";
+    $("#addBar")[0].style.visibility = "hidden";
     $("#results")[0].style.display = "none";
     $("#supplierID")[0].style.backgroundColor = "white";
     $("#supplierID")[0].innerHTML = "";
@@ -317,7 +318,6 @@ function onAddNewSupplier(result) {
 }
 
 function displaySupplierItems(supplier) {
-    console.log(supplier.Id);
     SupplierController.ReturnItems(supplier.Id, onDisplaySupplierItems);
 }
 
@@ -327,9 +327,11 @@ function onDisplaySupplierItems(result) {
     clearDisplay();
     $("#detailHeading")[0].innerHTML = name;
     $("#detailHeading")[0].style.visibility = "visible";
+    $("#addBar")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#items")[0].style.visibility = "visible";
-
+    $("body").off("click", "#addItem", addItem);
+    $("body").on("click", "#addItem", addItem);
     var items = JSON.parse(result);
 
     var button;
@@ -349,15 +351,18 @@ function onDisplaySupplierItems(result) {
     }
 }
 
+function addItem() {
+    SupplierController.addItem($("#itemIDInput").value);
+}
 
 function displaySupplierContacts(supplier) {
     SupplierController.ReturnCorrespondingContacts(supplier.Id, onDisplaySupplierContacts);
 
 }
 function onDisplaySupplierContacts(result) {
-    console.log(result);
     var contacts = JSON.parse(result);
-    // set display
+    console.log(contacts);
+            // set display
     var name = $("#detailHeading")[0].innerHTML;
     clearDisplay();
     $("#detailHeading")[0].innerHTML = name;

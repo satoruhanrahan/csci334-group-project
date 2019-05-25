@@ -28,6 +28,9 @@
     $("#Settings")[0].addEventListener("click", function () {
         loadPage("Settings", "");
     });
+    $("#LogOut")[0].addEventListener("click", function () {
+       //to do, redirect to LogInPage.aspx
+    });
 });
 
 function loadPage(page, loadDetails) {

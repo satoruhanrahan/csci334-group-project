@@ -75,6 +75,10 @@
                 </div>
             </div>
             <div class ="detailTabContent">
+                <div id="addBar">
+                    <input type="text" id="itemIDInput" placeholder="Add by Item ID"/>
+                    <button type="button" id="addItem" class="smallbtn greenbtn" style="float:right;"><img src="style/add.png" /></button>
+                </div>
                 <div id="items" class="scrollable">
                 </div>
             </div>

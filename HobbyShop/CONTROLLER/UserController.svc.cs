@@ -23,54 +23,54 @@ namespace HobbyShop.CONTROLLER
         [OperationContract]
         public string ReturnAll(string input)
         {
-            User _user = new User();
-            List<User> allUsers = _user.SearchDatabase(input);
+            UserData _userData = new UserData();
+            List<SystemUser> allUsers = _userData.SearchDatabase(input);
 
             string json = new JavaScriptSerializer().Serialize(allUsers);
             return json;
         }
-
+         
 
         [OperationContract]
-        public string ReturnUser(string username, string password) // is currently used to validate users
-        // Note: can be used to displayed all users, can not be used for search, don't need to worry about search at the moment
+        public string ReturnUser(string username, string password) // is currently used to validate user when logged in
+        
         {
-            User _user = new User();
+            UserData _user = new UserData();
             DateTime currentTime = DateTime.Now;
             _user.updateLoginTime(username, currentTime);
-            List<User> thatUser = _user.returnUsersCheck(username,password);
+            SystemUser theUser = _user.returnUsersCheck(username,password);
             
-            string json = new JavaScriptSerializer().Serialize(thatUser);
+            string json = new JavaScriptSerializer().Serialize(theUser);
             return json;
 
         }
+        
         [OperationContract]
         public string CreateNewAccount(string username,string password, string firstname, string lastname, string usertype)
         {
-            User _user = new User() ;
-            List<String> results = new List<string>();
-            results = _user.createAccount(username, password, lastname, firstname, usertype);
-
-            string json = new JavaScriptSerializer().Serialize(results);
-            return json;
+            UserData _user = new UserData() ;
+            
+            string results = _user.createAccount(username, password, lastname, firstname, usertype);
+            return results;
+            
             // NOTE: THE RETURN LIST FORM: { [OBJECT STRING] , [CONFIRMATION RESULT - ALREADY EXISTS/ ADD SUCCESSFULLY] }
             // USE: JSON.PARSE (LIST [0]) TO GET THE OBJECT OR JSON.PARSE (LIST [1]) TO GET THE RESULT
         }
+        
         [OperationContract]
-        public string DeleteUserAccount(string username)
+        public void DeleteUserAccount(int id)
         {
             try
             {
-                User _user = new User();
-                _user.UserName = username;
-                _user.DeleteUser();
-                return username;
+                UserData _user = new UserData();
+                _user.DeleteUser(id);
+                
             }
             catch (Exception e)
             {
-                return e.Message;
+                throw new Exception(e.Message);
             }
-        }
+        } 
 
     }
 }

@@ -43,7 +43,7 @@
             </div>
             <div id="details" class="detailTabContent">
                 <div id="test" class="scrollable">
-                    <table class="detailTable">
+                    <table class="detailTable" style="width:100%">
                         <tr> 
                             <td id="firstcell"> Customer Number </td> 
                             <td id="customerID"></td> 
@@ -80,8 +80,9 @@
                             <td> Membership Status </td> 
                             <td id="customerMemberStatus">
                                 <select id="customerMemberStatusInput" disabled>
-                                    <option value="member">Member</option>
-                                    <option value="nonmember">Non-Member</option>
+                                    <option value="Member">Member</option>
+                                    <option value="Non-Member">Non-Member</option>
+                                    <option value="Cancelled">Cancelled</option>
                                 </select>
                             </td> 
                         </tr>
