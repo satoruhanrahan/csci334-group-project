@@ -86,14 +86,17 @@
 .leftButton {
     visibility: hidden;
 }
-
+#addBar input{
+    width:calc(100% - 34px);
+    border:1px solid black;
+    height:28px;
+}
 #leftButton, #addRecordButton {
     visibility: hidden;
 }
 #addInventory {
     width: 100%;
 }
-/**/
 #rightButton {
     float: right;
     visibility: hidden; /**/
