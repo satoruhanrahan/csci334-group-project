@@ -14,7 +14,7 @@ namespace HobbyShop.CLASS
        
         string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
 
-        public List<SystemUser> SearchDatabase(string input)
+        public List<Staff> SearchDatabase(string input)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
@@ -27,7 +27,7 @@ namespace HobbyShop.CLASS
 
 
                     OleDbDataReader reader = cmd.ExecuteReader();
-                    List<SystemUser> users = new List<SystemUser>();
+                    List<Staff> users = new List<Staff>();
                     while (reader.Read())
                     {
                         string userName = Convert.ToString(reader["UserName"]);
@@ -47,7 +47,7 @@ namespace HobbyShop.CLASS
                             lastLogged = null;
                         }
 
-                        SystemUserFactory _userFactory = null;
+                        StaffFactory _userFactory = null;
 
                         switch (userType.ToLower())
                         {
@@ -59,7 +59,7 @@ namespace HobbyShop.CLASS
                                 break;
                         }
 
-                        SystemUser _user = _userFactory.GetUser();
+                        Staff _user = _userFactory.GetUser();
                         _user.LastLogged = lastLogged;
                         _user.Id = id;
                         users.Add(_user);
@@ -75,7 +75,7 @@ namespace HobbyShop.CLASS
         }
         
         
-        public SystemUser returnUsersCheck(string username, string password)
+        public Staff returnUsersCheck(string username, string password)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
@@ -88,7 +88,7 @@ namespace HobbyShop.CLASS
 
 
                     OleDbDataReader reader = cmd.ExecuteReader();
-                    SystemUser _user = null;
+                    Staff _user = null;
                     while (reader.Read())
                     {
                         string userName = Convert.ToString(reader["UserName"]);
@@ -99,7 +99,7 @@ namespace HobbyShop.CLASS
                         int id = Convert.ToInt32(reader["ID"]);
                         DateTime? lastLogged = Convert.ToDateTime(reader["LastLoginDate"]);
 
-                        SystemUserFactory _userFactory = null;
+                        StaffFactory _userFactory = null;
 
                         switch (userType.ToLower())
                         {
@@ -160,7 +160,7 @@ namespace HobbyShop.CLASS
                     OleDbDataReader reader = cmd.ExecuteReader();
                    
                     int count = 0;
-                    SystemUser _user = null;
+                    Staff _user = null;
                     while (reader.Read())
                     {
                         string userName = Convert.ToString(reader["UserName"]);
@@ -171,7 +171,7 @@ namespace HobbyShop.CLASS
                         DateTime? lastLogged = Convert.ToDateTime(reader["LastLoginDate"]);
                         int id = Convert.ToInt32(reader["ID"]);
 
-                        SystemUserFactory _userFactory = null;
+                        StaffFactory _userFactory = null;
 
                         switch (userType.ToLower())
                         {

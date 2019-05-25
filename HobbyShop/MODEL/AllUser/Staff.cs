@@ -5,14 +5,24 @@ using System.Web;
 
 namespace HobbyShop.CLASS
 {
-     class Staff : SystemUser
+    public class Staff
     {
-        private readonly string userType;
-        public override string UserType { get { return userType; } }
+        
+        public int Id { get; set; }
+        public string UserName { get; set; }
+        public string PassWord { get; set; }
+        public DateTime? LastLogged { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public virtual string UserType => "staff";
 
-        public Staff(string username, string password, string firstName, string lastName) : base(username, password, firstName, lastName)
+        public Staff(string username, string password, string firstName, string lastName)
         {
-            this.userType = "staff";
+            this.UserName = username;
+            this.PassWord = password;
+            this.FirstName = firstName;
+            this.LastName = lastName;
         }
     }
 }
+

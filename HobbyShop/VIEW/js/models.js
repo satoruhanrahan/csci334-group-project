@@ -190,8 +190,9 @@ function updateItem(item) {
             $("#itemTypeInput")[0].value,
             $("#itemSbjAreaInput")[0].value,
             $("#itemPriceInput")[0].value,
-            $("#itemAvailabilityInput")[0].value,
+            
             $("#itemDescriptionInput")[0].value,
+            $("#itemAvailabilityInput")[0].value,
             onUpdateItem
         );
     }
@@ -379,8 +380,9 @@ function addNewItem() {
             $("#itemTypeInput")[0].value,
             $("#itemSbjAreaInput")[0].value,
             $("#itemPriceInput")[0].value,
-            $("#itemAvailabilityInput")[0].value,
-            $("#itemDescriptionInput")[0].value,
+           
+             $("#itemDescriptionInput")[0].value,
+             $("#itemAvailabilityInput")[0].value,
             onAddNewItem
         );
     }

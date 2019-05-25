@@ -5,25 +5,19 @@ using System.Web;
 
 namespace HobbyShop.CLASS
 {
-     class AdminFactory: SystemUserFactory
+     class AdminFactory: StaffFactory
     {
         private string username;
         private string password;
-        private DateTime? lastLogged;
         private string firstName;
         private string lastName;
-        private int ID;
 
-       
-        public AdminFactory() { }
-        public AdminFactory(string username, string password, string firstName, string lastName)
+     
+        public AdminFactory(string username, string password, string firstName, string lastName) : base(username, password, firstName, lastName)
         {
-            this.username = username;
-            this.password = password;
-            this.firstName = firstName;
-            this.lastName = lastName;
+           
         }
-        public override SystemUser GetUser()
+        public new Staff GetUser()
         {
             return new Admin(username, password, firstName, lastName);
         }
