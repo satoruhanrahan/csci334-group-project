@@ -128,21 +128,13 @@ function displayItemDetails(item) {
 
     activeItem(item.Id);
 
-    var available;
-    if (item.Availability == true) {
-        available = "Yes";
-    }
-    else {
-        available = "No";
-    }
-
     $("#itemNameInput")[0].value = item.Name;
     $("#itemID")[0].innerHTML = item.Id;
     $("#itemTypeInput")[0].value = item.Type;
     $("#itemSbjAreaInput")[0].value = item.SbjArea;
     $("#itemPriceInput")[0].value = item.Price;
     $("#itemDescriptionInput")[0].value = item.Description;
-    $("#itemAvailability")[0].innerHTML = available;
+    $("#itemAvailabilityInput")[0].innerHTML = item.Availability;
     $("#itemTotalStock")[0].innerHTML = item.StockCount;
 }
 
@@ -155,7 +147,6 @@ function editItemDetails(item) {
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#itemID")[0].style.backgroundColor = "lightgrey";
-    $("#itemAvailability")[0].style.backgroundColor = "lightgrey";
     $("#itemTotalStock")[0].style.backgroundColor = "lightgrey";
     $("#detailHeading")[0].append(item.Name);
 
@@ -164,22 +155,16 @@ function editItemDetails(item) {
     $("#itemSbjAreaInput").removeAttr("disabled");
     $("#itemPriceInput").removeAttr("disabled");
     $("#itemDescriptionInput").removeAttr("disabled");
+    $("#itemAvailabilityInput").removeAttr("disabled");
 
     $("#itemNameInput")[0].value = item.Name;
     $("#itemTypeInput")[0].value = item.Type;
     $("#itemSbjAreaInput")[0].value = item.SbjArea;
     $("#itemPriceInput")[0].value = item.Price;
     $("#itemDescriptionInput")[0].value = item.Description;
+    $("#itemAvailabilityInput")[0].value = item.Availability;
     
-    var available;
-    if (item.Availability == true) {
-        available = "Yes";
-    }
-    else {
-        available = "No";
-    }
     $("#itemID")[0].append(item.Id);
-    $("#itemAvailability")[0].append(available);
     $("#itemTotalStock")[0].append(item.StockCount);
 
     var img1 = document.createElement("img");
@@ -205,6 +190,7 @@ function updateItem(item) {
             $("#itemTypeInput")[0].value,
             $("#itemSbjAreaInput")[0].value,
             $("#itemPriceInput")[0].value,
+            $("#itemAvailabilityInput")[0].value,
             $("#itemDescriptionInput")[0].value,
             onUpdateItem
         );
@@ -220,7 +206,7 @@ function onUpdateItem(item) {
         "SbjArea": $("#itemSbjAreaInput")[0].value,
         "Price": $("#itemPriceInput")[0].value,
         "Description": $("#itemDescriptionInput")[0].value,
-        "Availability": item.Availability,
+        "Availability": $("#itemAvailabilityInput")[0].value,
         "StockCount": item.StockCount
     }
     //  Refreshes the updated button 
@@ -312,10 +298,8 @@ function clearDisplay() {
     $("#detailTabBar")[0].style.visibility = "hidden";
     $("#results")[0].style.display = "none";
     $("#itemID")[0].style.backgroundColor = "white";
-    $("#itemAvailability")[0].style.backgroundColor = "white";
     $("#itemTotalStock")[0].style.backgroundColor = "white";
     $("#itemID")[0].innerHTML = "";
-    $("#itemAvailability")[0].innerHTML = "";
     $("#itemTotalStock")[0].innerHTML = "";
     $("#stores")[0].innerHTML = "";
     $("#suppliers")[0].innerHTML = "";
@@ -330,10 +314,13 @@ function clearDisplay() {
     $("#itemPriceInput")[0].value = "";
     $("#itemDescriptionInput")[0].value = "";
     $("#itemDescriptionInput").value = "";
+    $("#itemAvailabilityInput")[0].value = "";
+    $("#itemAvailabilityInput").value = "";
     $("#itemNameInput").attr({ "disabled": "disabled" });
     $("#itemTypeInput").attr({ "disabled": "disabled" });
     $("#itemSbjAreaInput").attr({ "disabled": "disabled" });
     $("#itemPriceInput").attr({ "disabled": "disabled" });
+    $("#itemAvailabilityInput").attr({ "disabled": "disabled" });
     $("#itemDescriptionInput").attr({ "disabled": "disabled" });
     $("body").off("click", "#leftButton");
     $("body").off("click", "#rightButton");
@@ -350,7 +337,6 @@ function displayAddItem() {
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#itemID")[0].style.backgroundColor = "lightgrey";
-    $("#itemAvailability")[0].style.backgroundColor = "lightgrey";
     $("#itemTotalStock")[0].style.backgroundColor = "lightgrey";
     activeItem("");
 
@@ -359,6 +345,7 @@ function displayAddItem() {
     $("#itemSbjAreaInput").removeAttr("disabled");
     $("#itemPriceInput").removeAttr("disabled");
     $("#itemDescriptionInput").removeAttr("disabled");
+    $("#itemAvailabilityInput").removeAttr("disabled");
 
     // set details for left button
     var img1 = document.createElement("img");
@@ -392,6 +379,7 @@ function addNewItem() {
             $("#itemTypeInput")[0].value,
             $("#itemSbjAreaInput")[0].value,
             $("#itemPriceInput")[0].value,
+            $("#itemAvailabilityInput")[0].value,
             $("#itemDescriptionInput")[0].value,
             onAddNewItem
         );
