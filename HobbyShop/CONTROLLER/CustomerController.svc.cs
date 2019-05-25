@@ -44,7 +44,7 @@ namespace HobbyShop.CONTROLLER
             return json;
         }
 
-        [OperationContract] 
+        [OperationContract]
         public string UpdateCustomer(int id, string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, string cusJoinDate, string cusEmail)
         {
             try
@@ -81,7 +81,7 @@ namespace HobbyShop.CONTROLLER
             }
         }
         [OperationContract]
-        public string ReturnMemberStatusList ()
+        public string ReturnMemberStatusList()
         {
             try
             {
@@ -115,4 +115,3 @@ namespace HobbyShop.CONTROLLER
         }
     }
 }
-

@@ -27,8 +27,8 @@ namespace HobbyShop.CLASS
         public string LastName { get { return lastName; } set { lastName = value; } }
         public string UserType { get { return userType; } set { userType = value; } }
 
-        public User() { }
-        public User(string username, string password, string firstName, string lastName, string userType)
+        public UserData() { }
+        public UserData(string username, string password, string firstName, string lastName, string userType)
         {
             this.username = username;
             this.password = password;
