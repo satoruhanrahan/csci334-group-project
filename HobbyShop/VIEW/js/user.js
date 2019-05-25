@@ -68,12 +68,12 @@ function onGetAllUsers(result) {
 
 //Advanced search display
 function displayAdvSearch() {
-    //clearDisplay();
+    clearDisplay();
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailHeading")[0].innerHTML = "Advanced Search";
 }
 
-// Creates and displays a list of buttons representing suppliers in the inventory. 
+ 
 function displayUserNames(users) {
     console.log(users[0]); //test
     $("#list")[0].innerHTML = "";
@@ -98,13 +98,13 @@ function displayUserNames(users) {
 function displayUserDetails(user) {
     console.log(user);
     // set display
-   // clearDisplay();
-    switchTabs("detailTabBar", "detailsTab");
-    $("#detailHeading")[0].innerHTML = user.FirstName + user.LastName;
+   clearDisplay();
+    
+    $("#detailHeading")[0].innerHTML = user.FirstName +" "+ user.LastName;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
-    $("#detailTabBar")[0].style.visibility = "visible";
+    
 
     /*
     $("#editUser")[0].addEventListener("click", function () {
@@ -130,6 +130,9 @@ function displayUserDetails(user) {
         }
         format = year + "-" + month + "-" + day;
     }
+    else {
+        format = "never logged in";
+    }
     
 
     activeItem(user.Id);
@@ -142,11 +145,44 @@ function displayUserDetails(user) {
     $("#lastLogin")[0].innerHTML = format;
 }
 
+function clearDisplay() {
+    $("#detailHeading")[0].innerHTML = "";
+    $("#detailHeading")[0].style.visibility = "hidden";
+    $("#details")[0].style.visibility = "hidden";
+    $("#detailOptions")[0].style.visibility = "hidden";
+    $("#leftButton")[0].style.visibility = "hidden";
+    $("#rightButton")[0].style.visibility = "hidden";
+    $("#detailTabBar")[0].style.visibility = "hidden";
+    $("#results")[0].style.display = "none";
+
+    $("#userNameInput").value = "";
+    $("#userID")[0].innerHTML = "";
+    $("#userPasswordInput").value = "";
+    $("#userFirstNameInput").value = "";
+    $("#userLastNameInput").value = "";
+    $("#userNameInput")[0].value = "";
+    $("#userPasswordInput")[0].value = "";
+    $("#userFirstNameInput")[0].value = "";
+    $("#userLastNameInput")[0].value = "";
+    $("#userTypeInput").value = "";
+    $("#userTypeInput")[0].value = "";
+    $("#lastLogin")[0].value = "";
+    $("#lastLogin").value = "";
+
+    $("#userNameInput").attr({ "disabled": "disabled" });
+    $("#userPasswordInput").attr({ "disabled": "disabled" });
+    $("#userFirstNameInput").attr({ "disabled": "disabled" });
+    $("#userLastNameInput").attr({ "disabled": "disabled" });
+    $("#userTypeInput").attr({ "disabled": "disabled" });
+
+    $("body").off("click", "#leftButton");
+    $("body").off("click", "#rightButton");
+}
 
 //Create new user account
 function displayAddUser() {
     //reset detail display to have correct elements for this menu.
-   // clearDisplay();
+   clearDisplay();
     $("#detailHeading")[0].innerHTML = "Create New Account";
     $("#detailHeading")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
@@ -184,9 +220,15 @@ function validateInput() {
         alert("Please input all fields!");
         return false;
     }
+    if (type != "admin" && type != "staff") {
+        alert("Type must be either admin or staff in lower case");
+        return false;
+    }
     else {
         return true;
     }
+    
+    
 }
 
 // Sends input to controller
@@ -205,7 +247,7 @@ function addNewUser() {
 
 function onAddNewUser(result) {
     console.log(result);
-    //clearDisplay();
+    clearDisplay();
     getAllUsers();
     
     resultPopup(result, "green");
@@ -266,7 +308,7 @@ function deleteUser(id) {
 }
 
 function onDeleteUser(id) {
-    //clearDisplay();
+    clearDisplay();
     //activeItem("");
     
     $("#" + id)[0].remove();
@@ -277,3 +319,4 @@ function onDeleteUser(id) {
 function closeDelete() {
     results.style.display = "none";
 }
+

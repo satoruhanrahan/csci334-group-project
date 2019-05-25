@@ -238,5 +238,26 @@ namespace HobbyShop.CLASS
                 }
             }
         }
+        public void AddNewSupplierItem(int itemID)
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+
+                    string query = "INSERT INTO SupplierItems (SupplierID,ItemNumber) VALUES (@supID,@itemID)";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.Parameters.AddWithValue("@supID", supID);
+                    cmd.Parameters.AddWithValue("@itemID", itemID);
+
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    throw new System.ApplicationException(ex.Message);
+                }
+            }
+        }
     }
 }

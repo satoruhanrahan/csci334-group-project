@@ -1,6 +1,7 @@
 ﻿// on Page load...
 $(document).ready(function () {
     // display all suppliers
+    var supplierGlobal;
     var suppliers;
     var searchedSuppliers;
     getAllSearchedSuppliers();
@@ -58,6 +59,7 @@ function displaySupplierNames(suppliers) {
         button.setAttribute("class", "listItem");
         let supplier = suppliers[i];
         button.addEventListener("click", function () {
+            supplierGlobal = supplier;
             displaySupplierDetails(supplier);
         });
         $("#list")[0].append(button);
@@ -332,6 +334,7 @@ function onDisplaySupplierItems(result) {
     $("#items")[0].style.visibility = "visible";
     $("body").off("click", "#addItem", addItem);
     $("body").on("click", "#addItem", addItem);
+
     var items = JSON.parse(result);
 
     var button;
@@ -352,9 +355,14 @@ function onDisplaySupplierItems(result) {
 }
 
 function addItem() {
-    SupplierController.addItem($("#itemIDInput").value);
+    console.log($("#itemIDInput")[0].value, supplierGlobal.Id);
+    SupplierController.AddNewSupplierItem($("#itemIDInput")[0].value,supplierGlobal.Id,onAddItem);
 }
-
+function onAddItem(result) {
+    clearDisplay();
+    getAllSearchedSuppliers();
+    resultPopup("Successfully added new Item to the database.", "green");
+}
 function displaySupplierContacts(supplier) {
     SupplierController.ReturnCorrespondingContacts(supplier.Id, onDisplaySupplierContacts);
 
