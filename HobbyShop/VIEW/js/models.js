@@ -183,7 +183,15 @@ function editItemDetails(item) {
 // Send edited data to controller
 function updateItem(item) {
     if (validateInput()) {
-        var checked = document.getElementById("itemAvailabilityInput");
+        
+        var checked = document.getElementById("itemAvailabilityInput").checked;
+        console.log(item.Id,
+            $("#itemNameInput")[0].value,
+            $("#itemTypeInput")[0].value,
+            $("#itemSbjAreaInput")[0].value,
+            $("#itemPriceInput")[0].value,
+            $("#itemDescriptionInput")[0].value,
+            checked);
         ModelController.UpdateModelDetails(
             item.Id,
             $("#itemNameInput")[0].value,
@@ -197,8 +205,10 @@ function updateItem(item) {
     }
 }
 
-function onUpdateItem(item) {
-    item = JSON.parse(item);
+function onUpdateItem(result) {
+    console.log(result);
+    var item = JSON.parse(result);
+    console.log(item);
     var newitem = {
         "Id": item.Id,
         "Name": $("#itemNameInput")[0].value,
@@ -374,7 +384,7 @@ function validateInput() {
 // Sends input to controller
 function addNewItem() {
     if (validateInput()) {
-        var checked = document.getElementById("itemAvailabilityInput");
+        var checked = document.getElementById("itemAvailabilityInput").checked;
          ModelController.AddNewModel(
             $("#itemNameInput")[0].value,
             $("#itemTypeInput")[0].value,
@@ -388,6 +398,7 @@ function addNewItem() {
 }
 
 function onAddNewItem(result) {
+    console.log("result");
     clearDisplay();
     getAllSearchedItems();
     resultPopup("Successfully added to the database.", "green");

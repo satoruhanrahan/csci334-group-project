@@ -168,14 +168,14 @@ namespace HobbyShop
                 }
             }
         }
-        public void UpdateModelDetails()
+        public void UpdateModelDetail()
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
                 try
                 {
                     con.Open();
-                    string query = "UPDATE Models SET Name=@name,Type=@type,SubjectArea=@area,CurrentRetailPrice=@price ,Description=@des, Availability=@avai WHERE ItemNumber=@id";
+                    string query = "UPDATE Models SET Name=@name,Type=@type,SubjectArea=@area,CurrentRetailPrice=@price,Description=@des,Availability=@avail WHERE ItemNumber=@id";
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.Parameters.AddWithValue("@name", itemName);
                     cmd.Parameters.AddWithValue("@type", itemType);
@@ -183,7 +183,7 @@ namespace HobbyShop
                     cmd.Parameters.AddWithValue("@price", itemPrice);
                     cmd.Parameters.AddWithValue("@des", itemDes);
                     cmd.Parameters.AddWithValue("@id", itemNum);
-                    cmd.Parameters.AddWithValue("@avai", itemAvail);
+                    cmd.Parameters.AddWithValue("@avail", itemAvail);
 
                     cmd.ExecuteNonQuery();
                 }
