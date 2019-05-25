@@ -16,11 +16,12 @@ namespace HobbyShop.CONTROLLER
     public class CustomerController
     {
         [OperationContract]
-        public string Add(string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime? cusJoinDate, string cusEmail)
+        public string Add(string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, string cusJoinDate, string cusEmail)
         {
             try
             {
-                Customer _cus = new Customer(cusName, cusAddress, cusPhone, cusCreditLine, cusBalance, cusMemberStatus, cusJoinDate, cusEmail);
+                DateTime formatedDate = DateTime.Parse(cusJoinDate);
+                Customer _cus = new Customer(cusName, cusAddress, cusPhone, cusCreditLine, cusBalance, cusMemberStatus, formatedDate, cusEmail);
                 _cus.Add();
 
                 string json = new JavaScriptSerializer().Serialize(_cus);

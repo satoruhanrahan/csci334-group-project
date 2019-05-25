@@ -19,6 +19,9 @@ namespace HobbyShop {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
+<<<<<<< HEAD
+=======
         protected global::System.Web.UI.HtmlControls.HtmlForm form2;
+>>>>>>> 35b39c33e26a67b10b7779b029c4bbca2a1c7b43
     }
 }
