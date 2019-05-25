@@ -208,7 +208,7 @@ namespace HobbyShop.CLASS
                 try
                 {
                     con.Open();
-                    string query = "SELECT SupplierContacts.SupplierID, FullName, PhoneNo FROM SupplierContacts INNER JOIN Suppliers ON SupplierContacts.SupplierID = Suppliers.SupplierID WHERE Suppliers.SupplierID=" + supID;
+                    string query = "SELECT SupplierContacts.ID,SupplierContacts.SupplierID, FullName, PhoneNo FROM SupplierContacts INNER JOIN Suppliers ON SupplierContacts.SupplierID = Suppliers.SupplierID WHERE Suppliers.SupplierID=" + supID;
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.ExecuteNonQuery();
 
@@ -217,11 +217,13 @@ namespace HobbyShop.CLASS
                     OleDbDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
+                        int contactID = Convert.ToInt32(reader["ID"]);
                         int supID = Convert.ToInt32(reader["SupplierID"]);
                         string name = Convert.ToString(reader["FullName"]);
                         string phone = Convert.ToString(reader["PhoneNo"]);
 
                         SupplierContact supplierContact = new SupplierContact(supID, name, phone);
+                        supplierContact.Id = contactID;
 
                         contacts.Add(supplierContact);
                     }
