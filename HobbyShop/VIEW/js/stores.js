@@ -2,6 +2,7 @@
 $(document).ready(function () {
     // display all stores
     var stores;
+    var storeId;
     var searchedStores;
     getAllSearchedStores();
     // prevent form submission on enter
@@ -68,6 +69,7 @@ function displayStoreDetails(store) {
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
+    storeId = store.Id;
     $("body").off("click", "#detailsTab");
     $("body").off("click", "#inventoryTab");
     $("body").on("click", "#detailsTab", function () {
@@ -344,7 +346,7 @@ function displayItemDetails(item) {
 }
 
 // Edit details
-function editStoreDetails(store) {
+function editItemDetails(item) {
     var address = $("#detailHeading")[0].innerHTML;
     clearDisplay();
     $("#detailHeading")[0].style.visibility = "visible";
@@ -381,30 +383,34 @@ function editStoreDetails(store) {
 function updateItem(item) {
     if (validateItemInput()) {
         StoreController.UpdateItem(
-            item.Id,
-            $("#storeAddressInput")[0].value,
-            onUpdateStore
+            $("#itemIDInput")[0].value,
+            $("#itemStockCountInput")[0].value,
+            $("#itemLocationInput")[0].value,
+            $("#itemDateAddedInput")[0].value,
+            onUpdateItem
         );
     }
 }
 
-function onUpdateStore(store) {
-    store = JSON.parse(store);
-    var newstore = {
-        "Id": store.Id,
-        "Address": $("#storeAddressInput")[0].value
+function onUpdateItem(item) {
+    item = JSON.parse(item);
+    var newitem = {
+        "Id":$("#itemIDInput")[0].value,
+        "StockCount":$("#itemStockCountInput")[0].value,
+        "Location":$("#itemLocationInput")[0].value,
+        "DateAdded":$("#itemDateAddedInput")[0].value,
     }
     //  Refreshes the updated button 
-    $("#" + newstore.Id)[0].innerHTML = newstore.Address;
-    $("#" + newstore.Id)[0].addEventListener("click", function () {
-        displayStoreDetails(newstore);
+    document.getElementById("inventoryList").$("#" + newitem.Id)[0].innerHTML = newitem.Id;
+    document.getElementById("inventoryList").$("#" + newitem.Id)[0].addEventListener("click", function () {
+        displayItemDetails(newitem);
     });
-    displayStoreDetails(newstore);
-    resultPopup("Successfully updated store in the Database.", "green");
+    displayItemDetails(newitem);
+    resultPopup("Successfully updated item in the Database.", "green");
 }
 
 //displays the delete model prompt
-function displayDeleteStore(store) {
+function displayDeleteItem(item) {
     $("#results")[0].style.borderColor = "red";
     $("#results")[0].style.display = "block";
     $("#results")[0].innerHTML = "";
@@ -439,12 +445,7 @@ function displayDeleteStore(store) {
     button2.append(br.cloneNode());
     button2.append("Cancel");
 
-    $("#results")[0].append("Are you sure you want to delete this store ");
-    var span = document.createElement("span");
-    span.style.fontWeight = "bold";
-    span.append("permanently");
-    $("#results")[0].append(span);
-    $("#results")[0].append(" from the database?");
+    $("#results")[0].append("Are you sure you want to delete this item from this stores inventory?");
     $("#results")[0].append(br.cloneNode());
     $("#results")[0].append(br.cloneNode());
     $("#results")[0].append(button1);
@@ -452,48 +453,55 @@ function displayDeleteStore(store) {
 }
 
 // sends id of store to be deleted to controller
-function deleteStore(id) {
+function deleteItem(id) {
     results.style.display = "none";
-    StoreController.Delete(id, onDeleteStore);
+    StoreController.DeleteItem(id, onDeleteItem);
 }
 
-function onDeleteStore(id) {
+function onDeleteItem(id) {
     clearDisplay();
     activeItem("");
     // remove corresponding button from list
-    $("#" + id)[0].remove();
-    resultPopup("Store was successfully removed.", "green");
+    document.getElementById("inventoryList").$("#" + id)[0].remove();
+    resultPopup("Item was successfully removed.", "green");
 }
 
 //Add new store to model table
-function displayAddStore() {
+function displayAddItem() {
     //reset detail display to have correct elements for this menu.
     clearDisplay();
-    $("#detailHeading")[0].innerHTML = "Add a New Store";
+    $("#detailHeading")[0].innerHTML = "Add an Item to the inventory";
     $("#detailHeading")[0].style.visibility = "visible";
-    $("#details")[0].style.visibility = "visible";
+    $("#inventory")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
-    $("#storeID")[0].style.backgroundColor = "lightgrey";
+    $("#addInventory")[0].style.visibility = "visible";
     activeItem("");
 
-    $("#storeAddressInput").removeAttr("disabled");
+    $("#itemIDInput").removeAttr("disabled");
+    $("#itemStockCountInput").removeAttr("disabled");
+    $("#itemLocationInput").removeAttr("disabled");
+    $("#itemDateAddedInput").removeAttr("disabled");
+
 
     // set details for left button
     var img1 = document.createElement("img");
     img1.src = "style/add.png";
     $("#leftButton")[0].innerHTML = "";
     $("#leftButton")[0].append(img1);
-    $("body").on("click", "#leftButton", addNewStore);
+    $("body").on("click", "#leftButton", addItem);
     $("body").on("click", "#rightButton", clearDisplay);
 }
 
-function validateInput() {
-    var address = $("#storeAddressInput")[0].value;
+function validateItemInput() {
+    var id = $("#itemIDInput")[0].value;
+    var stock = $("#itemStockCountInput")[0].value;
+    var loc = $("#itemLocationInput")[0].value;
+    var date = $("#itemDateAddedInput")[0].value;
 
-    if (address === '') {
-        alert("Please input: Address!");
+    if (id === '' || stock === '' || loc === '' || date === '') {
+        alert("Please input: ID, Stock count, Location in store and date stocked!");
         return false;
     }
     else {
@@ -502,11 +510,20 @@ function validateInput() {
 }
 
 // Sends input to controller
-function addNewStore() {
+function addItem() {
     if (validateInput()) {
-        StoreController.Add(
-            $("#storeAddressInput")[0].value,
-            onAddNewStore
+        StoreController.AddItem(
+            $("#itemIDInput")[0].value,
+            $("#itemStockCountInput")[0].value,
+            $("#itemLocationInput")[0].value,
+            $("#itemDateAddedInput")[0].value,
+            onAddItem
         );
     }
+}
+
+function onAddItem(result) {
+    clearDisplay();
+    displayStoreInventory();
+    resultPopup("Successfully added to the database.", "green");
 }
