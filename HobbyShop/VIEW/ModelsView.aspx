@@ -76,7 +76,7 @@
                         </tr> 
                         <tr> 
                             <td> Availability </td> 
-                            <td id="itemAvailability"></td> 
+                            <td id="itemAvailability"><input type="checkbox" id="itemAvailabilityInput" disabled/></td> 
                         </tr> 
                         <tr> 
                             <td> Total Stock </td> 
