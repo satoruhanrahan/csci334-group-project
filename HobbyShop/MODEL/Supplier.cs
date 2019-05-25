@@ -183,10 +183,9 @@ namespace HobbyShop.CLASS
                         bool itemAvail = Convert.ToBoolean(reader["Availability"]);
                         int stockCount = Convert.ToInt32(reader["StockCount"]);
 
-                        Model _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes)
+                        Model _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes,itemAvail)
                         {
-                            Id = itemNum,
-                            Availability = itemAvail,
+                            Id = itemNum, 
                             StockCount = stockCount
                         };
                         mods.Add(_model);
