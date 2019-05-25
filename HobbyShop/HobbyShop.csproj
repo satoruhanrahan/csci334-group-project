@@ -125,6 +125,7 @@
     <Content Include="VIEW\style\list.css" />
     <Content Include="VIEW\style\details.css" />
     <Content Include="VIEW\style\sales.css" />
+    <Content Include="VIEW\style\stores.css" />
     <Content Include="VIEW\SuppliersView.aspx" />
     <Content Include="VIEW\UsersView.aspx" />
     <Content Include="Web.config" />

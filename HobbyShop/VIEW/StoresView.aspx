@@ -8,6 +8,7 @@
         <title> Stores - Tim's Model Market </title>
 	    <link rel="stylesheet" href="style/details.css"/>
         <link rel="stylesheet" href="style/list.css" />
+        <link rel="stylesheet" href="style/stores.css" />
         <script type="text/javascript" src="js/stores.js"></script>
     </head>
     <body>

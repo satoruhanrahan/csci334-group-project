@@ -17,10 +17,10 @@ namespace HobbyShop.CONTROLLER
     public class StoreController
     {
         [OperationContract]
-        public string GetStores()
+        public string GetStores(string keyword)
         {
             Store store = new Store();
-            ArrayList storeList = store.GetStores();
+            ArrayList storeList = store.GetStores(keyword);
 
             string json = new JavaScriptSerializer().Serialize(storeList);
             return json;
@@ -33,6 +33,36 @@ namespace HobbyShop.CONTROLLER
             {
                 Store store = new Store(address);
                 store.AddStore();
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        [OperationContract]
+        public string UpdateStore(int storeID, string address)
+        {
+            try
+            {
+                Store store = new Store(storeID, address);
+                store.UpdateStore();
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        [OperationContract]
+        public string DeleteStore(int id)
+        {
+            try
+            {
+                Store store = new Store(id);
+                store.DeleteStore();
                 return "";
             }
             catch (Exception ex)
@@ -62,12 +92,13 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string DeleteStore(int id)
+        public string AddInventorItem(int storeID, string itemName, int stockCount, int location, string firstDate)
         {
             try
             {
-                Store store = new Store(id);
-                store.DeleteStore();
+                Store store = new Store();
+                DateTime formatedDate = DateTime.Parse(firstDate);
+                store.AddInventoryItem(storeID, itemName, stockCount, location, formatedDate);
                 return "";
             }
             catch (Exception ex)
@@ -77,13 +108,28 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string EditInventoryItem(string itemName, int stockCount, int location, string firstDate)
+        public string EditInventoryItem(string itemName, int stockCount, int location, string firstDate) //users are not allowed to change the storeID
         {
             try
             {
                 Store store = new Store();
                 DateTime formatedDate = DateTime.Parse(firstDate);
                 store.EditInventoryItem(itemName, stockCount, location, formatedDate);
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        [OperationContract]
+        public string DeleteInventoryItem(string itemName) //users are not allowed to change the storeID
+        {
+            try
+            {
+                Store store = new Store();
+                store.DeleteInventoryItem(itemName);
                 return "";
             }
             catch (Exception ex)

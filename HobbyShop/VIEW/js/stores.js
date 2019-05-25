@@ -25,10 +25,10 @@ $(document).ready(function () {
 // Display stores in list based on search
 function getAllSearchedStores() {
     var searchInput = document.getElementById("searchbar").value;
-    StoreController.Search(searchInput, onSearchStores);
+    StoreController.GetStores(searchInput, onGetStores);
 }
 
-function onSearchStores(result) {
+function onGetStores(result) {
     stores = JSON.parse(result);
     displayStoreNames(stores);
 }
@@ -86,7 +86,7 @@ function displayStoreDetails(store) {
     });
 
     activeItem(store.Id);
-    $("#storeID")[0].innerHTML = store.Id;
+    $("#storeID")[0].innerHTML = store.StoreID;
     $("#storeAddressInput")[0].value = store.Address;
 }
 
@@ -94,8 +94,10 @@ function displayStoreDetails(store) {
 function editStoreDetails(store) {
     clearDisplay();
     $("#detailHeading")[0].style.visibility = "visible";
-    $("#details")[0].style.visibility = "visible";
+    //$("#details")[0].style.visibility = "visible";
+    $("#detailTable")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
+    $("#inventory")[0].style.visibility = "hidden";
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#storeID")[0].style.backgroundColor = "lightgrey";
@@ -105,7 +107,7 @@ function editStoreDetails(store) {
 
     $("#storeAddressInput")[0].value = store.Address;
 
-    $("#storeID")[0].append(store.Id);
+    $("#storeID")[0].append(store.StoreID);
 
     var img1 = document.createElement("img");
     img1.src = "style/save.png";
@@ -123,8 +125,8 @@ function editStoreDetails(store) {
 // Send edited data to controller
 function updateStore(store) {
     if (validateInput()) {
-        StoreController.Update(
-            store.Id,
+        StoreController.UpdateStore(
+            store.StoreID,
             $("#storeAddressInput")[0].value,
             onUpdateStore
         );
@@ -134,7 +136,7 @@ function updateStore(store) {
 function onUpdateStore(store) {
     store = JSON.parse(store);
     var newstore = {
-        "Id": store.Id,
+        "StoreID": store.StoreID,
         "Address": $("#storeAddressInput")[0].value
     }
     //  Refreshes the updated button 
@@ -160,7 +162,7 @@ function displayDeleteStore(store) {
     button1.style.cssFloat = "left";
     button1.setAttribute("class", "mediumbtn greenbtn");
     button1.addEventListener("click", function () {
-        deleteStore(store.Id);
+        deleteStore(store.StoreID);
     });
     var img1 = document.createElement("img");
     img1.src = "style/delete.png";
@@ -197,7 +199,7 @@ function displayDeleteStore(store) {
 // sends id of store to be deleted to controller
 function deleteStore(id) {
     results.style.display = "none";
-    StoreController.Delete(id, onDeleteStore);
+    StoreController.DeleteStore(Number(id), onDeleteStore);
 }
 
 function onDeleteStore(id) {
@@ -272,7 +274,7 @@ function validateInput() {
 // Sends input to controller
 function addNewStore() {
     if (validateInput()) {
-        StoreController.Add(
+        StoreController.AddStore(
             $("#storeAddressInput")[0].value,
             onAddNewStore
         );
@@ -504,7 +506,7 @@ function validateInput() {
 // Sends input to controller
 function addNewStore() {
     if (validateInput()) {
-        StoreController.Add(
+        StoreController.AddStore(
             $("#storeAddressInput")[0].value,
             onAddNewStore
         );

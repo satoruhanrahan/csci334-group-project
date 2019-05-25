@@ -38,14 +38,14 @@ namespace HobbyShop.CLASS
 
         string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
 
-        public ArrayList GetStores()
+        public ArrayList GetStores(string keyword)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
                 try
                 {
                     con.Open();
-                    string query = "SELECT * FROM Stores";
+                    string query = "SELECT * FROM Stores WHERE StoreID LIKE '%" + keyword + "%' OR StoreAddress LIKE '%" + keyword + "%' ORDER BY StoreID";
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.ExecuteNonQuery();
 
@@ -116,6 +116,26 @@ namespace HobbyShop.CLASS
             }
         }
 
+        public void UpdateStore()
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    string query = "UPDATE Stores SET StoreAddress=@address WHERE StoreID=@id";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.Parameters.AddWithValue("@address", address);
+                    cmd.Parameters.AddWithValue("@id", storeID);
+                    cmd.ExecuteNonQuery();
+                }
+                catch (OleDbException ex)
+                {
+                    throw new System.ApplicationException(ex.Message);
+                }
+            }
+        }
+
         public void DeleteStore()
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
@@ -135,14 +155,32 @@ namespace HobbyShop.CLASS
             }
         }
 
-        public void AddInventoryItem()
+        public void AddInventoryItem(int storeID, string itemName, int stockCount, int location, DateTime firstDate)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
                 try
                 {
                     con.Open();
-                    for (int i = 0; i < items.Count; i++)
+                    string query = "SELECT ItemNumber FROM Models WHERE Name=@name";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.Parameters.AddWithValue("@name", itemName);
+                    cmd.ExecuteNonQuery();
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    int itemNumber = 0;
+                    if (reader.Read())
+                    {
+                        itemNumber = Convert.ToInt32(reader["ItemNumber"]);
+                    }
+                    string itemQuery = "INSERT INTO StoreInventory VALUES (@storeID, @itemNumber, @stockCount, @location, @firstDate)";
+                    OleDbCommand itemCmd = new OleDbCommand(itemQuery, con);
+                    itemCmd.Parameters.AddWithValue("@storeID", storeID);
+                    itemCmd.Parameters.AddWithValue("@itemNumber", itemNumber);
+                    itemCmd.Parameters.AddWithValue("@stockCount", stockCount);
+                    itemCmd.Parameters.AddWithValue("@location", location);
+                    itemCmd.Parameters.AddWithValue("@firstDate", firstDate);
+                    itemCmd.ExecuteNonQuery();
+                    /*for (int i = 0; i < items.Count; i++)
                     {
                         StoreInventory item = (StoreInventory)items[i];
                         string query = "SELECT ItemNumber FROM Models WHERE Name=@name";
@@ -162,7 +200,7 @@ namespace HobbyShop.CLASS
                         itemCmd.Parameters.AddWithValue("@stockCount", item.StockCount);
                         itemCmd.Parameters.AddWithValue("@firstDate", item.FirstStockDate);
                         itemCmd.ExecuteNonQuery();
-                    }
+                    }*/
                 }
                 catch (OleDbException ex)
                 {
@@ -195,6 +233,36 @@ namespace HobbyShop.CLASS
                     itemCmd.Parameters.AddWithValue("@count", stockCount);
                     itemCmd.Parameters.AddWithValue("@location", location);
                     itemCmd.Parameters.AddWithValue("@date", firstDate);
+                }
+                catch (OleDbException ex)
+                {
+                    throw new System.ApplicationException(ex.Message);
+                }
+            }
+        }
+
+        public void DeleteInventoryItem(string itemName)
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    string query = "SELECT ItemNumber FROM Models WHERE Name=@name";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.Parameters.AddWithValue("@name", itemName);
+                    cmd.ExecuteNonQuery();
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    int itemNumber = 0;
+                    if (reader.Read())
+                    {
+                        itemNumber = Convert.ToInt32(reader["ItemNumber"]);
+                    }
+
+                    string storeQuery = "DELETE FROM StoreInventory WHERE ItemNumber=@number";
+                    OleDbCommand storeCmd = new OleDbCommand(storeQuery, con);
+                    storeCmd.Parameters.AddWithValue("@number", itemNumber);
+                    storeCmd.ExecuteNonQuery();
                 }
                 catch (OleDbException ex)
                 {
