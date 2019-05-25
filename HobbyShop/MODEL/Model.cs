@@ -39,6 +39,19 @@ namespace HobbyShop
         public Model()
         { 
         }
+
+        public Model(int itemNum, string name, string type, string sbjArea, double price, string description, bool avail, int stockCount)
+        {
+            this.itemNum = itemNum;
+            this.itemName = name;
+            this.itemType = type;
+            this.itemSbjArea = sbjArea;
+            this.itemPrice = price;
+            this.itemDes = description;
+            this.itemAvail = avail; 
+            this.stockCount = stockCount;
+        }
+
         public Model(string name, string type, string sbjArea, double price, string description,bool avail)
         {
             this.itemName = name;

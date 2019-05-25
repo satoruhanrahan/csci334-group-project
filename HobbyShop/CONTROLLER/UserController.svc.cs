@@ -24,7 +24,7 @@ namespace HobbyShop.CONTROLLER
         public string ReturnAll(string input)
         {
             UserData _userData = new UserData();
-            List<SystemUser> allUsers = _userData.SearchDatabase(input);
+            List<Staff> allUsers = _userData.SearchDatabase(input);
 
             string json = new JavaScriptSerializer().Serialize(allUsers);
             return json;
@@ -38,7 +38,7 @@ namespace HobbyShop.CONTROLLER
             UserData _user = new UserData();
             DateTime currentTime = DateTime.Now;
             _user.updateLoginTime(username, currentTime);
-            SystemUser theUser = _user.returnUsersCheck(username,password);
+            Staff theUser = _user.returnUsersCheck(username,password);
             
             string json = new JavaScriptSerializer().Serialize(theUser);
             return json;

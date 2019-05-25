@@ -182,13 +182,13 @@ namespace HobbyShop.CLASS
                         string itemDes = Convert.ToString(reader["Description"]);
                         bool itemAvail = Convert.ToBoolean(reader["Availability"]);
                         int stockCount = Convert.ToInt32(reader["StockCount"]);
-
-                        Model _model = new Model(itemName, itemType, itemSbjArea, itemPrice, itemDes)
-                        {
+                        //string name, string type, string sbjArea, double price, string description,bool avail
+                        Model _model = new Model(itemNum, itemName, itemType, itemSbjArea, itemPrice, itemDes, itemAvail, stockCount);
+                        /*{
                             Id = itemNum,
                             Availability = itemAvail,
                             StockCount = stockCount
-                        };
+                        };*/
                         mods.Add(_model);
 
                     }

@@ -53,11 +53,15 @@ function onGetOrderRecords(result) {
 }
 //display a list of sales
 function displaySaleRecords(orders) {
-    //clearDisplay();
-    var test = document.getElementById("test");
+    clearDisplay();
+    /*var test = document.getElementById("test");
     while (test.hasChildNodes()) {
         test.removeChild(test.lastChild);
-    }
+    }*/
+    $("#detailHeading")[0].innerHTML = name;
+    $("#detailHeading")[0].style.visibility = "visible";
+    $("#detailTabBar")[0].style.visibility = "visible";
+    $("#orders")[0].style.visibility = "visible";
     for (var i = orders.length - 1; i >= 0; i--) {
         var button = document.createElement("button");
         button.setAttribute("class", "listItem bigList");
@@ -68,7 +72,7 @@ function displaySaleRecords(orders) {
         button.addEventListener("click", function () {
             loadPage("Sales", order);
         });
-        $("#test")[0].append(button);
+        $("#orders")[0].append(button);
     }
 }
 
@@ -164,11 +168,11 @@ function displayCustomerNames(customers) {
 function displayCustomerDetails(customer) {
     // set display
 
-    //clearDisplay();
-    var test = document.getElementById("test");
+    clearDisplay();
+    /*var test = document.getElementById("test");
     while (test.hasChildNodes()) {
         test.removeChild(test.lastChild);
-    }
+    }*/
     /*
     var detailTable = document.createElement("table");
     detailTable.setAttribute("class", "detailTable");
@@ -241,8 +245,6 @@ function displayCustomerDetails(customer) {
     }
 
     activeItem(customer.Id);
-
-
 
     $("#customerID")[0].innerHTML = customer.Id;
     $("#customerNameInput")[0].value = customer.Name;
@@ -325,19 +327,20 @@ function updateCustomer(customer) {
         var member = $("#customerMemberStatusInput")[0].value;
         var date = $("#customerJoinDateInput")[0].value;
         var email = $("#customerEmailInput")[0].value;
-        CustomerController.updateCustomer();
+        CustomerController.UpdateCustomer(Number(id), name, address, phone, Number(credit), Number(balance), member, date, email, onUpdateCustomer);
     }
 }
 
-function onUpdateCustomer(customer) {
-    customer = JSON.parse(customer);
+function onUpdateCustomer(result) {
+    var customer = JSON.parse(result);
     console.log(customer);
     var newcustomer = {
         "Id": customer.Id,
         "Name": $("#customerNameInput")[0].value,
         "Address": $("#customerAddressInput")[0].value,
+        "Phone": $("#customerPhoneNoInput")[0].value,
         "CreditLine": $("#customerCreditLineInput")[0].value,
-        "PhoneNo": $("#customerPhoneNoInput")[0].value,
+        "Balance": $("#customerBalInput")[0].value,
         "MemberStatus": $("#customerMemberStatusInput")[0].value,
         "JoinDate": $("#customerJoinDateInput")[0].value,
         "Email": $("#customerEmailInput")[0].value
@@ -420,9 +423,9 @@ function closeDelete() {
 
 // removes any details that are displayed in the details section
 function clearDisplay() {
-    $("#detailContainer")[0].style.visibility = "hidden";
-    $("#detailTable")[0].style.visibility = "hidden";
-    $("#addRecordButton")[0].style.visibility = "hidden";
+    //$("#detailContainer")[0].style.visibility = "hidden";
+    //$("#detailTable")[0].style.visibility = "hidden";
+    //$("#addRecordButton")[0].style.visibility = "hidden";
     
     $("#detailHeading")[0].innerHTML = "";
     $("#interests")[0].style.visibility = "hidden"
