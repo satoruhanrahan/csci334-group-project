@@ -41,6 +41,108 @@ function displayAdvSearch() {
     $("#detailHeading")[0].innerHTML = "Advanced Search";
 }
 
+function getOrderRecords(customerID) {
+    CustomerController.GetOrderRecords(customerID, onGetOrderRecords);
+}
+
+function onGetOrderRecords(result) {
+    if (parseJSON(result)) {
+        var orders = JSON.parse(result);
+        displaySaleRecords(orders);
+        //displayCustomerOrders(orders);
+    }
+}
+//display a list of sales
+function displaySaleRecords(orders) {
+    //clearDisplay();
+    var test = document.getElementById("test");
+    while (test.hasChildNodes()) {
+        test.removeChild(test.lastChild);
+    }
+    for (var i = orders.length - 1; i >= 0; i--) {
+        var button = document.createElement("button");
+        button.setAttribute("class", "listItem bigList");
+        var date = new Date(parseInt((orders[i].Date).substr(6)));
+        var formatedDate = date.toString().substr(4, 11);
+        button.innerHTML = "Sale #" + orders[i].SaleID + "<br/>" + formatedDate;
+        let order = orders[i];
+        button.addEventListener("click", function () {
+            loadPage("Sales", order);
+        });
+        $("#test")[0].append(button);
+    }
+}
+
+function displayCustomerOrders(order) {
+    $("#addRecordButton")[0].style.visibility = "hidden";
+    $("#leftButton")[0].style.visibility = "hidden";
+    $("#rightButton")[0].style.visibility = "hidden";
+    $("#results")[0].style.display = "none";
+    $("#detailOptions")[0].style.visibility = "visible";
+    $("#details")[0].style.visibility = "visible";
+    $("#detailTable")[0].style.visibility = "visible";
+
+    $("#sale")[0].style.backgroundColor = "white";
+    /*
+    var itemInputs = document.getElementsByClassName("itemInput");
+    for (var i = 0; i < itemInputs.length; i++) {
+        itemInputs[i].disabled = true;
+    }
+    */
+    //document.getElementById("error").innerText = "";
+    var date = new Date(parseInt((order.Date).substr(6)));
+
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var year = date.getFullYear();
+    if (month.toString().length == 1) {
+        month = "0" + month;
+    }
+    if (day.toString().length == 1) {
+        day = "0" + day;
+    }
+    var format = year + "-" + month + "-" + day;
+
+    var detailHeading = document.getElementById("detailHeading");
+    detailHeading.innerHTML = "Sale #" + order.SaleID;
+    document.getElementById("date").value = format;
+    document.getElementById("sale").value = order.SaleID;
+    //document.getElementById("customer").value = order.CustomerID;
+    document.getElementById("store").value = order.StoreID;
+    document.getElementById("totalValue").value = order.TotalValue;
+    document.getElementById("discountValue").value = order.Discount;
+    document.getElementById("finalValue").value = order.FinalTotal;
+    var items = order.Items;
+
+    var itemTable = document.getElementById("itemTable");
+    var numberOfRows = itemTable.rows.length;
+
+    if (items.length > 0 && numberOfRows >= 2) {
+        $("#itemTable").find("tr:gt(0)").remove();
+        for (var i = 0; i < items.length; i++) {
+            var row = document.createElement("tr");
+            var name = document.createElement("td");
+            name.innerHTML = items[i].ItemName;
+            var quantity = document.createElement("td");
+            quantity.innerHTML = items[i].Quantity;
+            var price = document.createElement("td");
+            price.innerHTML = items[i].Price;
+            var total = document.createElement("td");
+            total.innerHTML = items[i].Quantity * items[i].Price;
+
+            row.appendChild(name);
+            row.appendChild(quantity);
+            row.appendChild(price);
+            row.appendChild(total);
+            itemTable.appendChild(row);
+        }
+    }
+    else if (items.length == 0) {
+        $("#itemTable").find("tr:gt(1)").remove(); //delete table except the first 2 rows
+        $(".itemInput").val("");
+    }
+}
+
 // Creates and displays a list of buttons representing customers in the inventory. 
 function displayCustomerNames(customers) {
     $("#list")[0].innerHTML = "";
@@ -63,7 +165,39 @@ function displayCustomerNames(customers) {
 function displayCustomerDetails(customer) {
     //console.log(customer);
     // set display
-    clearDisplay();
+
+    //clearDisplay();
+    var test = document.getElementById("test");
+    while (test.hasChildNodes()) {
+        test.removeChild(test.lastChild);
+    }
+    /*
+    var detailTable = document.createElement("table");
+    detailTable.setAttribute("class", "detailTable");
+
+    var idRow = document.createElement("tr");
+    var idLabel = document.createElement("td");
+    idLabel.setAttribute("id", "firstcell");
+    idLabel.innerHTML = "Customer Number";
+    var idVal = document.createElement("td");
+    idVal.setAttribute("id", "customerID");
+    idRow.appendChild(idLabel);
+    idRow.appendChild(idVal);
+
+    var nameRow = document.createElement("tr");
+    var nameLabel = document.createElement("td");
+    nameLabel.setAttribute("id", "customerName");
+    nameLabel.innerHTML = "Name";
+    var nameInput = document.createElement("input");
+    nameInput.setAttribute("id", "customerNameInput");
+    nameInput.disabled = true;
+    var nameVal = document.createElement("td");
+    nameVal.setAttribute("id", "customerID");
+    nameVal.appendChild(nameInput);
+    nameRow.appendChild(nameLabel);
+    nameRow.appendChild(nameVal);
+    */
+
     switchTabs("detailTabBar", "detailsTab");
     $("#detailHeading")[0].innerHTML = customer.Name;
     $("#detailHeading")[0].style.visibility = "visible";
@@ -83,7 +217,7 @@ function displayCustomerDetails(customer) {
     });
     $("body").on("click", "#ordersTab", function () {
         switchTabs("detailTabBar", "ordersTab");
-        //displayCustomerOrders(customer);
+        getOrderRecords(customer.Id);
     });
     $("#editCustomer")[0].addEventListener("click", function () {
         editCustomerDetails(customer);
@@ -111,6 +245,9 @@ function displayCustomerDetails(customer) {
     }
 
     activeItem(customer.Id);
+
+
+
     $("#customerID")[0].innerHTML = customer.Id;
     $("#customerNameInput")[0].value = customer.Name;
     $("#customerAddressInput")[0].value = customer.Address;
@@ -168,30 +305,17 @@ function editCustomerDetails(customer) {
 
 // Send edited data to controller
 function updateCustomer(customer) {
-    
     if (validateInput()) {
-
-        CustomerController.UpdateCustomer(
-            customer.Id,
-            $("#customerNameInput")[0].value,
-            $("#customerAddressInput")[0].value,
-            $("#customerPhoneNoInput")[0].value,
-            $("#customerCreditLineInput")[0].value,
-            $("#customerBalInput")[0].value,
-            $("#customerMemberStatusInput")[0].value,
-            $("#customerJoinDateInput")[0].value,
-            $("#customerEmailInput")[0].value,
-            onUpdateCustomer
-        );
-        console.log(customer.Id,
-            $("#customerNameInput")[0].value,
-            $("#customerAddressInput")[0].value,
-            $("#customerPhoneNoInput")[0].value,
-            $("#customerCreditLineInput")[0].value,
-            $("#customerBalInput")[0].value,
-            $("#customerMemberStatusInput")[0].value,
-            $("#customerJoinDateInput")[0].value,
-            $("#customerEmailInput")[0].value);
+        var id = customer.Id;
+        var name = $("#customerNameInput")[0].value;
+        var address = $("#customerAddressInput")[0].value;
+        var phone = $("#customerPhoneNoInput")[0].value;
+        var credit = $("#customerCreditLineInput")[0].value;
+        var balance = $("#customerBalInput")[0].value;
+        var member = $("#customerMemberStatusInput")[0].value;
+        var date = $("#customerJoinDateInput")[0].value;
+        var email = $("#customerEmailInput")[0].value;
+        CustomerController.updateCustomer();
     }
 }
 
@@ -286,6 +410,10 @@ function closeDelete() {
 
 // removes any details that are displayed in the details section
 function clearDisplay() {
+    $("#detailContainer")[0].style.visibility = "hidden";
+    $("#detailTable")[0].style.visibility = "hidden";
+    $("#addRecordButton")[0].style.visibility = "hidden";
+    
     $("#detailHeading")[0].innerHTML = "";
     $("#interests")[0].style.visibility = "hidden"
     $("#orders")[0].style.visibility = "hidden"
@@ -295,25 +423,32 @@ function clearDisplay() {
     $("#leftButton")[0].style.visibility = "hidden";
     $("#rightButton")[0].style.visibility = "hidden";
     $("#detailTabBar")[0].style.visibility = "hidden";
+
     $("#results")[0].style.display = "none";
     $("#customerID")[0].style.backgroundColor = "white";
+    $("#customerNameInput")[0].style.backgroundColor = "white";
+    $("#customerAddressInput")[0].style.backgroundColor = "white";
     $("#customerID")[0].innerHTML = "";
+    $("#customerNameInput")[0].innerHTML = "";
+    $("#customerAddressInput")[0].innerHTML = "";
     $("#interests")[0].innerHTML = "";
     $("#orders")[0].innerHTML = "";
-    $("#customerNameInput")[0].value = "";
-    $("#customerAddressInput")[0].value = "";
-    $("#customerPhoneNoInput")[0].value = "";
-    $("#customerCreditLineInput")[0].value = "";
-    $("#customerMemberStatusInput")[0].value = "";
+    $("#customerPhoneNoInput").value = "";
+    $("#customerID")[0].innerHTML = "";
+    $("#customerCreditLineInput").value = "";
+    $("#customerBalInput").value = "";
+    $("#customerMemberStatusInput").value = "";
     $("#customerJoinDateInput")[0].value = "";
     $("#customerEmailInput")[0].value = "";
-    $("#customerNameInput").attr({ "disabled": "disabled" });
-    $("#customerAddressInput").attr({ "disabled": "disabled" });
-    $("#customerPhoneNoInput").attr({ "disabled": "disabled" });
-    $("#customerCreditLineInput").attr({ "disabled": "disabled" });
-    $("#customerMemberStatusInput").attr({ "disabled": "disabled" });
-    $("#customerJoinDateInput").attr({ "disabled": "disabled" });
-    $("#customerEmailInput").attr({ "disabled": "disabled" });
+    /*$("#itemSbjAreaInput")[0].value = "";
+    $("#itemPriceInput")[0].value = "";
+    $("#itemDescriptionInput")[0].value = "";
+    $("#itemDescriptionInput").value = "";
+    $("#itemNameInput").attr({ "disabled": "disabled" });
+    $("#itemTypeInput").attr({ "disabled": "disabled" });
+    $("#itemSbjAreaInput").attr({ "disabled": "disabled" });
+    $("#itemPriceInput").attr({ "disabled": "disabled" });
+    $("#itemDescriptionInput").attr({ "disabled": "disabled" });*/
     $("body").off("click", "#leftButton");
     $("body").off("click", "#rightButton");
 }
@@ -444,4 +579,14 @@ function onDisplayCustomerOrders(result) {
         });
         $("#contacts")[0].append(button);
     }
+}
+
+function parseJSON(jsonString) {
+    try {
+        var obj = JSON.parse(jsonString);
+        if (obj && typeof obj === "object")
+            return obj;
+    }
+    catch (e) { }
+    return false;
 }

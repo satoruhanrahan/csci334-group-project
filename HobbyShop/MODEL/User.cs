@@ -35,10 +35,9 @@ namespace HobbyShop.CLASS
             this.lastName = lastName;
             this.userType = userType;
         }
+
         string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
         
-
-
         public List<User> SearchDatabase(string input)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
@@ -46,7 +45,8 @@ namespace HobbyShop.CLASS
                 try
                 {
                     con.Open();
-                    string query = "SELECT* FROM Users WHERE GivenName LIKE '%" + input + "%' OR LastName LIKE '%" + input + "%' OR UserName LIKE '%" + input + "%' ORDER BY GivenName";
+                    string query = "SELECT* FROM Users WHERE GivenName LIKE '%" + input + "%' OR LastName LIKE '%" +
+                        input + "%' OR UserName LIKE '%" + input + "%' ORDER BY GivenName";
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.ExecuteNonQuery();
 

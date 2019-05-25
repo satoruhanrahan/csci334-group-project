@@ -42,7 +42,7 @@
                 <button type="button" class="tab detailtab" id="ordersTab">Orders</button>
             </div>
             <div id="details" class="detailTabContent">
-                <div class="scrollable">
+                <div id="test" class="scrollable">
                     <table class="detailTable">
                         <tr> 
                             <td id="firstcell"> Customer Number </td> 
@@ -105,7 +105,7 @@
                     </button>
                 </div>
             </div>
-            <div class ="detailTabContent">
+            <div id="content" class ="detailTabContent">
                 <div id="interests" class="scrollable">
                     <table class="detailTable">
                         <tr> 
@@ -126,6 +126,7 @@
                     </table>
                 </div>
             </div>
+
             <div class ="detailTabContent">
                 <div id="orders" class="scrollable">
                 </div>

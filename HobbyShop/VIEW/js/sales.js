@@ -1,4 +1,37 @@
-﻿var itemList = [];
+﻿$(document).ready(function () {
+    getSaleRecords();
+    getAllSearchedItems();
+    // prevent form submission on enter
+    $('form').keypress(function (event) {
+        return event.keyCode != 13;
+    });
+    // Search as the user types
+    var searchbar = $("#searchbar")[0];
+    searchbar.addEventListener("keyup", function (event) {
+        event.preventDefault();
+        getSaleRecords();
+        //getAllSearchedItems();
+    });
+    $("#advSearch")[0].addEventListener("click", function () {
+        displayAdvSearch();
+    });
+    /*$("#addButton")[0].addEventListener("click", function () {
+        displayAddSaleRecord();
+    });*/
+    document.getElementById("detailTable").style.visibility = "hidden";
+    setTimeout(function () {
+        try {
+            if (loaded != undefined) {
+                if (loaded != "") {
+                    displaySaleDetails(loaded);
+                    loaded = "";
+                }
+            }
+        } catch (ReferenceError) { }
+    }, 250);
+});
+
+var itemList = [];
 
 function getSaleRecords() {
     var keywords = document.getElementById("searchbar").value;
@@ -21,23 +54,6 @@ function onSearchItems(result) {
     for (var i = 0; i < items.length; i++) {
         itemList.push(items[i]);
     }
-
-    /*get sbjlist;
-      get typelist;
-      for (int i = 0; i < sbjlist.length; i++;) {
-           option = document.createElement("option");
-           option.value = sbjlist[i].Name;
-           option.append(sbjlist[i].Name);
-           $("#subjects").append(option);
-       }
-       for (int j = 0; j < typelist.length; j++;) {
-           option = document.createElement("option");
-           option.value = typelist[j].Name;
-           option.append(typelist[i].Name);
-           $("#types").append(option);
-       }
-    */
-    //displayItemNames(items);
 }
 
 //display a list of sales
@@ -382,6 +398,7 @@ function insertNewRow(index) {
         var opt = $("option[value='" + $(this).val() + "']");
         var index = opt.attr("id");
         priceInput.value = itemList[index].Price;
+        console.log("Item list: " + itemList[index].Price);
     });
 
     var total = document.createElement("td");
@@ -513,29 +530,6 @@ function displayConfirmDelete() {
 function closeDelete() {
     results.style.display = "none";
 }
-
-$(document).ready(function () {
-    getSaleRecords();
-    getAllSearchedItems();
-    // prevent form submission on enter
-    $('form').keypress(function (event) {
-        return event.keyCode != 13;
-    });
-    // Search as the user types
-    var searchbar = $("#searchbar")[0];
-    searchbar.addEventListener("keyup", function (event) {
-        event.preventDefault();
-        getSaleRecords();
-        //getAllSearchedItems();
-    });
-    $("#advSearch")[0].addEventListener("click", function () {
-        displayAdvSearch();
-    });
-    /*$("#addButton")[0].addEventListener("click", function () {
-        displayAddSaleRecord();
-    });*/
-    document.getElementById("detailTable").style.visibility = "hidden";
-});
 
 //Advanced search display
 function displayAdvSearch() {

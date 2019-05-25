@@ -5,6 +5,8 @@ using System.Web;
 using System.Text.RegularExpressions;
 using System.Data.OleDb;
 using System.Configuration;
+using System.Collections;
+using HobbyShop.CLASS;
 
 namespace HobbyShop
 {
@@ -34,6 +36,20 @@ namespace HobbyShop
         {
 
         }
+        
+        public Customer(int cusNum, string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime? cusJoinDate, string cusEmail)
+        {
+            this.cusNum = cusNum;
+            this.cusName = cusName;
+            this.cusPhone = cusPhone;
+            this.cusAddress = cusAddress;
+            this.cusCreditLine = cusCreditLine;
+            this.cusBalance = cusBalance;
+            this.cusMemberStatus = cusMemberStatus;
+            this.cusJoinDate = cusJoinDate;
+            this.cusEmail = cusEmail;
+        }
+            
         public Customer(string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime? cusJoinDate, string cusEmail)    
         {
             this.cusName = cusName;
@@ -45,6 +61,7 @@ namespace HobbyShop
             this.cusJoinDate = cusJoinDate;
             this.cusEmail = cusEmail;
         }
+
         string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
 
         public void Add()
@@ -96,6 +113,7 @@ namespace HobbyShop
                         double cusCredit = Convert.ToDouble(reader["CreditLine"]);
                         double cusBalance = Convert.ToDouble(reader["CurrentBalance"]);
                         string cusStatus = Convert.ToString(reader["ClubMemberStatus"]);
+                        //DateTime cusJoin = Convert.ToDateTime(reader["ClubMemberJoinDate"]);
                         DateTime? cusJoin;
                         if (!reader.IsDBNull(reader.GetOrdinal("ClubMemberJoinDate")))
                         {
@@ -145,6 +163,7 @@ namespace HobbyShop
                         string cusStatus = Convert.ToString(reader["ClubMemberStatus"]);
                         //DateTime? cusJoin = Convert.ToDateTime(reader["ClubMemberJoinDate"])
                         //DateTime? cusJoin = reader.IsDBNull(1) ? (DateTime?)null : (DateTime?)reader["ClubMemberJoinDate"];
+
                         DateTime? cusJoin;
                         if (!reader.IsDBNull(reader.GetOrdinal("ClubMemberJoinDate")) ){
 
@@ -154,6 +173,7 @@ namespace HobbyShop
                         {
                            cusJoin = null;
                         }
+                        //DateTime cusJoin = Convert.ToDateTime(reader["ClubMemberJoinDate"]);
                         string cusEmail = Convert.ToString(reader["EmailAddress"]);
                         
                       
@@ -162,9 +182,6 @@ namespace HobbyShop
                                 Id = cusNum
                             };
                             cusList.Add(_cus);
-                        
-                       
-
                     }
                     return cusList;
                 }
@@ -239,6 +256,67 @@ namespace HobbyShop
                         statusList.Add(status);
                     }
                     return statusList;
+                }
+                catch (Exception e)
+                {
+                    throw new System.ApplicationException(e.Message);
+                }
+            }
+        }
+
+        public ArrayList GetOrderRecords(int customerID)
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    string orderQuery = "SELECT * FROM Sales WHERE CustomerNumber = @customer";
+                    OleDbCommand cmd = new OleDbCommand(orderQuery, con);
+                    cmd.Parameters.AddWithValue("@customer", customerID);
+                    cmd.ExecuteNonQuery();
+
+                    ArrayList orderList = new ArrayList();
+
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int saleID = Convert.ToInt32(reader["SaleID"]);
+                        int storeID = Convert.ToInt32(reader["StoreID"]);
+                        DateTime date = Convert.ToDateTime(reader["DateOfSale"]);
+                        double totalValue = Convert.ToDouble(reader["TotalValue"]);
+                        double discount = Convert.ToDouble(reader["Discount"]);
+                        double finalTotal = Convert.ToDouble(reader["FinalTotal"]);
+
+                        Sale order = new Sale(saleID, date, storeID, totalValue, discount, finalTotal);
+                        orderList.Add(order);
+                    }
+                    con.Close();
+                    con.Open();
+
+                    for (int i = 0; i < orderList.Count; i++)
+                    {
+                        Sale order = (Sale)orderList[i];
+                        string itemQuery = "SELECT Models.Name, Models.CurrentRetailPrice, SaleItems.* FROM SaleItems" +
+                        " INNER JOIN Models ON Models.ItemNumber = SaleItems.ItemNumber" +
+                        " WHERE SaleItems.SaleID = @id";
+                        OleDbCommand itemCmd = new OleDbCommand(itemQuery, con);
+                        itemCmd.Parameters.AddWithValue("@id", order.SaleID);
+                        itemCmd.ExecuteNonQuery();
+
+                        OleDbDataReader itemReader = itemCmd.ExecuteReader();
+                        ArrayList itemList = new ArrayList();
+                        while (itemReader.Read())
+                        {
+                            string name = Convert.ToString(itemReader["Name"]);
+                            int quantity = Convert.ToInt32(itemReader["ItemAmount"]);
+                            double price = Convert.ToDouble(itemReader["CurrentRetailPrice"]);
+                            SaleItem item = new SaleItem(name, quantity, price);
+                            itemList.Add(item);
+                        }
+                        order.Items = itemList;
+                    }
+                    return orderList;
                 }
                 catch (Exception e)
                 {

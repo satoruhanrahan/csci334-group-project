@@ -16,11 +16,12 @@ namespace HobbyShop.CONTROLLER
     public class CustomerController
     {
         [OperationContract]
-        public string Add(string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime? cusJoinDate, string cusEmail)
+        public string Add(string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, string cusJoinDate, string cusEmail)
         {
             try
             {
-                Customer _cus = new Customer(cusName, cusAddress, cusPhone, cusCreditLine, cusBalance, cusMemberStatus, cusJoinDate, cusEmail);
+                DateTime formatedDate = DateTime.Parse(cusJoinDate);
+                Customer _cus = new Customer(cusName, cusAddress, cusPhone, cusCreditLine, cusBalance, cusMemberStatus, formatedDate, cusEmail);
                 _cus.Add();
 
                 string json = new JavaScriptSerializer().Serialize(_cus);
@@ -42,22 +43,14 @@ namespace HobbyShop.CONTROLLER
             string json = new JavaScriptSerializer().Serialize(cusList);
             return json;
         }
+
         [OperationContract] 
-        public string UpdateCustomer(int id, string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime? cusJoinDate, string cusEmail)
+        public string UpdateCustomer(int id, string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, string cusJoinDate, string cusEmail)
         {
             try
             {
-                Customer _cus = new Customer();
-                _cus.Id = id;
-                _cus.Name = cusName;
-                _cus.Address = cusAddress;
-                _cus.Phone = cusPhone;
-                _cus.CreditLine = cusCreditLine;
-                _cus.Balance = cusBalance;
-                _cus.MemberStatus = cusMemberStatus;
-                _cus.JoinDate = cusJoinDate;
-                _cus.Email = cusEmail;
-
+                DateTime? formatedDate = DateTime.Parse(cusJoinDate);
+                Customer _cus = new Customer(id, cusName, cusAddress, cusPhone, cusCreditLine, cusBalance, cusMemberStatus, formatedDate, cusEmail);
                 _cus.Update();
 
                 string json = new JavaScriptSerializer().Serialize(_cus);
@@ -102,6 +95,22 @@ namespace HobbyShop.CONTROLLER
             catch (Exception e)
             {
                 throw new System.ApplicationException(e.Message);
+            }
+        }
+
+        [OperationContract]
+        public string GetOrderRecords(int customerID)
+        {
+            try
+            {
+                Customer customer = new Customer();
+                ArrayList orderList = customer.GetOrderRecords(customerID);
+                string json = new JavaScriptSerializer().Serialize(orderList);
+                return json;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
             }
         }
     }

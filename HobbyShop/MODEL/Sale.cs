@@ -32,6 +32,16 @@ namespace HobbyShop.CLASS
 
         public Sale(int saleID) { this.saleID = saleID; }
 
+        public Sale(int saleID, DateTime date, int storeID, double totalValue, double discount, double finalTotal)
+        {
+            this.saleID = saleID;
+            this.date = date;
+            this.storeID = storeID;
+            this.totalValue = totalValue;
+            this.discount = discount;
+            this.finalTotal = finalTotal;
+        }
+
         public Sale(DateTime date, int customerID, int storeID, double totalValue, double discount, double finalTotal)
         {
             this.date = date;
