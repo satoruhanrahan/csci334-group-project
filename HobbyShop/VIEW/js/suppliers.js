@@ -361,7 +361,8 @@ function displaySupplierContacts(supplier) {
 }
 function onDisplaySupplierContacts(result) {
     var contacts = JSON.parse(result);
-    // set display
+    console.log(contacts);
+            // set display
     var name = $("#detailHeading")[0].innerHTML;
     clearDisplay();
     $("#detailHeading")[0].innerHTML = name;
