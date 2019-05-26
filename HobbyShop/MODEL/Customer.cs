@@ -199,19 +199,50 @@ namespace HobbyShop
                 try
                 {
                     con.Open();
-                    string query = "UPDATE Customer SET Name=@name,Address=@add,PhoneNumber=@phone,CreditLine=@credit,CurrentBalance=@balance,ClubMemberStatus=@status,ClubMemberJoinDate=@join,EmailAddress=@email WHERE CustomerNumber=@id";
+                    /*string query = "UPDATE Customer SET Name=@name,Address=@add,PhoneNumber=@phone,CreditLine=@credit,CurrentBalance=@balance,ClubMemberStatus=@status,ClubMemberJoinDate=@join,EmailAddress=@email WHERE CustomerNumber=@id";
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.Parameters.AddWithValue("@name", cusName);
                     cmd.Parameters.AddWithValue("@add", cusAddress);
                     cmd.Parameters.AddWithValue("@phone", cusPhone);
                     cmd.Parameters.AddWithValue("@credit", cusCreditLine);
                     cmd.Parameters.AddWithValue("@balance", cusBalance);
-                    cmd.Parameters.AddWithValue("@status", cusMemberStatus);
-                    cmd.Parameters.AddWithValue("@join", cusJoinDate);
-                    cmd.Parameters.AddWithValue("@email", cusEmail);
-                    cmd.Parameters.AddWithValue("@id", cusNum);
+                    cmd.Parameters.AddWithValue("@status", cusMemberStatus);*/
+                    if (cusMemberStatus != "Non-Member")
+                    {
+                        string query = "UPDATE Customer SET Name=@name,Address=@add,PhoneNumber=@phone,CreditLine=@credit,CurrentBalance=@balance,ClubMemberStatus=@status,ClubMemberJoinDate=@join,EmailAddress=@email WHERE CustomerNumber=@id";
+                        OleDbCommand cmd = new OleDbCommand(query, con);
+                        cmd.Parameters.AddWithValue("@name", cusName);
+                        cmd.Parameters.AddWithValue("@add", cusAddress);
+                        cmd.Parameters.AddWithValue("@phone", cusPhone);
+                        cmd.Parameters.AddWithValue("@credit", cusCreditLine);
+                        cmd.Parameters.AddWithValue("@balance", cusBalance);
+                        cmd.Parameters.AddWithValue("@status", cusMemberStatus);
+                        //cusJoinDate = null;
+                        //cmd.Parameters.AddWithValue("@join", null);
+                        cmd.Parameters.AddWithValue("@join", cusJoinDate);
+                        cmd.Parameters.AddWithValue("@email", cusEmail);
+                        cmd.Parameters.AddWithValue("@id", cusNum);
 
-                    cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        string query = "UPDATE Customer SET Name=@name,Address=@add,PhoneNumber=@phone,CreditLine=@credit,CurrentBalance=@balance,ClubMemberStatus=@status,ClubMemberJoinDate=NULL,EmailAddress=@email WHERE CustomerNumber=@id";
+                        OleDbCommand cmd = new OleDbCommand(query, con);
+                        cmd.Parameters.AddWithValue("@name", cusName);
+                        cmd.Parameters.AddWithValue("@add", cusAddress);
+                        cmd.Parameters.AddWithValue("@phone", cusPhone);
+                        cmd.Parameters.AddWithValue("@credit", cusCreditLine);
+                        cmd.Parameters.AddWithValue("@balance", cusBalance);
+                        cmd.Parameters.AddWithValue("@status", cusMemberStatus);
+                        cmd.Parameters.AddWithValue("@email", cusEmail);
+                        cmd.Parameters.AddWithValue("@id", cusNum);
+
+                        cmd.ExecuteNonQuery();
+                        //cmd.Parameters.AddWithValue("@join", cusJoinDate);
+                    }
+                    //cmd.Parameters.AddWithValue("@join", cusJoinDate);
+                    
                 }
                 catch (Exception e)
                 {

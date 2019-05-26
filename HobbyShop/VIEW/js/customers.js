@@ -196,7 +196,14 @@ function updateCustomer(customer) {
 }
 
 function onUpdateCustomer(result) {
-    var customer = JSON.parse(result);
+    if (parseJSON(result)) {
+        var customer = JSON.parse(result);
+        displayCustomerDetails(customer);
+        getAllSearchedCustomers();
+        //displayCustomerDetails(customer);
+        resultPopup("Successfully updated customer in the Database.", "green");
+    }
+    /*var customer = JSON.parse(result);
     var newcustomer = {
         "Id": customer.Id,
         "Name": $("#customerNameInput")[0].value,
@@ -214,7 +221,7 @@ function onUpdateCustomer(result) {
         displayCustomerDetails(newcustomer);
     });
     displayCustomerDetails(newcustomer);
-    resultPopup("Successfully updated customer in the Database.", "green");
+    resultPopup("Successfully updated customer in the Database.", "green");*/
 }
 
 //displays the delete model prompt
