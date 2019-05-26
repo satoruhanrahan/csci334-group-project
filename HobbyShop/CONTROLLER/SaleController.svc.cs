@@ -18,6 +18,8 @@ namespace HobbyShop.CONTROLLER
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class SaleController : BaseController<Sale>
     {
+        [OperationContract]
+        public override string GetRecords(string search) => base.GetRecords(search);
 
         [OperationContract]
         public string AddSaleRecord(string date, int customerID, int storeID, double totalValue, double discount, double finalTotal, string itemList)
@@ -27,7 +29,7 @@ namespace HobbyShop.CONTROLLER
                 DateTime formatedDate = DateTime.Parse(date);
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 var list = serializer.Deserialize<SaleItem[]>(itemList);
-                
+
                 ArrayList items = new ArrayList(list);
                 Sale sale = new Sale(formatedDate, customerID, storeID, totalValue, discount, finalTotal);
                 sale.Items = items;

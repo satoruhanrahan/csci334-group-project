@@ -33,7 +33,7 @@ var itemList = [];
 
 function getSaleRecords() {
     var keywords = document.getElementById("searchbar").value;
-    SaleController.GetSaleRecords(keywords, onGetSaleRecords);
+    SaleController.GetRecords(keywords, onGetSaleRecords);
 }
 
 //callback function

@@ -20,6 +20,8 @@ namespace HobbyShop.CONTROLLER
     {
         string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
 
+        [OperationContract]
+        public override string GetRecords(string search) => base.GetRecords(search);
 
         [OperationContract]
         public string AddDeliveryRecord(string date, int storeID, int supplierID, string itemList)
