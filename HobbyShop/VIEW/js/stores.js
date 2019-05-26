@@ -56,7 +56,7 @@ function displayStoreNames(stores) {
     for (var i = stores.length - 1; i >= 0; i--) {
         button = document.createElement("button");
         button.append(stores[i].Address);
-        button.setAttribute("id", stores[i].Id);
+        button.setAttribute("id", stores[i].StoreID);
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem");
         let store = stores[i];
@@ -95,7 +95,7 @@ function displayStoreDetails(store) {
         displayDeleteStore(store);
     });
 
-    activeItem(store.Id);
+    activeItem(store.StoreID);
     $("#storeID")[0].innerHTML = store.StoreID;
     $("#storeAddressInput")[0].value = store.Address;
 }
@@ -148,8 +148,8 @@ function onUpdateStore(store) {
         "Address": $("#storeAddressInput")[0].value
     }
     //  Refreshes the updated button 
-    $("#" + newstore.Id)[0].innerHTML = newstore.Address;
-    $("#" + newstore.Id)[0].addEventListener("click", function () {
+    $("#" + newstore.StoreID)[0].innerHTML = newstore.Address;
+    $("#" + newstore.StoreID)[0].addEventListener("click", function () {
         displayStoreDetails(newstore);
     });
     displayStoreDetails(newstore);
@@ -308,7 +308,7 @@ function displayStoreInventory(inventory) {
     $("#addInventory")[0].style.visibility = "visible";
     $("#inventory")[0].style.visibility = "visible";
     
-    
+    $("#inventoryList")[0].innerHTML="";
     var button;
     for (var i = inventory.length - 1; i >= 0; i--) {
         button = document.createElement("button");
@@ -387,7 +387,7 @@ function editItemDetails(store) {
 function updateItem(item) {
     if (validateItemInput()) {
         StoreController.EditInventoryItem(
-            globalStore.Id,
+            globalStore.StoreID,
             $("#itemIDInput")[0].value,
             $("#itemStockCountInput")[0].value,
             $("#itemLocationInput")[0].value,
@@ -407,7 +407,7 @@ function onUpdateItem(item) {
     }
     //  Refreshes the updated button 
     (document).getElementById("inventoryList").$("#" + newitem.ItemName)[0].innerHTML = "Item: #" + inventory[i].ItemName;
-    $("#" + newstore.Id)[0].addEventListener("click", function () {
+    $("#" + newstore.StoreID)[0].addEventListener("click", function () {
         displayItemDetails(newitem);
     });
     displayItemDetails(newitem);
@@ -428,7 +428,7 @@ function displayDeleteItem(item) {
     button1.style.cssFloat = "left";
     button1.setAttribute("class", "mediumbtn greenbtn");
     button1.addEventListener("click", function () {
-        deleteItem(item.Id);
+        deleteItem(item.ItemName);
     });
     var img1 = document.createElement("img");
     img1.src = "style/delete.png";
@@ -461,7 +461,7 @@ function displayDeleteItem(item) {
 // sends id of store to be deleted to controller
 function deleteItem(id) {
     results.style.display = "none";
-    StoreController.DeleteInventoryItem(globalStore.Id, id, onDeleteItem);
+    StoreController.DeleteInventoryItem(globalStore.StoreID, id, onDeleteItem);
 }
 
 function onDeleteItem(id) {
@@ -501,7 +501,7 @@ function displayAddItem() {
 function addNewItem() {
     if (validateItemInput()) {
         StoreController.AddInventoryItem(
-            globalStore.Id,
+            globalStore.StoreID,
             $("#itemIDInput")[0].value,
             $("#itemStockCountInput")[0].value,
             $("#itemLocationInput")[0].value,

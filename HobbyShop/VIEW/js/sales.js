@@ -20,14 +20,12 @@
     });*/
     document.getElementById("detailTable").style.visibility = "hidden";
     setTimeout(function () {
-        try {
-            if (loaded != undefined) {
-                if (loaded != "") {
-                    displaySaleDetails(loaded);
-                    loaded = "";
-                }
+        if (loaded != undefined) {
+            if (loaded != "") {
+                displaySaleDetails(loaded);
+                loaded = "";
             }
-        } catch (ReferenceError) { }
+        }
     }, 250);
 });
 

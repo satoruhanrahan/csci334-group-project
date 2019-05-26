@@ -285,6 +285,7 @@ function displayAddSupplier() {
     img1.src = "style/add.png";
     $("#leftButton")[0].innerHTML = "";
     $("#leftButton")[0].append(img1);
+    $("body").off("click", "#leftButton");
     $("body").on("click", "#leftButton", addNewSupplier);
     $("body").on("click", "#rightButton", clearDisplay);
 }
