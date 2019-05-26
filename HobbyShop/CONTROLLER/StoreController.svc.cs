@@ -82,7 +82,7 @@ namespace HobbyShop.CONTROLLER
                 ArrayList items = new ArrayList(list);
                 Store store = new Store();
                 store.Items = items;
-                //store.AddInventoryItem();
+                //store.AddInventoryItems(items);
                 return "";
             }
             catch (Exception ex)

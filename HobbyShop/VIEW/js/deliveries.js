@@ -40,7 +40,7 @@ var itemList = [];
 
 function getDeliveryRecords() {
     var keywords = document.getElementById("searchbar").value;
-    DeliveryController.GetDeliveryRecords(onGetDeliveryRecords);
+    DeliveryController.GetRecords(onGetDeliveryRecords);
 }
 
 //callback function
