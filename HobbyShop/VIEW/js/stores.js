@@ -20,6 +20,14 @@ $(document).ready(function () {
     $("#addButton")[0].addEventListener("click", function () {
         displayAddStore();
     });
+    setTimeout(function () {
+        if (loaded != undefined) {
+            if (loaded != "") {
+                displayStoreDetails(loaded);
+                loaded = "";
+            }
+        }
+    }, 250);
 });
 
 // Display stores in list based on search

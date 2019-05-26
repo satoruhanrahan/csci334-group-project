@@ -40,112 +40,6 @@ function displayAdvSearch() {
     $("#detailHeading")[0].innerHTML = "Advanced Search";
 }
 
-function getOrderRecords(customerID) {
-    CustomerController.GetOrderRecords(customerID, onGetOrderRecords);
-}
-
-function onGetOrderRecords(result) {
-    if (parseJSON(result)) {
-        var orders = JSON.parse(result);
-        displaySaleRecords(orders);
-        //displayCustomerOrders(orders);
-    }
-}
-//display a list of sales
-function displaySaleRecords(orders) {
-    clearDisplay();
-    /*var test = document.getElementById("test");
-    while (test.hasChildNodes()) {
-        test.removeChild(test.lastChild);
-    }*/
-    $("#detailHeading")[0].innerHTML = name;
-    $("#detailHeading")[0].style.visibility = "visible";
-    $("#detailTabBar")[0].style.visibility = "visible";
-    $("#orders")[0].style.visibility = "visible";
-    for (var i = orders.length - 1; i >= 0; i--) {
-        var button = document.createElement("button");
-        button.setAttribute("class", "listItem bigList");
-        var date = new Date(parseInt((orders[i].Date).substr(6)));
-        var formatedDate = date.toString().substr(4, 11);
-        button.innerHTML = "Sale #" + orders[i].SaleID + "<br/>" + formatedDate;
-        let order = orders[i];
-        button.addEventListener("click", function () {
-            loadPage("Sales", order);
-        });
-        $("#orders")[0].append(button);
-    }
-}
-
-function displayCustomerOrders(order) {
-    $("#addRecordButton")[0].style.visibility = "hidden";
-    $("#leftButton")[0].style.visibility = "hidden";
-    $("#rightButton")[0].style.visibility = "hidden";
-    $("#results")[0].style.display = "none";
-    $("#detailOptions")[0].style.visibility = "visible";
-    $("#details")[0].style.visibility = "visible";
-    $("#detailTable")[0].style.visibility = "visible";
-
-    $("#sale")[0].style.backgroundColor = "white";
-    /*
-    var itemInputs = document.getElementsByClassName("itemInput");
-    for (var i = 0; i < itemInputs.length; i++) {
-        itemInputs[i].disabled = true;
-    }
-    */
-    //document.getElementById("error").innerText = "";
-    var date = new Date(parseInt((order.Date).substr(6)));
-
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
-    var year = date.getFullYear();
-    if (month.toString().length == 1) {
-        month = "0" + month;
-    }
-    if (day.toString().length == 1) {
-        day = "0" + day;
-    }
-    var format = year + "-" + month + "-" + day;
-
-    var detailHeading = document.getElementById("detailHeading");
-    detailHeading.innerHTML = "Sale #" + order.SaleID;
-    document.getElementById("date").value = format;
-    document.getElementById("sale").value = order.SaleID;
-    //document.getElementById("customer").value = order.CustomerID;
-    document.getElementById("store").value = order.StoreID;
-    document.getElementById("totalValue").value = order.TotalValue;
-    document.getElementById("discountValue").value = order.Discount;
-    document.getElementById("finalValue").value = order.FinalTotal;
-    var items = order.Items;
-
-    var itemTable = document.getElementById("itemTable");
-    var numberOfRows = itemTable.rows.length;
-
-    if (items.length > 0 && numberOfRows >= 2) {
-        $("#itemTable").find("tr:gt(0)").remove();
-        for (var i = 0; i < items.length; i++) {
-            var row = document.createElement("tr");
-            var name = document.createElement("td");
-            name.innerHTML = items[i].ItemName;
-            var quantity = document.createElement("td");
-            quantity.innerHTML = items[i].Quantity;
-            var price = document.createElement("td");
-            price.innerHTML = items[i].Price;
-            var total = document.createElement("td");
-            total.innerHTML = items[i].Quantity * items[i].Price;
-
-            row.appendChild(name);
-            row.appendChild(quantity);
-            row.appendChild(price);
-            row.appendChild(total);
-            itemTable.appendChild(row);
-        }
-    }
-    else if (items.length == 0) {
-        $("#itemTable").find("tr:gt(1)").remove(); //delete table except the first 2 rows
-        $(".itemInput").val("");
-    }
-}
-
 // Creates and displays a list of buttons representing customers in the inventory. 
 function displayCustomerNames(customers) {
     $("#list")[0].innerHTML = "";
@@ -167,39 +61,7 @@ function displayCustomerNames(customers) {
 // Displays an customers details
 function displayCustomerDetails(customer) {
     // set display
-
     clearDisplay();
-    /*var test = document.getElementById("test");
-    while (test.hasChildNodes()) {
-        test.removeChild(test.lastChild);
-    }*/
-    /*
-    var detailTable = document.createElement("table");
-    detailTable.setAttribute("class", "detailTable");
-
-    var idRow = document.createElement("tr");
-    var idLabel = document.createElement("td");
-    idLabel.setAttribute("id", "firstcell");
-    idLabel.innerHTML = "Customer Number";
-    var idVal = document.createElement("td");
-    idVal.setAttribute("id", "customerID");
-    idRow.appendChild(idLabel);
-    idRow.appendChild(idVal);
-
-    var nameRow = document.createElement("tr");
-    var nameLabel = document.createElement("td");
-    nameLabel.setAttribute("id", "customerName");
-    nameLabel.innerHTML = "Name";
-    var nameInput = document.createElement("input");
-    nameInput.setAttribute("id", "customerNameInput");
-    nameInput.disabled = true;
-    var nameVal = document.createElement("td");
-    nameVal.setAttribute("id", "customerID");
-    nameVal.appendChild(nameInput);
-    nameRow.appendChild(nameLabel);
-    nameRow.appendChild(nameVal);
-    */
-
     switchTabs("detailTabBar", "detailsTab");
     $("#detailHeading")[0].innerHTML = customer.Name;
     $("#detailHeading")[0].style.visibility = "visible";
@@ -423,10 +285,6 @@ function closeDelete() {
 
 // removes any details that are displayed in the details section
 function clearDisplay() {
-    //$("#detailContainer")[0].style.visibility = "hidden";
-    //$("#detailTable")[0].style.visibility = "hidden";
-    //$("#addRecordButton")[0].style.visibility = "hidden";
-    
     $("#detailHeading")[0].innerHTML = "";
     $("#interests")[0].style.visibility = "hidden"
     $("#orders")[0].style.visibility = "hidden"
@@ -446,25 +304,6 @@ function clearDisplay() {
     $("#customerAddressInput")[0].innerHTML = "";
     $("#interests")[0].innerHTML = "";
     $("#orders")[0].innerHTML = "";
-
-    /*$("#customerPhoneNoInput").value = "";
-    $("#customerID")[0].innerHTML = "";
-    $("#customerCreditLineInput").value = "";
-    $("#customerBalInput").value = "";
-    $("#customerMemberStatusInput").value = "";
-    $("#customerJoinDateInput")[0].value = "";
-    $("#customerEmailInput")[0].value = "";
-    ----
-    $("#itemSbjAreaInput")[0].value = "";
-    $("#itemPriceInput")[0].value = "";
-    $("#itemDescriptionInput")[0].value = "";
-    $("#itemDescriptionInput").value = "";
-    $("#itemNameInput").attr({ "disabled": "disabled" });
-    $("#itemTypeInput").attr({ "disabled": "disabled" });
-    $("#itemSbjAreaInput").attr({ "disabled": "disabled" });
-    $("#itemPriceInput").attr({ "disabled": "disabled" });
-    $("#itemDescriptionInput").attr({ "disabled": "disabled" });*/
-
     $("#customerNameInput")[0].value = "";
     $("#customerAddressInput")[0].value = "";
     $("#customerPhoneNoInput")[0].value = "";
@@ -565,52 +404,45 @@ function onAddNewCustomer(result) {
 }
 
 function displayCustomerInterests(customer) {
-    CustomerController.ReturnItems(customer.Id, onDisplayCustomerItems);
-}
-
-function onDisplayCustomerInterests(result) {
-    // set display
     var name = $("#detailHeading")[0].innerHTML;
     clearDisplay();
     $("#detailHeading")[0].innerHTML = name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
-    $("#items")[0].style.visibility = "visible";
-
-    var interests = JSON.parse(result);
-    $("#itemTypeInput")[0].value = interests.Type;
-    $("#itemSbjAreaInput")[0].value = interests.SbjArea;
+    $("#interests")[0].style.visibility = "visible";
 }
 
 
-function displayCustomerOrders(customer) {
-    CustomerController.ReturnCorrespondingContacts(customer.Id, onDisplayCustomerContacts);
-
+function getOrderRecords(customerID) {
+    CustomerController.GetOrderRecords(customerID, onGetOrderRecords);
 }
-function onDisplayCustomerOrders(result) {
-    var orders = JSON.parse(result);
-    // set display
-    var name = $("#detailHeading")[0].innerHTML;
+
+function onGetOrderRecords(result) {
+    if (parseJSON(result)) {
+        var orders = JSON.parse(result);
+        displaySaleRecords(orders);
+    }
+}
+
+//display a list of sales
+function displaySaleRecords(orders) {
     clearDisplay();
     $("#detailHeading")[0].innerHTML = name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
-    $("#contacts")[0].style.visibility = "visible";
-
-    var button;
+    $("#orders")[0].style.visibility = "visible";
     for (var i = orders.length - 1; i >= 0; i--) {
-        button = document.createElement("button");
-        br = document.createElement("br");
-        button.append(orders[i].Name);
-        button.append(br);
-        button.append(orders[i].FinalTotal);
-        button.setAttribute("type", "button");
+        var button = document.createElement("button");
         button.setAttribute("class", "listItem bigList");
+        var date = new Date(parseInt((orders[i].Date).substr(6)));
+        var formatedDate = date.toString().substr(4, 11);
+        button.innerHTML = "Sale #" + orders[i].SaleID + "<br/>" + formatedDate;
         let order = orders[i];
         button.addEventListener("click", function () {
-            loadPage("Orders", order);
+            event.preventDefault();
+            loadPage("Sales", order);
         });
-        $("#contacts")[0].append(button);
+        $("#orders")[0].append(button);
     }
 }
 
