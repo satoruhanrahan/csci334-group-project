@@ -29,7 +29,6 @@ function onReturnUser(result) {
 }
 
 $(document).ready(function () {
-    //console.log(user.UserType);
     // display all users
     var users;
     getAllUsers();

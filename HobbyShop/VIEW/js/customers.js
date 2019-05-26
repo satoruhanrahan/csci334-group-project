@@ -2,6 +2,7 @@
 $(document).ready(function () {
     // display all customers
     var customers;
+    var customerGlobal;
     var searchedCustomers;
     getAllSearchedCustomers();
     // prevent form submission on enter
@@ -53,6 +54,7 @@ function displayCustomerNames(customers) {
         let customer = customers[i];
         button.addEventListener("click", function () {
             displayCustomerDetails(customer);
+            customerGlobal = customer;
         });
         $("#list")[0].append(button);
     }
@@ -77,7 +79,7 @@ function displayCustomerDetails(customer) {
     });
     $("body").on("click", "#interestsTab", function () {
         switchTabs("detailTabBar", "interestsTab");
-        displayCustomerInterests(customer);
+        getInterests(customer);
     });
     $("body").on("click", "#ordersTab", function () {
         switchTabs("detailTabBar", "ordersTab");
@@ -112,10 +114,10 @@ function displayCustomerDetails(customer) {
     $("#customerNameInput")[0].value = customer.Name;
     $("#customerAddressInput")[0].value = customer.Address;
     $("#customerPhoneNoInput")[0].value = customer.Phone;
-    
+
     $("#customerCreditLineInput")[0].value = customer.CreditLine;
     $("#customerBalInput")[0].value = customer.Balance;
-    $("#customerMemberStatusInput")[0].value = customer.MemberStatus; 
+    $("#customerMemberStatusInput")[0].value = customer.MemberStatus;
     $("#customerEmailInput")[0].value = customer.Email;
 }
 
@@ -189,13 +191,12 @@ function updateCustomer(customer) {
         var member = $("#customerMemberStatusInput")[0].value;
         var date = $("#customerJoinDateInput")[0].value;
         var email = $("#customerEmailInput")[0].value;
-        //CustomerController.UpdateCustomer(Number(id), name, address, phone, Number(credit), Number(balance), member, date, email, onUpdateCustomer);
+        CustomerController.UpdateCustomer(Number(id), name, address, phone, Number(credit), Number(balance), member, date, email, onUpdateCustomer);
     }
 }
 
 function onUpdateCustomer(result) {
     var customer = JSON.parse(result);
-    console.log(customer);
     var newcustomer = {
         "Id": customer.Id,
         "Name": $("#customerNameInput")[0].value,
@@ -342,7 +343,7 @@ function displayAddCustomer() {
     $("#customerAddressInput").removeAttr("disabled");
     $("#customerPhoneNoInput").removeAttr("disabled");
     $("#customerCreditLineInput").removeAttr("disabled");
-    $("#customerBalInput").removeAttr( "disabled" );
+    $("#customerBalInput").removeAttr("disabled");
     $("#customerMemberStatusInput").removeAttr("disabled");
     $("#customerJoinDateInput").removeAttr("disabled");
     $("#customerEmailInput").removeAttr("disabled");
@@ -362,7 +363,7 @@ function validateInput() {
     var phoneno = $("#customerPhoneNoInput")[0].value;
     var status = $("#customerMemberStatusInput")[0].value;
     var date = $("#customerJoinDateInput")[0].value;
-    if (name === '' || address === '' || joinDate === '' || status === '' ) {
+    if (name === '' || address === '' || date === '' || status === '') {
         alert("Please input: Name, Address, Phone number, Membership status or Join Date!");
         return false;
     }
@@ -393,22 +394,63 @@ function addNewCustomer() {
 }
 
 function onAddNewCustomer(result) {
-    console.log(result);
     clearDisplay();
     getAllSearchedCustomers();
     resultPopup("Successfully added to the database.", "green");
 }
 
-function displayCustomerInterests(customer) {
+function getInterests(customer) {
+
+    CustomerController.ReturnInterest(customer.Id, onGetInterest);
+}
+
+function onGetInterest(result) {
+    console.log(result);
+    if (parseJSON(result)) {
+        var interests = JSON.parse(result);
+        displayCustomerInterests(interests);
+        console.log(interests);
+    }
+}
+function displayCustomerInterests(interests) {
     var name = $("#detailHeading")[0].innerHTML;
     clearDisplay();
     $("#detailHeading")[0].innerHTML = name;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#interests")[0].style.visibility = "visible";
+
+    for (var i = interests.length - 1; i >= 0; i--) {
+        var content = document.createElement("div");
+
+        content.innerHTML = "Type: " + interests[i].Type + ", Subject Area: " + interests[i].Sbj;
+        let interest = interests[i];
+
+
+        var img1 = document.createElement("img");
+        img1.src = "style/delete.png";
+        button2 = document.createElement("button");
+        button2.append(img1);
+        button2.setAttribute("type", "button");
+        button2.setAttribute("class", "smallbtn redbtn");
+        button2.style.cssFloat = "right";
+        content.append(button2);
+        button2.addEventListener("click", function () {
+            removeInterest(customerGlobal.Id, interest.Type, interest.Sbj);
+        });
+        $("#interests")[0].append(content);
+
+    }
 }
+function removeInterest(id, type, sbj) {
+    CustomerController.RemoveInterest(id, type, sbj, onRemoveInterest);
 
-
+}
+function onRemoveInterest(result) {
+    clearDisplay();
+    getAllSearchedCustomers();
+    resultPopup("Successfully remove interest from the database.", "green");
+}
 function getOrderRecords(customerID) {
     CustomerController.GetOrderRecords(customerID, onGetOrderRecords);
 }

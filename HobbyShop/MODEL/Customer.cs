@@ -32,11 +32,11 @@ namespace HobbyShop
         public string MemberStatus { get { return cusMemberStatus; } set { cusMemberStatus = value; } }
         public DateTime? JoinDate { get { return cusJoinDate; } set { cusJoinDate = value; } }
 
-        public Customer ()
+        public Customer()
         {
 
         }
-        
+
         public Customer(int cusNum, string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime? cusJoinDate, string cusEmail)
         {
             this.cusNum = cusNum;
@@ -49,8 +49,8 @@ namespace HobbyShop
             this.cusJoinDate = cusJoinDate;
             this.cusEmail = cusEmail;
         }
-            
-        public Customer(string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime? cusJoinDate, string cusEmail)    
+
+        public Customer(string cusName, string cusAddress, string cusPhone, double cusCreditLine, double cusBalance, string cusMemberStatus, DateTime? cusJoinDate, string cusEmail)
         {
             this.cusName = cusName;
             this.cusPhone = cusPhone;
@@ -81,7 +81,7 @@ namespace HobbyShop
                     cmd.Parameters.AddWithValue("@status", cusMemberStatus);
                     cmd.Parameters.AddWithValue("@join", cusJoinDate);
                     cmd.Parameters.AddWithValue("@email", cusEmail);
-            
+
                     cmd.ExecuteNonQuery();
                 }
                 catch (Exception ex)
@@ -151,7 +151,7 @@ namespace HobbyShop
 
                     OleDbDataReader reader = cmd.ExecuteReader();
                     List<Customer> cusList = new List<Customer>();
-                    
+
                     while (reader.Read())
                     {
                         int cusNum = Convert.ToInt32(reader["CustomerNumber"]);
@@ -165,23 +165,24 @@ namespace HobbyShop
                         //DateTime? cusJoin = reader.IsDBNull(1) ? (DateTime?)null : (DateTime?)reader["ClubMemberJoinDate"];
 
                         DateTime? cusJoin;
-                        if (!reader.IsDBNull(reader.GetOrdinal("ClubMemberJoinDate")) ){
+                        if (!reader.IsDBNull(reader.GetOrdinal("ClubMemberJoinDate")))
+                        {
 
                             cusJoin = reader.GetDateTime(reader.GetOrdinal("ClubMemberJoinDate"));
                         }
                         else
                         {
-                           cusJoin = null;
+                            cusJoin = null;
                         }
                         //DateTime cusJoin = Convert.ToDateTime(reader["ClubMemberJoinDate"]);
                         string cusEmail = Convert.ToString(reader["EmailAddress"]);
-                        
-                      
-                            Customer _cus = new Customer(cusName, cusAddress, cusPhone, cusCredit, cusBalance, cusStatus, cusJoin, cusEmail)
-                            {
-                                Id = cusNum
-                            };
-                            cusList.Add(_cus);
+
+
+                        Customer _cus = new Customer(cusName, cusAddress, cusPhone, cusCredit, cusBalance, cusStatus, cusJoin, cusEmail)
+                        {
+                            Id = cusNum
+                        };
+                        cusList.Add(_cus);
                     }
                     return cusList;
                 }
@@ -264,6 +265,59 @@ namespace HobbyShop
             }
         }
 
+        public List<MODEL.Interest> returnInterest(int id)
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    string query = "SELECT * FROM Interests WHERE CustomerNumber=" + id;
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.ExecuteNonQuery();
+
+                    List<MODEL.Interest> interestList = new List<MODEL.Interest>();
+
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        string type = Convert.ToString(reader["ModelType"]);
+                        string sbj = Convert.ToString(reader["SubjectArea"]);
+
+                        MODEL.Interest interest = new MODEL.Interest(type, sbj);
+                        interestList.Add(interest);
+                    }
+                    return interestList;
+                }
+                catch (Exception e)
+                {
+                    throw new System.ApplicationException(e.Message);
+                }
+            }
+        }
+        public void removeInterest(int cusID, string type, string sbj)
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+
+                    string query = "DELETE FROM Interests WHERE CustomerNumber=@cusid AND ModelType=@type AND SubjectArea=@area";
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.Parameters.AddWithValue("@cusid", cusID);
+                    cmd.Parameters.AddWithValue("@type", type);
+                    cmd.Parameters.AddWithValue("@area", sbj);
+
+
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    throw new System.ApplicationException(ex.Message);
+                }
+            }
+        }
         public ArrayList GetOrderRecords(int customerID)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))

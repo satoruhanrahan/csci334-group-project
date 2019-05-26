@@ -34,7 +34,7 @@
                 <button type="button" class="smallbtn"> <img src="style/options.png" /></button>
                 <div class="dropdown-content">
                     <button type="button" class="dropdown-button" id="editStore">Edit Details</button>
-                    <button type="button" class="dropdown-button" id="deleteStore">Delete Store</button>
+                    <button type="button" class="dropdown-button" id="deleteStore">Delete</button>
                 </div> 
             </div>
             <div id="detailTabBar">
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class ="detailTabContent">
-                <div id="inventory" class="scrollable">
+                <div id="inventory" class="scrollable" style="width:100%">
                     <table class="detailTable">
                         <tr> 
                             <td class="firstcell"> Item Name </td> 

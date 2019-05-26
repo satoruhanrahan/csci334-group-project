@@ -56,7 +56,7 @@ function displayStoreNames(stores) {
     for (var i = stores.length - 1; i >= 0; i--) {
         button = document.createElement("button");
         button.append(stores[i].Address);
-        button.setAttribute("id", stores[i].Id);
+        button.setAttribute("id", stores[i].StoreID);
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem");
         let store = stores[i];
@@ -95,7 +95,7 @@ function displayStoreDetails(store) {
         displayDeleteStore(store);
     });
 
-    activeItem(store.Id);
+    activeItem(store.StoreID);
     $("#storeID")[0].innerHTML = store.StoreID;
     $("#storeAddressInput")[0].value = store.Address;
 }
@@ -142,18 +142,29 @@ function updateStore(store) {
     }
 }
 
-function onUpdateStore(store) {
-    var newstore = {
-        "StoreID": $("#storeID")[0].value,
+function onUpdateStore(result) {
+    if (parseJSON(result)) {
+        var store = JSON.parse(result);
+        getAllSearchedStores();
+        displayStoreDetails(store);
+        resultPopup("Successfully updated store in the Database.", "green");
+    }
+    else {
+        resultPopup("Failed to edit a record!", "red");
+    }
+    /*var newstore = {
+        //"StoreID": $("#storeID")[0].value,
+        "StoreID": store.,
         "Address": $("#storeAddressInput")[0].value
     }
+
     //  Refreshes the updated button 
-    $("#" + newstore.Id)[0].innerHTML = newstore.Address;
-    $("#" + newstore.Id)[0].addEventListener("click", function () {
+    $("#" + newstore.StoreID)[0].innerHTML = newstore.Address;
+    $("#" + newstore.StoreID)[0].addEventListener("click", function () {
         displayStoreDetails(newstore);
     });
     displayStoreDetails(newstore);
-    resultPopup("Successfully updated store in the Database.", "green");
+    resultPopup("Successfully updated store in the Database.", "green");*/
 }
 
 //displays the delete model prompt
@@ -239,6 +250,14 @@ function clearDisplay() {
     $("#storeID")[0].innerHTML = "";
     $("#storeAddressInput")[0].value = "";
     $("#storeAddressInput").attr({ "disabled": "disabled" });
+    $("#itemIDInput").attr({ "disabled": "disabled" });
+    $("#itemStockCountInput").attr({ "disabled": "disabled" });
+    $("#itemLocationInput").attr({ "disabled": "disabled" });
+    $("#itemDateAddedInput").attr({ "disabled": "disabled" });
+    $("#itemIDInput")[0].value = "";
+    $("#itemStockCountInput")[0].value = "";
+    $("#itemLocationInput")[0].value = "";
+    $("#itemDateAddedInput")[0].value = "";
     $("body").off("click", "#leftButton");
     $("body").off("click", "#rightButton");
 }
@@ -299,7 +318,6 @@ function onAddNewStore(result) {
 
 function displayStoreInventory(inventory) {
     // set display
-    console.log(inventory);
     var address = $("#detailHeading")[0].innerHTML;
     clearDisplay();
     $("#detailHeading")[0].innerHTML = address;
@@ -308,7 +326,7 @@ function displayStoreInventory(inventory) {
     $("#addInventory")[0].style.visibility = "visible";
     $("#inventory")[0].style.visibility = "visible";
     
-    
+    $("#inventoryList")[0].innerHTML="";
     var button;
     for (var i = inventory.length - 1; i >= 0; i--) {
         button = document.createElement("button");
@@ -330,6 +348,8 @@ function displayStoreInventory(inventory) {
 
 function displayItemDetails(item) {
     var address = $("#detailHeading")[0].innerHTML;
+    $("#leftButton")[0].style.visibility = "visible";
+    $("#rightButton")[0].style.visibility = "visible";
     clearDisplay();
     $("#detailHeading")[0].innerHTML = address;
     $("#detailHeading")[0].style.visibility = "visible";
@@ -346,20 +366,32 @@ function displayItemDetails(item) {
     $("#itemIDInput")[0].value = item.ItemName;
     $("#itemStockCountInput")[0].value = item.StockCount;
     $("#itemLocationInput")[0].value = item.Location;
-    $("#itemDateAddedInput")[0].value = item.FirstStockDate;
+    var date = new Date(parseInt((item.FirstStockDate).substr(6)));
+
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var year = date.getFullYear();
+    if (month.toString().length == 1) {
+        month = "0" + month;
+    }
+    if (day.toString().length == 1) {
+        day = "0" + day;
+    }
+    var format = year + "-" + month + "-" + day;
+    console.log("Date: " + format);
+    $("#itemDateAddedInput")[0].value = format;
 }
 
 // Edit details
-function editItemDetails(store) {
-    var address = $("#detailHeading")[0].innerHTML;
+function editItemDetails(item) {
     clearDisplay();
+    $("#detailHeading")[0].innerHTML = globalStore.Address;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#inventory")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#addInventory")[0].style.visibility = "visible";
-    $("#detailHeading")[0].append(address);
 
     $("#itemIDInput").removeAttr("disabled");
     $("#itemStockCountInput").removeAttr("disabled");
@@ -369,7 +401,19 @@ function editItemDetails(store) {
     $("#itemIDInput")[0].value = item.ItemName;
     $("#itemStockCountInput")[0].value = item.StockCount;
     $("#itemLocationInput")[0].value = item.Location;
-    $("#itemDateAddedInput")[0].value = item.FirstStockDate;    
+    var date = new Date(parseInt((item.FirstStockDate).substr(6)));
+
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var year = date.getFullYear();
+    if (month.toString().length == 1) {
+        month = "0" + month;
+    }
+    if (day.toString().length == 1) {
+        day = "0" + day;
+    }
+    var format = year + "-" + month + "-" + day;
+    $("#itemDateAddedInput")[0].value = format;    
 
     var img1 = document.createElement("img");
     img1.src = "style/save.png";
@@ -384,21 +428,31 @@ function editItemDetails(store) {
     });
 }
 // Send edited data to controller
-function updateItem(item) {
+function updateItem() {
+    console.log("Test Update: " + typeof (Number($("#itemStockCountInput")[0].value)));
     if (validateItemInput()) {
         StoreController.EditInventoryItem(
-            globalStore.Id,
+            globalStore.StoreID,
             $("#itemIDInput")[0].value,
-            $("#itemStockCountInput")[0].value,
-            $("#itemLocationInput")[0].value,
+            Number($("#itemStockCountInput")[0].value),
+            Number($("#itemLocationInput")[0].value),
             $("#itemDateAddedInput")[0].value,
             onUpdateItem
         );
     }
 }
 
-function onUpdateItem(item) {
-    item = JSON.parse(item);
+function onUpdateItem(result) {
+    if (parseJSON(result)) {
+        var store = JSON.parse(result);
+        getAllSearchedStores();
+        displayStoreInventory(store.Items);
+        resultPopup("Successfully updated inventory item in the Database.", "green");
+    }
+    else {
+        resultPopup("Failed to edit a record!", "red");
+    }
+    /*item = JSON.parse(item);
     var newitem = {
         "ItemName":$("#itemIDInput")[0].value,
         "StockCount":$("#itemStockCountInput")[0].value,
@@ -407,11 +461,11 @@ function onUpdateItem(item) {
     }
     //  Refreshes the updated button 
     (document).getElementById("inventoryList").$("#" + newitem.ItemName)[0].innerHTML = "Item: #" + inventory[i].ItemName;
-    $("#" + newstore.Id)[0].addEventListener("click", function () {
+    $("#" + newstore.StoreID)[0].addEventListener("click", function () {
         displayItemDetails(newitem);
     });
     displayItemDetails(newitem);
-    resultPopup("Successfully updated inventory item in the Database.", "green");
+    resultPopup("Successfully updated inventory item in the Database.", "green");*/
 }
 
 //displays the delete model prompt
@@ -428,7 +482,7 @@ function displayDeleteItem(item) {
     button1.style.cssFloat = "left";
     button1.setAttribute("class", "mediumbtn greenbtn");
     button1.addEventListener("click", function () {
-        deleteItem(item.Id);
+        deleteItem(item.ItemName);
     });
     var img1 = document.createElement("img");
     img1.src = "style/delete.png";
@@ -459,16 +513,22 @@ function displayDeleteItem(item) {
 }
 
 // sends id of store to be deleted to controller
-function deleteItem(id) {
+function deleteItem(name) {
     results.style.display = "none";
-    StoreController.DeleteInventoryItem(globalStore.Id, id, onDeleteItem);
+    //StoreController.DeleteInventoryItem(globalStore.StoreID, id, onDeleteItem);
+    StoreController.DeleteInventoryItem(name, onDeleteItem);
 }
 
-function onDeleteItem(id) {
-    clearDisplay();
-    // remove corresponding button from list
-    (document).getElementById("inventoryList").$("#" + id)[0].remove();
-    resultPopup("Item was successfully removed.", "green");
+function onDeleteItem(result) {
+    if (result == "") {
+        clearDisplay();
+        /*// remove corresponding button from list
+        (document).getElementById("inventoryList").$("#" + id)[0].remove();*/
+        resultPopup("Item was successfully removed.", "green");
+    }
+    else {
+        resultPopup("Failed to remove item.", "red");
+    }
 }
 
 //Add new store to model table
@@ -494,17 +554,20 @@ function displayAddItem() {
     $("#leftButton")[0].innerHTML = "";
     $("#leftButton")[0].append(img1);
     $("body").on("click", "#leftButton", addNewItem);
-    $("body").on("click", "#rightButton", function () { displayItemDetails(item); });
+    $("body").on("click", "#rightButton", function () {
+        displayStoreInventory(globalStore.Items);
+    });
 }
 
 // Sends input to controller
 function addNewItem() {
+    console.log("Test: " + typeof(Number($("#itemStockCountInput")[0].value)));
     if (validateItemInput()) {
         StoreController.AddInventoryItem(
-            globalStore.Id,
+            globalStore.StoreID,
             $("#itemIDInput")[0].value,
-            $("#itemStockCountInput")[0].value,
-            $("#itemLocationInput")[0].value,
+            Number($("#itemStockCountInput")[0].value),
+            Number($("#itemLocationInput")[0].value),
             $("#itemDateAddedInput")[0].value,
             onAddNewItem
         );
@@ -512,9 +575,18 @@ function addNewItem() {
 }
 
 function onAddNewItem(result) {
-    clearDisplay();
-    displayStoreInvetory(globalStore.Items);
-    resultPopup("Successfully added to the database.", "green");
+    if (parseJSON(result)) {
+        var store = JSON.parse(result);
+        clearDisplay();
+        //displayStoreInventory(globalStore.Items);
+        getAllSearchedStores();
+        displayStoreInventory(store.Items);
+        resultPopup("Successfully added to the database.", "green");
+        //displayStoreInventory(globalStore.Items);
+    }
+    else {
+        resultPopup("Failed to add a new record!", "red");
+    }
 }
 
 function validateItemInput() {
@@ -529,4 +601,14 @@ function validateItemInput() {
     else {
         return true;
     }
+}
+
+function parseJSON(jsonString) {
+    try {
+        var obj = JSON.parse(jsonString);
+        if (obj && typeof obj === "object")
+            return obj;
+    }
+    catch (e) { }
+    return false;
 }

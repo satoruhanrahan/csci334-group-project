@@ -113,5 +113,37 @@ namespace HobbyShop.CONTROLLER
                 return e.Message;
             }
         }
+
+        [OperationContract]
+        public string ReturnInterest(int id)
+        {
+            try
+            {
+                Customer customer = new Customer();
+                List<MODEL.Interest> list = customer.returnInterest(id);
+                string json = new JavaScriptSerializer().Serialize(list);
+                return json;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+        [OperationContract]
+        public string RemoveInterest(int id, string type, string sbj)
+        {
+            try
+            {
+                Customer customer = new Customer();
+                customer.removeInterest(id, type, sbj);
+
+
+                return "";
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
     }
 }

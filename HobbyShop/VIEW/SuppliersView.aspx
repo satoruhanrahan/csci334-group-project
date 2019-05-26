@@ -42,6 +42,7 @@
                 <button type="button" class="tab detailtab active" id="detailsTab">Details</button>
                 <button type="button" class="tab detailtab" id="itemsTab">Models</button>
                 <button type="button" class="tab detailtab" id="contactsTab">Contacts</button>
+                <button type="button" class="tab detailtab" id="deliveriesTab">Deliveries</button>
             </div>
             <div id="details" class="detailTabContent">
                 <div class="scrollable">
@@ -67,8 +68,10 @@
                             </td> 
                         </tr>
                     </table>
-                    <button type="button" id="leftButton" title="Save changes" class="smallbtn greenbtn"> 
+                     <button type="button" id="leftButton" title="Save changes" class="smallbtn greenbtn">
+                        <img id="leftImage" src="style/add.png" />
                     </button>
+
                     <button type="button" id="rightButton" title="Discard changes" class="smallbtn redbtn" style="float:right;"> 
                         <img src="style/close.png" />
                     </button>
@@ -84,6 +87,10 @@
             </div>
             <div class ="detailTabContent">
                 <div id="contacts" class="scrollable">
+                </div>
+            </div>
+            <div class ="detailTabContent">
+                <div id="deliveries" class="scrollable">
                 </div>
             </div>
 		</div>
