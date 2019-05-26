@@ -422,6 +422,7 @@ function onGetOrderRecords(result) {
 
 //display a list of sales
 function displaySaleRecords(orders) {
+    var name = $("#detailHeading")[0].innerHTML;
     clearDisplay();
     $("#detailHeading")[0].innerHTML = name;
     $("#detailHeading")[0].style.visibility = "visible";

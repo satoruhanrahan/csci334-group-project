@@ -61,9 +61,9 @@
                 <div id="inventory" class="scrollable">
                     <table class="detailTable">
                         <tr> 
-                            <td class="firstcell"> Store ID </td> 
+                            <td class="firstcell"> Item Name </td> 
                             <td id="itemID">
-                                <input type="number" id="itemIDInput" disabled/>
+                                <input type="text" id="itemIDInput" disabled/>
                             </td> 
                         </tr> 
                         <tr> 
