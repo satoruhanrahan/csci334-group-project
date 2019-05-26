@@ -4,6 +4,7 @@ using System.Web.Script.Serialization;
 
 namespace HobbyShop.CONTROLLER
 {
+    [ServiceContract(Namespace = "")]
     public class BaseController<T> where T : CLASS.BaseModel, new()
     {
         public BaseController()
