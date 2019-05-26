@@ -31,20 +31,20 @@
             <div id="detailOptions" class="dropdown">
                 <button type="button" class="smallbtn"> <img src="style/options.png" /></button>
                 <div class="dropdown-content">
-                    <button type="button" class="dropdown-button" id="editUser">Edit Details</button>
+                   
                     <button type="button" class="dropdown-button" id="deleteUser">Delete Accounts</button>
                 </div> 
             </div>
             <div id="detailTabBar">
                 <button type="button" class="tab detailtab active" id="detailsTab">Details</button>
-                <button type="button" class="tab detailtab" id="storesTab">Stores</button>
+                
                
             </div>
             <div id="details" class="detailTabContent">
                 <div class="scrollable">
                     <table id="detailTable">
                         <tr> 
-                            <td id="firstcell"> Name </td> 
+                            <td id="firstcell"> UserName </td> 
                             <td id="userName"><input type="text" id="userNameInput" disabled/></td> 
                         </tr> 
                         <tr> 

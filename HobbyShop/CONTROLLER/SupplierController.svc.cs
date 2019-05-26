@@ -123,6 +123,20 @@ namespace HobbyShop.CONTROLLER
                 return e.Message;
             }
         }
+        [OperationContract]
+        public void AddNewSupplierItem(int itemID,  int supID)
+        {
+            try
+            {
+                Supplier _s = new Supplier();
+                _s.Id = supID;
+                _s.AddNewSupplierItem(itemID);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
 

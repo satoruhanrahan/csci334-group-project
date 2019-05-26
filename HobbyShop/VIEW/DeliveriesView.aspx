@@ -58,6 +58,21 @@
                         <td> Supplier ID </td> 
                         <td id="supplierID"><input type="text" id="supplier" class="userInput" disabled /></td>
                     </tr>  
+                    <tr> 
+                        <td> Items </td> 
+                        <td>
+                            <table id="itemTable">
+                                <tr>
+                                    <td>Item Number</td>
+                                    <td>Total Cost</td>
+                                </tr>
+                                <!--<tr>
+                                    <td><input type="text" class="itemInput" id="itemNumber"/></td>
+                                    <td><input type="text" class="itemInput" id="totalCost"/></td>
+                                </tr>-->
+                            </table>
+                        </td> 
+                    </tr> 
                 </table>
                 <button type="button" id="leftButton" title="Save changes" class="smallbtn greenbtn">
                     <img id="leftImage" src="style/add.png" />

@@ -32,7 +32,7 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string AddDeliveryRecord(string date, int storeID, int supplierID)
+        public string AddDeliveryRecord(string date, int storeID, int supplierID, string itemList)
         {
             try
             {
@@ -48,12 +48,18 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string EditDeliveryDetails(int id, string date, int storeID, int supplierID)
+        public string EditDeliveryDetails(int id, string date, int storeID, int supplierID, string itemList)
         {
             try
             {
+                //convert items into arraylist of deliveryItems
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                var list = serializer.Deserialize<DeliveryItem[]>(itemList);
+                ArrayList items = new ArrayList(list);
+                //create new delivery
                 DateTime formatedDate = DateTime.Parse(date);
                 Delivery delivery = new Delivery(id, formatedDate, storeID, supplierID);
+                delivery.Items = items;
                 delivery.EditDeliveryDetails();
                 string json = new JavaScriptSerializer().Serialize(delivery);
                 return json;

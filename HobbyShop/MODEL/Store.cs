@@ -80,7 +80,7 @@ namespace HobbyShop.CLASS
                         {
                             string itemName = Convert.ToString(itemReader["Name"]);
                             int stockCount = Convert.ToInt32(itemReader["StockCount"]);
-                            int location = Convert.ToInt32(itemReader["LocationInStore"]);
+                            int location = Convert.ToInt32(itemReader["LocationInShop"]);
                             DateTime firstDate = Convert.ToDateTime(itemReader["FirstStockDate"]);
                             StoreInventory item = new StoreInventory(itemName, stockCount, location, firstDate);
                             itemList.Add(item);

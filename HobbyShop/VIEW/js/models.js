@@ -185,13 +185,6 @@ function updateItem(item) {
     if (validateInput()) {
         
         var checked = document.getElementById("itemAvailabilityInput").checked;
-        console.log(item.Id,
-            $("#itemNameInput")[0].value,
-            $("#itemTypeInput")[0].value,
-            $("#itemSbjAreaInput")[0].value,
-            $("#itemPriceInput")[0].value,
-            $("#itemDescriptionInput")[0].value,
-            checked);
         ModelController.UpdateModelDetails(
             item.Id,
             $("#itemNameInput")[0].value,
