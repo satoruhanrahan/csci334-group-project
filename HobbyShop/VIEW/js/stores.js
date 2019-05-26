@@ -251,6 +251,14 @@ function clearDisplay() {
     $("#storeID")[0].innerHTML = "";
     $("#storeAddressInput")[0].value = "";
     $("#storeAddressInput").attr({ "disabled": "disabled" });
+    $("#itemIDInput").attr({ "disabled": "disabled" });
+    $("#itemStockCountInput").attr({ "disabled": "disabled" });
+    $("#itemLocationInput").attr({ "disabled": "disabled" });
+    $("#itemDateAddedInput").attr({ "disabled": "disabled" });
+    $("#itemIDInput")[0].value = "";
+    $("#itemStockCountInput")[0].value = "";
+    $("#itemLocationInput")[0].value = "";
+    $("#itemDateAddedInput")[0].value = "";
     $("body").off("click", "#leftButton");
     $("body").off("click", "#rightButton");
 }
@@ -358,11 +366,24 @@ function displayItemDetails(item) {
     $("#itemIDInput")[0].value = item.ItemName;
     $("#itemStockCountInput")[0].value = item.StockCount;
     $("#itemLocationInput")[0].value = item.Location;
-    $("#itemDateAddedInput")[0].value = item.FirstStockDate;
+    var date = new Date(parseInt((item.FirstStockDate).substr(6)));
+
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var year = date.getFullYear();
+    if (month.toString().length == 1) {
+        month = "0" + month;
+    }
+    if (day.toString().length == 1) {
+        day = "0" + day;
+    }
+    var format = year + "-" + month + "-" + day;
+
+    $("#itemDateAddedInput")[0].value = format;
 }
 
 // Edit details
-function editItemDetails(store) {
+function editItemDetails(item) {
     var address = $("#detailHeading")[0].innerHTML;
     clearDisplay();
     $("#detailHeading")[0].style.visibility = "visible";
@@ -381,7 +402,19 @@ function editItemDetails(store) {
     $("#itemIDInput")[0].value = item.ItemName;
     $("#itemStockCountInput")[0].value = item.StockCount;
     $("#itemLocationInput")[0].value = item.Location;
-    $("#itemDateAddedInput")[0].value = item.FirstStockDate;    
+    var date = new Date(parseInt((item.FirstStockDate).substr(6)));
+
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var year = date.getFullYear();
+    if (month.toString().length == 1) {
+        month = "0" + month;
+    }
+    if (day.toString().length == 1) {
+        day = "0" + day;
+    }
+    var format = year + "-" + month + "-" + day;
+    $("#itemDateAddedInput")[0].value = format;    
 
     var img1 = document.createElement("img");
     img1.src = "style/save.png";
@@ -506,7 +539,9 @@ function displayAddItem() {
     $("#leftButton")[0].innerHTML = "";
     $("#leftButton")[0].append(img1);
     $("body").on("click", "#leftButton", addNewItem);
-    $("body").on("click", "#rightButton", function () { displayItemDetails(item); });
+    $("body").on("click", "#rightButton", function () {
+        displayStoreInventory(globalStore.Items);
+    });
 }
 
 // Sends input to controller
