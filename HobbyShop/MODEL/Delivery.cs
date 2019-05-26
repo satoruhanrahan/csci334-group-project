@@ -8,7 +8,7 @@ using System.Collections;
 
 namespace HobbyShop.CLASS
 {
-    public class Delivery
+    public class Delivery : BaseModel
     {
         private int deliveryID;
         private DateTime date;
@@ -43,7 +43,7 @@ namespace HobbyShop.CLASS
 
         string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
 
-        public ArrayList GetDeliveryRecords()
+        public override ArrayList GetRecords(string keyword)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
