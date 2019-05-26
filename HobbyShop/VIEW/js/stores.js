@@ -513,16 +513,22 @@ function displayDeleteItem(item) {
 }
 
 // sends id of store to be deleted to controller
-function deleteItem(id) {
+function deleteItem(name) {
     results.style.display = "none";
-    StoreController.DeleteInventoryItem(globalStore.StoreID, id, onDeleteItem);
+    //StoreController.DeleteInventoryItem(globalStore.StoreID, id, onDeleteItem);
+    StoreController.DeleteInventoryItem(name, onDeleteItem);
 }
 
-function onDeleteItem(id) {
-    clearDisplay();
-    // remove corresponding button from list
-    (document).getElementById("inventoryList").$("#" + id)[0].remove();
-    resultPopup("Item was successfully removed.", "green");
+function onDeleteItem(result) {
+    if (result == "") {
+        clearDisplay();
+        /*// remove corresponding button from list
+        (document).getElementById("inventoryList").$("#" + id)[0].remove();*/
+        resultPopup("Item was successfully removed.", "green");
+    }
+    else {
+        resultPopup("Failed to remove item.", "red");
+    }
 }
 
 //Add new store to model table
