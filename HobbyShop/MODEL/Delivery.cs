@@ -14,11 +14,13 @@ namespace HobbyShop.CLASS
         private DateTime date;
         private int storeID;
         private int supplierID;
+        private ArrayList items;
 
         public int DeliveryID { get { return deliveryID; } }
         public DateTime Date { get { return date; } set { date = value; } }
         public int StoreID { get { return storeID; } set { storeID = value; } }
         public int SupplierID { get { return supplierID; } set { supplierID = value; } }
+        public ArrayList Items { get { return items; } set { items = value; } }
 
         public Delivery() { }
 
@@ -64,6 +66,28 @@ namespace HobbyShop.CLASS
                     Delivery delivery = new Delivery(id, date, storeID, supplierID);
                     deliveryList.Add(delivery);
                 }
+                con.Close();
+                con.Open();
+                for (int i = 0; i < deliveryList.Count; i++)
+                {
+                    Delivery delivery = (Delivery)deliveryList[i];
+                    string itemQuery = "SELECT DeliveryItems.* FROM DeliveryItems" +
+                        " INNER JOIN Deliveries ON Deliveries.DeliveryID = DeliveryItems.DeliveryID" +
+                        " WHERE DeliveryItems.DeliveryID = @id";
+                    OleDbCommand itemCmd = new OleDbCommand(itemQuery, con);
+                    itemCmd.Parameters.AddWithValue("@id", delivery.DeliveryID);
+                    itemCmd.ExecuteNonQuery();
+                    OleDbDataReader itemReader = itemCmd.ExecuteReader();
+                    ArrayList itemList = new ArrayList();
+                    while (itemReader.Read())
+                    {
+                        int itemNumber = Convert.ToInt32(itemReader["ItemNumber"]);
+                        double totalCost = Convert.ToDouble(itemReader["TotalCost"]);
+                        DeliveryItem item = new DeliveryItem(itemNumber, totalCost);
+                        itemList.Add(item);
+                    }
+                    delivery.items = itemList;
+                }
                 return deliveryList;
             }
         }
@@ -94,15 +118,31 @@ namespace HobbyShop.CLASS
             {
                 try
                 {
+                    //remove old deliveries items
+                    con.Open();
+                    string deleteQuery = "DELETE FROM DeliveryItems WHERE DeliveryID=@delivery" +
+                        "ID";
+                    OleDbCommand cmd = new OleDbCommand(deleteQuery, con);
+                    cmd.Parameters.AddWithValue("@deliveryID", deliveryID);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+
+                    //insert new deliveries items
+                    //for (int j = 0; j < items.Count; j++)
+                    //{
+                    //    DeliveryItem item = (DeliveryItem)items[j];
+                    //}
+
+                    //update delivery details
                     con.Open();
                     string query = "UPDATE Delivery SET Date=@date, StoreID=@storeID, SupplierID=@supplierID WHERE DeliveryID=@id";
-                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    OleDbCommand updateCmd = new OleDbCommand(query, con);
                     cmd.Parameters.AddWithValue("@date", date);
                     cmd.Parameters.AddWithValue("@storeID", storeID);
                     cmd.Parameters.AddWithValue("@supplierID", supplierID);
                     cmd.Parameters.AddWithValue("@id", deliveryID);
-
                     cmd.ExecuteNonQuery();
+                    con.Close();
                 }
                 catch (OleDbException ex)
                 {

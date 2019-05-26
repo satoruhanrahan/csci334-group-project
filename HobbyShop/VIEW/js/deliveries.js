@@ -1,4 +1,29 @@
-﻿function getDeliveryRecords() {
+﻿$(document).ready(function () {
+    getDeliveryRecords();
+    // prevent form submission on enter
+    $('form').keypress(function (event) {
+        return event.keyCode != 13;
+    });
+    // Search as the user types
+    var searchbar = $("#searchbar")[0];
+    searchbar.addEventListener("keyup", function (event) {
+        event.preventDefault();
+        //getAllSearchedItems();
+    });
+    $("#advSearch")[0].addEventListener("click", function () {
+        displayAdvSearch();
+    });
+    /*$("#addButton")[0].addEventListener("click", function () {
+        displayAddDeliveryRecord();
+    });*/
+    $("#leftButton")[0].style.visibility = "hidden";
+    $("#rightButton")[0].style.visibility = "hidden";
+    $("#detailOptions")[0].style.visibility = "hidden";
+    $("#details")[0].style.visibility = "hidden";
+    $("#detailTable")[0].style.visibility = "hidden";
+});
+
+function getDeliveryRecords() {
     DeliveryController.GetDeliveryRecords(onGetDeliveryRecords);
 }
 
@@ -32,13 +57,10 @@ function displayDeliveryRecords(deliveries) {
 
 //display delivery details
 function displayDeliveryDetails(delivery) {
-    $("#leftButton")[0].style.visibility = "visible";
-    $("#rightButton")[0].style.visibility = "visible";
     $("#results")[0].style.display = "none";
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
     $("#detailTable")[0].style.visibility = "visible";
-    console.log("Test if it's updated!");
     /*
     $("#editItem")[0].addEventListener("click", function () {
         editDeliveryDetails(delivery);
@@ -66,6 +88,38 @@ function displayDeliveryDetails(delivery) {
     document.getElementById("delivery").value = delivery.DeliveryID;
     document.getElementById("store").value = delivery.StoreID;
     document.getElementById("supplier").value = delivery.SupplierID;
+
+    var items = delivery.Items;
+    var itemTable = document.getElementById("itemTable");
+
+    //remove previous delivery's itemlist
+    var numberOfRows = itemTable.rows.length;
+    if (numberOfRows > 1) {
+        for (var i = 1; i < numberOfRows; i++) {
+            itemTable.deleteRow(1);
+        }
+    }
+    console.log(items.length);
+    if (items.length > 0) {
+        for (var i = 0; i < items.length; i++) {
+            var row = document.createElement("tr");
+            var itemNumberInput = document.createElement("input");
+            itemNumberInput.setAttribute("class", "itemInput");
+            var totalCostInput = document.createElement("input");
+            totalCostInput.setAttribute("class", "itemInput");
+            var itemNumber = document.createElement("td");
+            var totalCost = document.createElement("td");
+            itemNumberInput.value = items[i].ItemNumber;
+            itemNumberInput.disabled = true;
+            totalCostInput.value = items[i].TotalCost;
+            totalCostInput.disabled = true;
+            itemNumber.appendChild(itemNumberInput);
+            totalCost.appendChild(totalCostInput);
+            row.appendChild(itemNumber);
+            row.appendChild(totalCost);
+            itemTable.appendChild(row);
+        }
+    }
 }
 
 function displayAddDeliveryRecord() {
@@ -93,7 +147,6 @@ function displayAddDeliveryRecord() {
             elements[i].disabled = false;
         }
     }
-
     $("#leftButton")[0].addEventListener("click", function () {
         $("#leftButton")[0].style.visibility = "hidden";
         $("#rightButton")[0].style.visibility = "hidden";
@@ -105,38 +158,37 @@ function displayAddDeliveryRecord() {
     });
 }
 
-// removes any details that are displayed in the details section
-function clearDisplay() {
-    $("#detailHeading")[0].style.visibility = "hidden";
-    $("#details")[0].style.visibility = "hidden";
-    $("#detailOptions")[0].style.visibility = "hidden";
-}
-
 //add a new delivery record
 function addDeliveryRecord() {
     var date = document.getElementById("date").value;
     var store = document.getElementById("store").value;
     var supplier = document.getElementById("supplier").value;
 
-    var check = false;
     var errorMessage = document.getElementById("error");
     if (store == "" || supplier == "") {
-        errorMessage.innerText = "No field is empty!";
+        errorMessage.innerText = "Information is missing!";
     }
     else {
-        errorMessage.innerText = "";
-        check = true;
-    }
-    if (check == true) {
-        DeliveryController.AddDeliveryRecord(date, store, onAddDeliveryRecord);
+        DeliveryController.AddDeliveryRecord(date, store);
+        onAddDeliveryRecord();
     }
 }
 
-function onAddDeliveryRecord(result) {
+function onAddDeliveryRecord() {
     resultPopup("Successfully added to the database", "green");
     clearDisplay();
     getDeliveryRecords();
     // **todo: add single new button to list
+}
+
+// removes any details that are displayed in the details section
+function clearDisplay() {
+    $("#detailHeading")[0].style.visibility = "hidden";
+    $("#leftButton")[0].style.visibility = "hidden";
+    $("#rightButton")[0].style.visibility = "hidden";
+    $("#detailOptions")[0].style.visibility = "hidden";
+    $("#details")[0].style.visibility = "hidden";
+    $("#detailTable")[0].style.visibility = "hidden";
 }
 
 //edit delivery record
@@ -152,10 +204,10 @@ function editDeliveryDetails(delivery) {
     $("#rightButton")[0].style.visibility = "visible";
     var elements = document.getElementsByTagName("input");
     for (var i = 0; i < elements.length; i++) {
-        var id = elements[i].id;
-        if (id == "date" || id == "store" || id == "supplier") {
-            elements[i].disabled = false;
-        }
+        //var id = elements[i].id;
+        //if (id == "date" || id == "store" || id == "supplier") {
+        elements[i].disabled = false;
+        //}
     }
     $("#leftButton")[0].addEventListener("click", function () {
         saveDeliveryDetails(delivery);
@@ -172,7 +224,18 @@ function saveDeliveryDetails() {
     var store = document.getElementById("store").value;
     var supplier = document.getElementById("supplier").value;
 
-    DeliveryController.EditDeliveryDetails(Number(id), date, Number(store), Number(supplier), onEditDeliveryDetails);
+    //get item details
+    var listOfItems = [];
+    var itemTable = document.getElementById("itemTable");
+    var itemInputs = document.getElementsByClassName("nameInput");
+    for (var i = 0; i < itemInputs.length; i + 2) {
+        var itemNumber = itemInputs[i].value;
+        var totalCost = itemInputs[i + 1].value;
+        var item = { ItemNumber: parseInt(itemNumber), TotalCost: parseFloat(totalCost) };
+        listOfItems.push(item);
+    }
+    var itemListString = JSON.stringify(listOfItems);
+    DeliveryController.EditDeliveryDetails(Number(id), date, Number(store), Number(supplier), itemListString, onEditDeliveryDetails);
 }
 
 function onEditDeliveryDetails(result) {
@@ -209,26 +272,6 @@ function onDeleteDeliveryRecord(result) {
         getDeliveryRecords();
     }
 }
-
-$(document).ready(function () {
-    getDeliveryRecords();
-    // prevent form submission on enter
-    $('form').keypress(function (event) {
-        return event.keyCode != 13;
-    });
-    // Search as the user types
-    var searchbar = $("#searchbar")[0];
-    searchbar.addEventListener("keyup", function (event) {
-        event.preventDefault();
-        //getAllSearchedItems();
-    });
-    $("#advSearch")[0].addEventListener("click", function () {
-        displayAdvSearch();
-    });
-    /*$("#addButton")[0].addEventListener("click", function () {
-        displayAddDeliveryRecord();
-    });*/
-});
 
 //Advanced search display
 function displayAdvSearch() {
