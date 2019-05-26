@@ -28,7 +28,8 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="login/css/util.css"/>
 	<link rel="stylesheet" type="text/css" href="login/css/main.css"/>
-<!--===============================================================================================-->
+<!--===============================================================================================-->
+
 </head>
 <body>
         <div class="limiter">
@@ -49,7 +50,9 @@
 						<input class="input100" type="password" id="pBox" placeholder="Password"/>
 						<span class="focus-input100-1"></span>
 						<span class="focus-input100-2"></span>
-					</div>                    <div id="noti"></div>                    <div class="container-login100-form-btn m-t-20"> 
+					</div>
+                    <div id="noti"></div>
+                    <div class="container-login100-form-btn m-t-20"> 
                         <input class="login100-form-btn" type="button" value="Log in" id="b1" onclick="loginToAccount()"; />
 
                     </div>
@@ -83,7 +86,8 @@
 	<script src="login/vendor/countdowntime/countdowntime.js"></script>
 <!--===============================================================================================-->
 	<script src="login/js/main.js"></script>
-
+
+
         
         
 </body>

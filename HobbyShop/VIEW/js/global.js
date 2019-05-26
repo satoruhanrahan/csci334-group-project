@@ -22,13 +22,14 @@
     $("#Stores")[0].addEventListener("click", function () {
         loadPage("Stores", "");
     });
-    $("#Users")[0].addEventListener("click", function () {
+    /*$("#Users")[0].addEventListener("click", function () {
         loadPage("Users", "");
-    });
+    });*/
     $("#Settings")[0].addEventListener("click", function () {
         loadPage("Settings", "");
     });
     $("#LogOut")[0].addEventListener("click", function () {
+        window.location = "LogInPage.aspx";
        //to do, redirect to LogInPage.aspx
     });
 });
