@@ -48,7 +48,8 @@ namespace HobbyShop.CONTROLLER
             {
                 Store store = new Store(storeID, address);
                 store.UpdateStore();
-                return "";
+                string json = new JavaScriptSerializer().Serialize(store);
+                return json;
             }
             catch (Exception ex)
             {

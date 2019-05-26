@@ -142,18 +142,30 @@ function updateStore(store) {
     }
 }
 
-function onUpdateStore(store) {
-    var newstore = {
-        "StoreID": $("#storeID")[0].value,
+function onUpdateStore(result) {
+    if (parseJSON(result)) {
+        var store = JSON.parse(result);
+        getAllSearchedStores();
+        displayStoreDetails(store);
+        resultPopup("Successfully updated store in the Database.", "green");
+    }
+    else {
+        resultPopup("Failed to edit a record!", "red");
+    }
+    /*var newstore = {
+        //"StoreID": $("#storeID")[0].value,
+        "StoreID": store.,
         "Address": $("#storeAddressInput")[0].value
     }
+    //console.log("Store id:" + newstore.StoreID);
+
     //  Refreshes the updated button 
     $("#" + newstore.StoreID)[0].innerHTML = newstore.Address;
     $("#" + newstore.StoreID)[0].addEventListener("click", function () {
         displayStoreDetails(newstore);
     });
     displayStoreDetails(newstore);
-    resultPopup("Successfully updated store in the Database.", "green");
+    resultPopup("Successfully updated store in the Database.", "green");*/
 }
 
 //displays the delete model prompt
@@ -529,4 +541,14 @@ function validateItemInput() {
     else {
         return true;
     }
+}
+
+function parseJSON(jsonString) {
+    try {
+        var obj = JSON.parse(jsonString);
+        if (obj && typeof obj === "object")
+            return obj;
+    }
+    catch (e) { }
+    return false;
 }
