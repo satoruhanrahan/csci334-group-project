@@ -38,7 +38,7 @@ namespace HobbyShop.CLASS
                 try
                 {
                     con.Open();
- 
+
                     string query = "INSERT INTO Suppliers (SupplierName,SupplierAddress,CreditLine) VALUES (@name,@address,@credit)";
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.Parameters.AddWithValue("@name", supName);
@@ -75,7 +75,7 @@ namespace HobbyShop.CLASS
 
                         _sup = new Supplier(supName, supAdd, supCredit);
                         _sup.Id = supNum;
-                       
+
                     }
                     return _sup;
                 }
@@ -106,7 +106,7 @@ namespace HobbyShop.CLASS
                         string supAdd = Convert.ToString(reader["SupplierAddress"]);
                         double supCredit = Convert.ToDouble(reader["CreditLine"]);
 
-                        Supplier _sup = new Supplier(supName,supAdd,supCredit);
+                        Supplier _sup = new Supplier(supName, supAdd, supCredit);
                         _sup.Id = supNum;
                         sups.Add(_sup);
                     }
@@ -170,7 +170,7 @@ namespace HobbyShop.CLASS
                     cmd.ExecuteNonQuery();
 
                     List<Model> mods = new List<Model>();
-                    
+
                     OleDbDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -250,6 +250,27 @@ namespace HobbyShop.CLASS
                     OleDbCommand cmd = new OleDbCommand(query, con);
                     cmd.Parameters.AddWithValue("@supID", supID);
                     cmd.Parameters.AddWithValue("@itemID", itemID);
+
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    throw new System.ApplicationException(ex.Message);
+                }
+            }
+        }
+        public void removeItem(int itemID)
+        {
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+
+                    string query = "DELETE FROM SupplierItems WHERE SupplierID=@supid AND ItemNumber=" + itemID;
+                    OleDbCommand cmd = new OleDbCommand(query, con);
+                    cmd.Parameters.AddWithValue("@supID", supID);
+
 
                     cmd.ExecuteNonQuery();
                 }

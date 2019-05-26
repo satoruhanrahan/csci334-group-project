@@ -88,7 +88,7 @@ namespace HobbyShop.CONTROLLER
             }
         }
         [OperationContract]
-        public string ReturnItems(int id) 
+        public string ReturnItems(int id)
         {
             try
             {
@@ -124,13 +124,27 @@ namespace HobbyShop.CONTROLLER
             }
         }
         [OperationContract]
-        public void AddNewSupplierItem(int itemID,  int supID)
+        public void AddNewSupplierItem(int itemID, int supID)
         {
             try
             {
                 Supplier _s = new Supplier();
                 _s.Id = supID;
                 _s.AddNewSupplierItem(itemID);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        [OperationContract]
+        public void RemoveItem(int itemID, int supID)
+        {
+            try
+            {
+                Supplier _s = new Supplier();
+                _s.Id = supID;
+                _s.removeItem(itemID);
             }
             catch (Exception e)
             {

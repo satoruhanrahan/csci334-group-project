@@ -1,5 +1,4 @@
-﻿// on Page load...
-$(document).ready(function () {
+﻿$(document).ready(function () {
     // display all suppliers
     var supplierGlobal;
     var suppliers;
@@ -352,6 +351,7 @@ function onDisplaySupplierItems(result) {
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem bigList");
         let item = items[i];
+
         button.addEventListener("click", function () {
             loadPage("Models", item);
         });
@@ -362,14 +362,27 @@ function onDisplaySupplierItems(result) {
         button2.setAttribute("type", "button");
         button2.setAttribute("class", "smallbtn redbtn");
         button2.style.cssFloat = "right";
+        console.log(items[i].Id, supplierGlobal.Id);
+
+       
         button2.addEventListener("click", function () {
-            SupplierController.RemoveSupplierItem(items[i].Name);
+            removeItem(item.Id, supplierGlobal.Id);
             clearDisplay();
         });
         $("#items")[0].append(button);
 
         $("#items")[0].append(button2);
     }
+}
+
+function removeItem(itemid, supid) {
+    SupplierController.RemoveItem(itemid, supid, onRemoveItem);
+
+}
+function onRemoveItem(result) {
+    clearDisplay();
+    getAllSearchedSuppliers();
+    resultPopup("Successfully remove Item from the database.", "green");
 }
 
 function addItem() {

@@ -144,6 +144,7 @@
       <DependentUpon>SupplierController.svc</DependentUpon>
     </Compile>
     <Compile Include="MODEL\DeliveryItem.cs" />
+    <Compile Include="MODEL\Interest.cs" />
     <Compile Include="VIEW\MasterPageStaff.aspx.cs">
       <DependentUpon>MasterPageStaff.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
