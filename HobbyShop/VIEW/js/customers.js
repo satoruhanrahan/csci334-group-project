@@ -189,7 +189,7 @@ function updateCustomer(customer) {
         var member = $("#customerMemberStatusInput")[0].value;
         var date = $("#customerJoinDateInput")[0].value;
         var email = $("#customerEmailInput")[0].value;
-        CustomerController.UpdateCustomer(Number(id), name, address, phone, Number(credit), Number(balance), member, date, email, onUpdateCustomer);
+        //CustomerController.UpdateCustomer(Number(id), name, address, phone, Number(credit), Number(balance), member, date, email, onUpdateCustomer);
     }
 }
 
@@ -361,9 +361,9 @@ function validateInput() {
     var address = $("#customerAddressInput")[0].value;
     var phoneno = $("#customerPhoneNoInput")[0].value;
     var status = $("#customerMemberStatusInput")[0].value;
-    
-    if (name === '' || address === '' || phoneno === '' || status === '' ) {
-        alert("Please input: Name, Address, Phone number or Membership status!");
+    var date = $("#customerJoinDateInput")[0].value;
+    if (name === '' || address === '' || joinDate === '' || status === '' ) {
+        alert("Please input: Name, Address, Phone number, Membership status or Join Date!");
         return false;
     }
     else {
@@ -374,6 +374,10 @@ function validateInput() {
 // Sends input to controller
 function addNewCustomer() {
     if (validateInput()) {
+        var date = $("#customerJoinDateInput")[0].value;
+        if (date == undefined) {
+            date = null;
+        }
         CustomerController.Add(
             $("#customerNameInput")[0].value,
             $("#customerAddressInput")[0].value,
@@ -381,18 +385,10 @@ function addNewCustomer() {
             $("#customerCreditLineInput")[0].value,
             $("#customerBalInput")[0].value,
             $("#customerMemberStatusInput")[0].value,
-            $("#customerJoinDateInput")[0].value,
+            date,
             $("#customerEmailInput")[0].value,
             onAddNewCustomer
         );
-        console.log($("#customerNameInput")[0].value,
-            $("#customerAddressInput")[0].value,
-            $("#customerPhoneNoInput")[0].value,
-            $("#customerCreditLineInput")[0].value,
-            $("#customerBalInput")[0].value,
-            $("#customerMemberStatusInput")[0].value,
-            $("#customerJoinDateInput")[0].value,
-            $("#customerEmailInput")[0].value);
     }
 }
 
