@@ -71,7 +71,7 @@ namespace HobbyShop.CONTROLLER
                 return ex.Message;
             }
         }
-
+        /*
         [OperationContract]
         public string AddInventoryItem(string itemList) //string itemName, int stockCount, int location, DateTime firstStockDate
         {
@@ -90,17 +90,19 @@ namespace HobbyShop.CONTROLLER
             {
                 return ex.Message;
             }
-        }
+        }*/
 
         [OperationContract]
-        public string AddInventorItem(int storeID, string itemName, int stockCount, int location, string firstDate)
+        public string AddInventoryItem(int storeID, string itemName, int stockCount, int location, string firstDate)
         {
             try
             {
                 Store store = new Store();
                 DateTime formatedDate = DateTime.Parse(firstDate);
                 store.AddInventoryItem(storeID, itemName, stockCount, location, formatedDate);
-                return "";
+                string json = new JavaScriptSerializer().Serialize(store);
+                return json;
+                //return "";
             }
             catch (Exception ex)
             {
@@ -109,14 +111,17 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string EditInventoryItem(string itemName, int stockCount, int location, string firstDate) //users are not allowed to change the storeID
+        public string EditInventoryItem(int storeID, string itemName, int stockCount, int location, string firstDate) //users are not allowed to change the storeID
         {
             try
             {
                 Store store = new Store();
                 DateTime formatedDate = DateTime.Parse(firstDate);
-                store.EditInventoryItem(itemName, stockCount, location, formatedDate);
-                return "";
+                //StoreInventory item = store.EditInventoryItem(storeID, itemName, stockCount, location, formatedDate);
+                store.EditInventoryItem(storeID, itemName, stockCount, location, formatedDate);
+                string json = new JavaScriptSerializer().Serialize(store);
+                return json;
+                //return "";
             }
             catch (Exception ex)
             {

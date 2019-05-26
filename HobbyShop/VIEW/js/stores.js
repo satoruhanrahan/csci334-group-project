@@ -152,20 +152,6 @@ function onUpdateStore(result) {
     else {
         resultPopup("Failed to edit a record!", "red");
     }
-    /*var newstore = {
-        //"StoreID": $("#storeID")[0].value,
-        "StoreID": store.,
-        "Address": $("#storeAddressInput")[0].value
-    }
-    //console.log("Store id:" + newstore.StoreID);
-
-    //  Refreshes the updated button 
-    $("#" + newstore.StoreID)[0].innerHTML = newstore.Address;
-    $("#" + newstore.StoreID)[0].addEventListener("click", function () {
-        displayStoreDetails(newstore);
-    });
-    displayStoreDetails(newstore);
-    resultPopup("Successfully updated store in the Database.", "green");*/
 }
 
 //displays the delete model prompt
@@ -378,7 +364,7 @@ function displayItemDetails(item) {
         day = "0" + day;
     }
     var format = year + "-" + month + "-" + day;
-
+    console.log("Date: " + format);
     $("#itemDateAddedInput")[0].value = format;
 }
 
@@ -429,21 +415,31 @@ function editItemDetails(item) {
     });
 }
 // Send edited data to controller
-function updateItem(item) {
+function updateItem() {
+    console.log("Test Update: " + typeof (Number($("#itemStockCountInput")[0].value)));
     if (validateItemInput()) {
         StoreController.EditInventoryItem(
             globalStore.StoreID,
             $("#itemIDInput")[0].value,
-            $("#itemStockCountInput")[0].value,
-            $("#itemLocationInput")[0].value,
+            Number($("#itemStockCountInput")[0].value),
+            Number($("#itemLocationInput")[0].value),
             $("#itemDateAddedInput")[0].value,
             onUpdateItem
         );
     }
 }
 
-function onUpdateItem(item) {
-    item = JSON.parse(item);
+function onUpdateItem(result) {
+    if (parseJSON(result)) {
+        var store = JSON.parse(result);
+        getAllSearchedStores();
+        displayStoreInventory(store.Items);
+        resultPopup("Successfully updated inventory item in the Database.", "green");
+    }
+    else {
+        resultPopup("Failed to edit a record!", "red");
+    }
+    /*item = JSON.parse(item);
     var newitem = {
         "ItemName":$("#itemIDInput")[0].value,
         "StockCount":$("#itemStockCountInput")[0].value,
@@ -456,7 +452,7 @@ function onUpdateItem(item) {
         displayItemDetails(newitem);
     });
     displayItemDetails(newitem);
-    resultPopup("Successfully updated inventory item in the Database.", "green");
+    resultPopup("Successfully updated inventory item in the Database.", "green");*/
 }
 
 //displays the delete model prompt
@@ -546,12 +542,13 @@ function displayAddItem() {
 
 // Sends input to controller
 function addNewItem() {
+    console.log("Test: " + typeof(Number($("#itemStockCountInput")[0].value)));
     if (validateItemInput()) {
         StoreController.AddInventoryItem(
             globalStore.StoreID,
             $("#itemIDInput")[0].value,
-            $("#itemStockCountInput")[0].value,
-            $("#itemLocationInput")[0].value,
+            Number($("#itemStockCountInput")[0].value),
+            Number($("#itemLocationInput")[0].value),
             $("#itemDateAddedInput")[0].value,
             onAddNewItem
         );
@@ -559,9 +556,18 @@ function addNewItem() {
 }
 
 function onAddNewItem(result) {
-    clearDisplay();
-    displayStoreInvetory(globalStore.Items);
-    resultPopup("Successfully added to the database.", "green");
+    if (parseJSON(result)) {
+        var store = JSON.parse(result);
+        clearDisplay();
+        //displayStoreInventory(globalStore.Items);
+        getAllSearchedStores();
+        displayStoreInventory(store.Items);
+        resultPopup("Successfully added to the database.", "green");
+        //displayStoreInventory(globalStore.Items);
+    }
+    else {
+        resultPopup("Failed to add a new record!", "red");
+    }
 }
 
 function validateItemInput() {

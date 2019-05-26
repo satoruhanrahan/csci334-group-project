@@ -12,7 +12,7 @@ namespace HobbyShop.CLASS
     {
         private int storeID;
         private string address;
-        private ArrayList items;
+        private ArrayList items = new ArrayList();
 
         public int StoreID { get { return storeID; } }
         public string Address { get { return address; } }
@@ -180,6 +180,34 @@ namespace HobbyShop.CLASS
                     itemCmd.Parameters.AddWithValue("@location", location);
                     itemCmd.Parameters.AddWithValue("@firstDate", firstDate);
                     itemCmd.ExecuteNonQuery();
+
+                    string iQuery = "SELECT * FROM StoreInventory WHERE StoreID=@storeID";
+                    OleDbCommand iCmd = new OleDbCommand(iQuery, con);
+                    iCmd.Parameters.AddWithValue("@storeID", storeID);
+                    iCmd.ExecuteNonQuery();
+                    OleDbDataReader iReader = iCmd.ExecuteReader();
+                    int iNumber = 0;
+                    
+                    while (iReader.Read())
+                    {
+                        iNumber = Convert.ToInt32(iReader["ItemNumber"]);
+                        int count = Convert.ToInt32(iReader["StockCount"]);
+                        int address = Convert.ToInt32(iReader["LocationInStore"]);
+                        DateTime date = Convert.ToDateTime(iReader["FirstStockDate"]);
+                        string mQuery = "SELECT Name FROM Models WHERE ItemNumber=@number";
+                        OleDbCommand mCmd = new OleDbCommand(mQuery, con);
+                        mCmd.Parameters.AddWithValue("@number", iNumber);
+                        mCmd.ExecuteNonQuery();
+                        OleDbDataReader mReader = mCmd.ExecuteReader();
+                        if (mReader.Read())
+                        {
+                            string name = Convert.ToString(mReader["Name"]);
+                            StoreInventory item = new StoreInventory(name, count, address, date);
+                            items.Add(item);
+                        }
+                    }
+                    
+
                     /*for (int i = 0; i < items.Count; i++)
                     {
                         StoreInventory item = (StoreInventory)items[i];
@@ -209,7 +237,7 @@ namespace HobbyShop.CLASS
             }
         }
 
-        public void EditInventoryItem(string itemName, int stockCount, int location, DateTime firstDate)
+        public void EditInventoryItem(int storeID, string itemName, int stockCount, int location, DateTime firstDate)
         {
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
@@ -227,12 +255,42 @@ namespace HobbyShop.CLASS
                         itemNumber = Convert.ToInt32(reader["ItemNumber"]);
                     }
                     string itemQuery = "UPDATE StoreInventory SET ItemNumber=@itemNumber, StockCount=@count, LocationInStore=@location, FirstStockDate=@date" +
-                        "WHERE StoreID=@storeID";
+                        " WHERE StoreID=@storeID";
                     OleDbCommand itemCmd = new OleDbCommand(itemQuery, con);
                     itemCmd.Parameters.AddWithValue("@itemNumber", itemNumber);
                     itemCmd.Parameters.AddWithValue("@count", stockCount);
                     itemCmd.Parameters.AddWithValue("@location", location);
                     itemCmd.Parameters.AddWithValue("@date", firstDate);
+                    itemCmd.Parameters.AddWithValue("@storeID", storeID);
+                    itemCmd.ExecuteNonQuery();
+                    //StoreInventory item = new StoreInventory(itemName, stockCount, location, firstDate);
+                    //return item;
+                    
+                    string iQuery = "SELECT * FROM StoreInventory WHERE StoreID=@storeID";
+                    OleDbCommand iCmd = new OleDbCommand(iQuery, con);
+                    iCmd.Parameters.AddWithValue("@storeID", storeID);
+                    iCmd.ExecuteNonQuery();
+                    OleDbDataReader iReader = iCmd.ExecuteReader();
+                    int iNumber = 0;
+
+                    while (iReader.Read())
+                    {
+                        iNumber = Convert.ToInt32(iReader["ItemNumber"]);
+                        int count = Convert.ToInt32(iReader["StockCount"]);
+                        int address = Convert.ToInt32(iReader["LocationInStore"]);
+                        DateTime date = Convert.ToDateTime(iReader["FirstStockDate"]);
+                        string mQuery = "SELECT Name FROM Models WHERE ItemNumber=@number";
+                        OleDbCommand mCmd = new OleDbCommand(mQuery, con);
+                        mCmd.Parameters.AddWithValue("@number", iNumber);
+                        mCmd.ExecuteNonQuery();
+                        OleDbDataReader mReader = mCmd.ExecuteReader();
+                        if (mReader.Read())
+                        {
+                            string name = Convert.ToString(mReader["Name"]);
+                            StoreInventory item = new StoreInventory(name, count, address, date);
+                            items.Add(item);
+                        }
+                    }/**/
                 }
                 catch (OleDbException ex)
                 {
