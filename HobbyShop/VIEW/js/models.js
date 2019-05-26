@@ -199,9 +199,7 @@ function updateItem(item) {
 }
 
 function onUpdateItem(result) {
-    console.log(result);
     var item = JSON.parse(result);
-    console.log(item);
     var newitem = {
         "Id": item.Id,
         "Name": $("#itemNameInput")[0].value,
@@ -391,7 +389,6 @@ function addNewItem() {
 }
 
 function onAddNewItem(result) {
-    console.log("result");
     clearDisplay();
     getAllSearchedItems();
     resultPopup("Successfully added to the database.", "green");
