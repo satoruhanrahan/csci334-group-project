@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     getDeliveryRecords();
+    getAllSearchedItems();
     // prevent form submission on enter
     $('form').keypress(function (event) {
         return event.keyCode != 13;
@@ -8,6 +9,7 @@
     var searchbar = $("#searchbar")[0];
     searchbar.addEventListener("keyup", function (event) {
         event.preventDefault();
+        getDeliveryRecords();
         //getAllSearchedItems();
     });
     $("#advSearch")[0].addEventListener("click", function () {
@@ -16,14 +18,28 @@
     /*$("#addButton")[0].addEventListener("click", function () {
         displayAddDeliveryRecord();
     });*/
-    $("#leftButton")[0].style.visibility = "hidden";
+    /*$("#leftButton")[0].style.visibility = "hidden";
     $("#rightButton")[0].style.visibility = "hidden";
     $("#detailOptions")[0].style.visibility = "hidden";
     $("#details")[0].style.visibility = "hidden";
-    $("#detailTable")[0].style.visibility = "hidden";
+    $("#detailTable")[0].style.visibility = "hidden";*/
+    document.getElementById("detailTable").style.visibility = "hidden";
+    setTimeout(function () {
+        try {
+            if (loaded != undefined) {
+                if (loaded != "") {
+                    displayDeliveryDetails(loaded);
+                    loaded = "";
+                }
+            }
+        } catch (ReferenceError) { }
+    }, 250);
 });
 
+var itemList = [];
+
 function getDeliveryRecords() {
+    var keywords = document.getElementById("searchbar").value;
     DeliveryController.GetDeliveryRecords(onGetDeliveryRecords);
 }
 
@@ -31,6 +47,18 @@ function getDeliveryRecords() {
 function onGetDeliveryRecords(result) {
     var deliveries = JSON.parse(result);
     displayDeliveryRecords(deliveries);
+}
+
+//get all model items
+function getAllSearchedItems() {
+    var searchInput = document.getElementById("searchbar").value;
+    ModelController.SearchDatabase(searchInput, onSearchItems);
+}
+function onSearchItems(result) {
+    items = JSON.parse(result);
+    for (var i = 0; i < items.length; i++) {
+        itemList.push(items[i]);
+    }
 }
 
 //display a list of deliveries
@@ -48,6 +76,7 @@ function displayDeliveryRecords(deliveries) {
         let delivery = deliveries[i];
         button.addEventListener("click", function (event) {
             document.getElementById("details").style.visibility = "visible";
+            document.getElementById("detailTable").style.visibility = "visible";
             event.preventDefault();
             displayDeliveryDetails(delivery);
         });
@@ -61,10 +90,14 @@ function displayDeliveryDetails(delivery) {
     $("#detailOptions")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
     $("#detailTable")[0].style.visibility = "visible";
+    $("#leftButton")[0].style.visibility = "hidden";
+    $("#rightButton")[0].style.visibility = "hidden";
+    $("#error")[0].style.visibility = "hidden";
     /*
     $("#editItem")[0].addEventListener("click", function () {
         editDeliveryDetails(delivery);
     });
+    
    $("#deleteItem")[0].addEventListener("click", function () {
         displayDeleteItem(item);
     });*/
@@ -99,7 +132,6 @@ function displayDeliveryDetails(delivery) {
             itemTable.deleteRow(1);
         }
     }
-    console.log(items.length);
     if (items.length > 0) {
         for (var i = 0; i < items.length; i++) {
             var row = document.createElement("tr");
@@ -127,10 +159,13 @@ function displayAddDeliveryRecord() {
     $("#detailHeading")[0].innerHTML = "Add a New Delivery Record";
     $("#detailHeading")[0].style.visibility = "visible";
     $("#details")[0].style.visibility = "visible";
+    $("#detailTable")[0].style.visibility = "visible";
     $("#detailOptions")[0].style.visibility = "hidden";
-
+    $("#itemTable").find("tr:gt(0)").remove();
+    //$('#itemTable').append('<tr><td><input type="text" class="itemInput" id="itemNumber"/></td><td><input type="text" class="itemInput" id="totalCost"/></td></tr>');
+    insertNewRow(1);
     $("#leftImage").attr("src", "style/add.png");
-
+    $("#delivery")[0].style.backgroundColor = "lightgray";
     /*var img1 = document.createElement("img");
     img1.src = "style/add.png";
     $("#leftButton")[0].append(img1);
@@ -148,8 +183,8 @@ function displayAddDeliveryRecord() {
         }
     }
     $("#leftButton")[0].addEventListener("click", function () {
-        $("#leftButton")[0].style.visibility = "hidden";
-        $("#rightButton")[0].style.visibility = "hidden";
+        //$("#leftButton")[0].style.visibility = "hidden";
+        //$("#rightButton")[0].style.visibility = "hidden";
         addDeliveryRecord();
     });
 
@@ -158,19 +193,92 @@ function displayAddDeliveryRecord() {
     });
 }
 
+function insertNewRow(index) {
+    var row = document.createElement("tr");
+    var itemNumber = document.createElement("td");
+    var itemNumberInput = document.createElement("input");
+    itemNumberInput.setAttribute("type", "text");
+    itemNumberInput.setAttribute("class", "itemInput itemNumberInput");
+    itemNumberInput.setAttribute("id", "itemNumberInput" + index);
+    itemNumberInput.setAttribute("list", "itemNumber" + index);
+    var datalist = document.createElement("datalist");
+    datalist.setAttribute("id", "itemNumber" + index);
+    itemNumber.appendChild(itemNumberInput);
+    itemNumber.appendChild(datalist);
+
+    var totalCost = document.createElement("td");
+    var totalCostInput = document.createElement("input");
+    totalCostInput.setAttribute("type", "text");
+    totalCostInput.setAttribute("class", "itemInput totalCostInput");
+    totalCostInput.setAttribute("id", "totalCostInput" + index);
+    totalCost.appendChild(totalCostInput);
+   
+    for (var i = 0; i < itemList.length; i++) {
+        var option = document.createElement("option");
+        option.setAttribute("value", itemList[i].Id);
+        option.setAttribute("id", i);
+        datalist.appendChild(option);
+    }
+    totalCostInput.addEventListener("keydown", addRow);
+    totalCost.appendChild(totalCostInput);
+    
+    row.appendChild(itemNumber);
+    row.appendChild(totalCost);
+    itemTable.appendChild(row);
+}
+
+function addRow(e) {
+    var j = 2;
+    if (e.keyCode == 13) { // 13 is enter
+        alert("Pressed!");
+        insertNewRow(j);
+        j++;
+    }
+}
 //add a new delivery record
 function addDeliveryRecord() {
     var date = document.getElementById("date").value;
     var store = document.getElementById("store").value;
     var supplier = document.getElementById("supplier").value;
 
-    var errorMessage = document.getElementById("error");
-    if (store == "" || supplier == "") {
-        errorMessage.innerText = "Information is missing!";
+    var itemNumberInput = document.getElementsByClassName("itemNumberInput");
+    var totalCostInput = document.getElementsByClassName("totalCostInput");
+    //there must be at least one item in a sale record
+    var itemNumber = itemNumberInput[0].value;
+    var totalCost = totalCostInput[0].value;
+
+    /*var errorMessage = document.getElementById("error");
+    if (date == "" || store == "" || supplier == "") {
+        errorMessage.innerText = "Please input date, storeID, supplierID and at least 1 item!";
     }
     else {
-        DeliveryController.AddDeliveryRecord(date, store);
+        DeliveryController.AddDeliveryRecord(date, store, supplier);
         onAddDeliveryRecord();
+    }*/
+    var check = false;
+    var errorMessage = document.getElementById("error");
+    if (date == "" || store == "" || supplier == "" || itemNumber == "" || totalCost == "") {
+        errorMessage.innerText = "Please input date, store, supplier and at least 1 item!";
+    }
+    else if (!(Number(store)) || !(Number(supplier))) {
+        errorMessage.innerText = "Please input the right format!";
+    }
+    else {
+        errorMessage.innerText = "";
+        check = true;
+    }
+    if (check) {
+        var listOfItems = [];
+        for (var i = 0; i < itemNumberInput.length; i++) {
+            var itemNumber = itemNumberInput[i].value;
+            var totalCost = totalCostInput[i].value;
+            if (itemNumber != "") {
+                var item = { ItemNumber: itemNumber, TotalCost: totalCost };
+                listOfItems.push(item);
+            }
+        }
+        var itemListString = JSON.stringify(listOfItems);
+        DeliveryController.AddDeliveryRecord(date, store, supplier, itemListString, onAddDeliveryRecord);
     }
 }
 
@@ -189,19 +297,17 @@ function clearDisplay() {
     $("#detailOptions")[0].style.visibility = "hidden";
     $("#details")[0].style.visibility = "hidden";
     $("#detailTable")[0].style.visibility = "hidden";
+    $("#detailContainer")[0].style.visibility = "hidden";
+    $("#detailHeading")[0].style.visibility = "hidden";
 }
 
 //edit delivery record
 function editDeliveryDetails(delivery) {
-    //document.getElementById("left").src = "style/save.png";
     $("#leftImage").attr("src", "style/save.png");
-    /*var img1 = document.createElement("img");
-    img1.src = "style/save.png";
-    $("#leftButton")[0].append(img1);
-    */
-
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
+    $("#delivery")[0].style.backgroundColor = "lightgray";
+
     var elements = document.getElementsByTagName("input");
     for (var i = 0; i < elements.length; i++) {
         //var id = elements[i].id;
@@ -256,9 +362,12 @@ function onEditDeliveryDetails(result) {
             }
         }
     }
+    else {
+        resultPopup("Failed to edit record!", "red");
+    }
 }
 
-function deleteDeliveryRecord() {
+function deletedeleteDeliveryRecord() {
     var id = document.getElementById("delivery").value;
     DeliveryController.DeleteDeliveryRecord(Number(id), onDeleteDeliveryRecord);
 }
@@ -275,8 +384,9 @@ function onDeleteDeliveryRecord(result) {
 
 //Advanced search display
 function displayAdvSearch() {
-    document.getElementById("detailHeading").innerHTML = "Advanced Search";
-    document.getElementById("details").innerHTML = "Here will be filter & sort settings for an advanced search!";
+    clearDisplay();
+    $("#detailHeading")[0].style.visibility = "visible";
+    $("#detailHeading")[0].innerHTML = "Advanced Search";
 }
 
 function restore() {

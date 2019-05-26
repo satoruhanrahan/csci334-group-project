@@ -104,6 +104,7 @@ namespace HobbyShop.CLASS
                     cmd.Parameters.AddWithValue("@storeID", storeID);
                     cmd.Parameters.AddWithValue("@supplierID", supplierID);
                     cmd.ExecuteNonQuery();
+                    con.Close();
                 }
                 catch (OleDbException ex)
                 {
@@ -128,10 +129,18 @@ namespace HobbyShop.CLASS
                     con.Close();
 
                     //insert new deliveries items
-                    //for (int j = 0; j < items.Count; j++)
-                    //{
-                    //    DeliveryItem item = (DeliveryItem)items[j];
-                    //}
+                    for (int j = 0; j < items.Count; j++)
+                    {
+                        string itemQuery = "INSERT INTO DeliveryItems VALUES (@itemNumber, @totalCost)";
+                        OleDbCommand itemCmd = new OleDbCommand(itemQuery, con);
+                        itemCmd.Parameters.AddWithValue("@deliveryID", deliveryID);
+                        //itemCmd.Parameters.AddWithValue("@itemNumber", itemNumber); //doesnt work for some reason
+                        //itemCmd.Parameters.AddWithValue("@totalCost", totalCost);
+                        itemCmd.ExecuteNonQuery();
+                    }
+                    //UpdateModel(item, number);
+                    //UpdateItem(item, number);
+                    con.Close();
 
                     //update delivery details
                     con.Open();
