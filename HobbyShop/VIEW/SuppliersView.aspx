@@ -42,6 +42,7 @@
                 <button type="button" class="tab detailtab active" id="detailsTab">Details</button>
                 <button type="button" class="tab detailtab" id="itemsTab">Models</button>
                 <button type="button" class="tab detailtab" id="contactsTab">Contacts</button>
+                <button type="button" class="tab detailtab" id="deliveriesTab">Deliveries</button>
             </div>
             <div id="details" class="detailTabContent">
                 <div class="scrollable">
@@ -84,6 +85,10 @@
             </div>
             <div class ="detailTabContent">
                 <div id="contacts" class="scrollable">
+                </div>
+            </div>
+            <div class ="detailTabContent">
+                <div id="deliveries" class="scrollable">
                 </div>
             </div>
 		</div>

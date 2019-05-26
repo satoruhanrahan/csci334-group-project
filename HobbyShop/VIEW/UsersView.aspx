@@ -40,7 +40,7 @@
                 
                
             </div>
-            <div id="details" class="detailTabContent">
+            <div id="details" class="detailTabContent noTabs">
                 <div class="scrollable">
                     <table id="detailTable">
                         <tr> 

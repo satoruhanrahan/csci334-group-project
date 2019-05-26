@@ -195,7 +195,6 @@ function updateCustomer(customer) {
 
 function onUpdateCustomer(result) {
     var customer = JSON.parse(result);
-    console.log(customer);
     var newcustomer = {
         "Id": customer.Id,
         "Name": $("#customerNameInput")[0].value,
@@ -393,7 +392,6 @@ function addNewCustomer() {
 }
 
 function onAddNewCustomer(result) {
-    console.log(result);
     clearDisplay();
     getAllSearchedCustomers();
     resultPopup("Successfully added to the database.", "green");

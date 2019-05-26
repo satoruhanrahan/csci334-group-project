@@ -404,7 +404,6 @@ function insertNewRow(index) {
         var opt = $("option[value='" + $(this).val() + "']");
         var index = opt.attr("id");
         priceInput.value = itemList[index].Price;
-        console.log("Item list: " + itemList[index].Price);
     });
 
     var total = document.createElement("td");

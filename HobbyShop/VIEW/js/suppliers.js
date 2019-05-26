@@ -79,6 +79,7 @@ function displaySupplierDetails(supplier) {
     $("body").off("click", "#detailsTab");
     $("body").off("click", "#itemsTab");
     $("body").off("click", "#contactsTab");
+    $("body").off("click", "#deliveriesTab");
     $("body").on("click", "#detailsTab", function () {
         switchTabs("detailTabBar", "detailsTab");
         displaySupplierDetails(supplier);
@@ -90,6 +91,10 @@ function displaySupplierDetails(supplier) {
     $("body").on("click", "#contactsTab", function () {
         switchTabs("detailTabBar", "contactsTab");
         displaySupplierContacts(supplier);
+    });
+    $("body").on("click", "#deliveriesTab", function () {
+        switchTabs("detailTabBar", "deliveriesTab");
+        displaySupplierDeliveries(supplier);
     });
     $("#editSupplier")[0].addEventListener("click", function () {
         editSupplierDetails(supplier);
@@ -344,19 +349,30 @@ function onDisplaySupplierItems(result) {
         br = document.createElement("br");
         button.append("Item: " + items[i].Name);
         button.appendChild(br);
-        //button.append(item[i].Address);
         button.setAttribute("type", "button");
         button.setAttribute("class", "listItem bigList");
         let item = items[i];
         button.addEventListener("click", function () {
             loadPage("Models", item);
         });
+        var img1 = document.createElement("img");
+        img1.src = "style/delete.png";
+        button2 = document.createElement("button");
+        button2.append(img1);
+        button2.setAttribute("type", "button");
+        button2.setAttribute("class", "smallbtn redbtn");
+        button2.style.cssFloat = "right";
+        button2.addEventListener("click", function () {
+            SupplierController.RemoveSupplierItem(items[i].Name);
+            clearDisplay();
+        });
         $("#items")[0].append(button);
+
+        $("#items")[0].append(button2);
     }
 }
 
 function addItem() {
-    console.log($("#itemIDInput")[0].value, supplierGlobal.Id);
     SupplierController.AddNewSupplierItem($("#itemIDInput")[0].value,supplierGlobal.Id,onAddItem);
 }
 function onAddItem(result) {
@@ -370,7 +386,6 @@ function displaySupplierContacts(supplier) {
 }
 function onDisplaySupplierContacts(result) {
     var contacts = JSON.parse(result);
-    console.log(contacts);
             // set display
     var name = $("#detailHeading")[0].innerHTML;
     clearDisplay();
@@ -390,5 +405,31 @@ function onDisplaySupplierContacts(result) {
             loadPage("Contacts", contact);
         });
         $("#contacts")[0].append(button);
+    }
+}
+function displaySupplierDeliveries(supplier) {
+    SupplierController.ReturnCorrespondingDeliveries(supplier.Id, onDisplaySupplierContacts);
+}
+function onDisplaySupplierDeliveries(result) {
+    var deliveries = JSON.parse(result);
+    // set display
+    var name = $("#detailHeading")[0].innerHTML;
+    clearDisplay();
+    $("#detailHeading")[0].innerHTML = name;
+    $("#detailHeading")[0].style.visibility = "visible";
+    $("#detailTabBar")[0].style.visibility = "visible";
+    $("#deliveries")[0].style.visibility = "visible";
+
+    var button;
+    for (var i = deliveries.length - 1; i >= 0; i--) {
+        button = document.createElement("button");
+        button.append(deliveries[i].Id);
+        button.setAttribute("type", "button");
+        button.setAttribute("class", "listItem bigList");
+        let delivery = deliveries[i];
+        button.addEventListener("click", function () {
+            loadPage("Deliveries", delivery);
+        });
+        $("#deliveries")[0].append(button);
     }
 }

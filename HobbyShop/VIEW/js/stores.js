@@ -152,6 +152,19 @@ function onUpdateStore(result) {
     else {
         resultPopup("Failed to edit a record!", "red");
     }
+    /*var newstore = {
+        //"StoreID": $("#storeID")[0].value,
+        "StoreID": store.,
+        "Address": $("#storeAddressInput")[0].value
+    }
+
+    //  Refreshes the updated button 
+    $("#" + newstore.StoreID)[0].innerHTML = newstore.Address;
+    $("#" + newstore.StoreID)[0].addEventListener("click", function () {
+        displayStoreDetails(newstore);
+    });
+    displayStoreDetails(newstore);
+    resultPopup("Successfully updated store in the Database.", "green");*/
 }
 
 //displays the delete model prompt
@@ -305,7 +318,6 @@ function onAddNewStore(result) {
 
 function displayStoreInventory(inventory) {
     // set display
-    console.log(inventory);
     var address = $("#detailHeading")[0].innerHTML;
     clearDisplay();
     $("#detailHeading")[0].innerHTML = address;
@@ -336,6 +348,8 @@ function displayStoreInventory(inventory) {
 
 function displayItemDetails(item) {
     var address = $("#detailHeading")[0].innerHTML;
+    $("#leftButton")[0].style.visibility = "visible";
+    $("#rightButton")[0].style.visibility = "visible";
     clearDisplay();
     $("#detailHeading")[0].innerHTML = address;
     $("#detailHeading")[0].style.visibility = "visible";
@@ -370,15 +384,14 @@ function displayItemDetails(item) {
 
 // Edit details
 function editItemDetails(item) {
-    var address = $("#detailHeading")[0].innerHTML;
     clearDisplay();
+    $("#detailHeading")[0].innerHTML = globalStore.Address;
     $("#detailHeading")[0].style.visibility = "visible";
     $("#inventory")[0].style.visibility = "visible";
     $("#detailTabBar")[0].style.visibility = "visible";
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#addInventory")[0].style.visibility = "visible";
-    $("#detailHeading")[0].append(address);
 
     $("#itemIDInput").removeAttr("disabled");
     $("#itemStockCountInput").removeAttr("disabled");
