@@ -68,8 +68,10 @@
                             </td> 
                         </tr>
                     </table>
-                    <button type="button" id="leftButton" title="Save changes" class="smallbtn greenbtn"> 
+                     <button type="button" id="leftButton" title="Save changes" class="smallbtn greenbtn">
+                        <img id="leftImage" src="style/add.png" />
                     </button>
+
                     <button type="button" id="rightButton" title="Discard changes" class="smallbtn redbtn" style="float:right;"> 
                         <img src="style/close.png" />
                     </button>

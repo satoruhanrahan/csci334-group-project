@@ -36,8 +36,8 @@
             <div id="detailOptions" class="dropdown">
                 <button type="button" class="smallbtn"> <img src="style/options.png" /></button>
                  <div class="dropdown-content">
-                     <button type="button" class="dropdown-button" id="editDelivery" onclick="editDeliveryDetails();">Edit Details</button>
-                     <button type="button" class="dropdown-button" id="deleteDelivery" onclick="deleteDeliveryRecord();">Delete Delivery</button>
+                     <button type="button" class="dropdown-button" id="editDelivery" <%--onclick="editDeliveryDetails();--%>">Edit Details</button>
+                     <button type="button" class="dropdown-button" id="deleteDelivery" onclick="displayConfirmDelete();">Delete Delivery</button>
                  </div> 
              </div>
             <div id="details">
@@ -63,22 +63,43 @@
                         <td>
                             <table id="itemTable">
                                 <tr>
-                                    <td>Item Number</td>
-                                    <td>Total Cost</td>
+                                    <td>Name</td>
+                                    <td>Quantity</td>
+                                    <td>Unit Price</td>
+                                    <td>Total Price</td>
+                                    <%--<td>Item Number</td>
+                                    <td>Total Cost</td>--%>
                                 </tr>
-                                <!--<tr>
+                                <tr>
+                                    <td><input class="itemInput nameInput" list="itemName"/><datalist id="itemName"></datalist></td>
+                                    <td><input class="itemInput quantityInput" /></td>
+                                    <td><input class="itemInput priceInput" disabled/></td>
+                                    <td><input class="itemInput totalInput" /></td>
+                                </tr>
+                                <%--<tr>
                                     <td><input type="text" class="itemInput" id="itemNumber"/></td>
                                     <td><input type="text" class="itemInput" id="totalCost"/></td>
-                                </tr>-->
+                                </tr>--%>
                             </table>
                         </td> 
+                    </tr>
+                    
+                    <tr> 
+                        <td> Total: </td> 
+                        <td id="total"><input type="text" id="totalValue" class="userInput" disabled /></td>
                     </tr> 
                 </table>
-                <button type="button" id="leftButton" title="Save changes" class="smallbtn greenbtn">
-                    <img id="leftImage" src="style/add.png" />
+               
+                <button type="button" id="leftButton" title="Save changes" class="smallbtn greenbtn" onclick="saveDeliveryDetails();">
+                        <img id="leftImage" src="style/save.png" />
+                    </button>
+
+                <button type="button" id="addRecordButton" title="Add record" class="smallbtn greenbtn" onclick="addDeliveryRecord()">
+                    <img id="image" src="style/add.png" />
                 </button>
+
                 <button type="button" id="rightButton" title="Discard changes" class="smallbtn redbtn" style="float:right;"> 
-                    <img src="style/close.png" />
+                    <img src="style/close.png" style="color: red; font-style: italic;"/>
                 </button> <br/><br/>
                 <span id="error"></span>
             </div>
@@ -88,6 +109,7 @@
         <asp:scriptmanager runat="server">
             <Services>
                 <asp:ServiceReference Path="~/CONTROLLER/DeliveryController.svc" />
+                <asp:ServiceReference Path="~/CONTROLLER/ModelController.svc" />
             </Services>
         </asp:scriptmanager>
     </form>

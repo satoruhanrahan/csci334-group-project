@@ -18,26 +18,32 @@ namespace HobbyShop.CONTROLLER
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class DeliveryController
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
+        //string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
 
 
         [OperationContract]
-        public string GetDeliveryRecords()
+        public string GetDeliveryRecords(string keyword)
         {
             Delivery delivery = new Delivery();
-            ArrayList deliveryList = delivery.GetDeliveryRecords();
+            ArrayList deliveryList = delivery.GetDeliveryRecords(keyword);
 
             string json = new JavaScriptSerializer().Serialize(deliveryList);
             return json;
         }
 
         [OperationContract]
-        public string AddDeliveryRecord(string date, int storeID, int supplierID, string itemList)
+        public string AddDeliveryRecord(string date, int storeID, int supplierID, double totalValue, string itemList)
         {
             try
             {
                 DateTime formatedDate = DateTime.Parse(date);
-                Delivery delivery = new Delivery(formatedDate, storeID, supplierID);
+
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                var list = serializer.Deserialize<DeliveryItem[]>(itemList);
+
+                ArrayList items = new ArrayList(list);
+                Delivery delivery = new Delivery(formatedDate, supplierID, storeID, totalValue);
+                delivery.Items = items;
                 delivery.AddDeliveryRecord();
                 return "";
             }
@@ -48,7 +54,7 @@ namespace HobbyShop.CONTROLLER
         }
 
         [OperationContract]
-        public string EditDeliveryDetails(int id, string date, int storeID, int supplierID, string itemList)
+        public string EditDeliveryDetails(int id, string date, int storeID, int supplierID, double totalValue, string itemList)
         {
             try
             {
@@ -58,7 +64,7 @@ namespace HobbyShop.CONTROLLER
                 ArrayList items = new ArrayList(list);
                 //create new delivery
                 DateTime formatedDate = DateTime.Parse(date);
-                Delivery delivery = new Delivery(id, formatedDate, storeID, supplierID);
+                Delivery delivery = new Delivery(id, formatedDate, supplierID, storeID, totalValue);
                 delivery.Items = items;
                 delivery.EditDeliveryDetails();
                 string json = new JavaScriptSerializer().Serialize(delivery);

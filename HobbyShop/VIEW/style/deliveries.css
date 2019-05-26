@@ -1,7 +1,45 @@
-﻿.userInput {
+﻿/*.userInput {
     background-color: white;
 }
 
 #delivery {
     background-color: lightgray;
+}
+*/
+
+.userInput, .itemInput {
+    background-color: white;
+    color: black;
+    width: 70px;
+}
+
+#error {
+    color: red;
+    font-style: italic;
+}
+
+.dropdown {
+    margin-top: -5px;
+}
+
+#delivery {
+    background-color: white;
+    /*background-color: white;-----lightgray*/
+}
+
+#addRecordButton {
+    position: absolute;
+    left: 10px;
+}
+
+#itemTable td {
+    border: solid 1px;
+}
+
+#itemTable {
+    border-collapse: collapse;
+}
+
+#details input {
+    border: 0;
 }
