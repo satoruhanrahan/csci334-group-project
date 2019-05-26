@@ -93,14 +93,12 @@ function displayDeliveryDetails(delivery) {
     $("#leftButton")[0].style.visibility = "hidden";
     $("#rightButton")[0].style.visibility = "hidden";
     $("#error")[0].style.visibility = "hidden";
-    /*
-    $("#editItem")[0].addEventListener("click", function () {
+    $("#editDelivery")[0].addEventListener("click", function () {
         editDeliveryDetails(delivery);
     });
-    
-   $("#deleteItem")[0].addEventListener("click", function () {
-        displayDeleteItem(item);
-    });*/
+   $("#deleteDelivery")[0].addEventListener("click", function () {
+       displayDeleteItem(delivery.DeliveryID);
+    });
 
     var date = new Date(parseInt((delivery.Date).substr(6)));
 
@@ -121,6 +119,11 @@ function displayDeliveryDetails(delivery) {
     document.getElementById("delivery").value = delivery.DeliveryID;
     document.getElementById("store").value = delivery.StoreID;
     document.getElementById("supplier").value = delivery.SupplierID;
+
+    $("#date").attr({ "disabled": "disabled" });
+    $("#delivery").attr({ "disabled": "disabled" });
+    $("#store").attr({ "disabled": "disabled" });
+    $("#supplier").attr({ "disabled": "disabled" });
 
     var items = delivery.Items;
     var itemTable = document.getElementById("itemTable");
@@ -307,7 +310,6 @@ function editDeliveryDetails(delivery) {
     $("#leftButton")[0].style.visibility = "visible";
     $("#rightButton")[0].style.visibility = "visible";
     $("#delivery")[0].style.backgroundColor = "lightgray";
-
     var elements = document.getElementsByTagName("input");
     for (var i = 0; i < elements.length; i++) {
         //var id = elements[i].id;
@@ -320,7 +322,7 @@ function editDeliveryDetails(delivery) {
     });
 
     $("#rightButton")[0].addEventListener("click", function () {
-        restore();
+        displayDeliveryDetails(delivery);
     });
 }
 
@@ -367,9 +369,8 @@ function onEditDeliveryDetails(result) {
     }
 }
 
-function deletedeleteDeliveryRecord() {
-    var id = document.getElementById("delivery").value;
-    DeliveryController.DeleteDeliveryRecord(Number(id), onDeleteDeliveryRecord);
+function deleteDeliveryRecord(id) {
+    DeliveryController.DeleteDeliveryRecord(id, onDeleteDeliveryRecord);
 }
 
 function onDeleteDeliveryRecord(result) {

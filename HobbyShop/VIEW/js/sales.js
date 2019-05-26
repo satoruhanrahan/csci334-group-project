@@ -120,6 +120,14 @@ function displaySaleDetails(sale) {
     document.getElementById("totalValue").value = sale.TotalValue;
     document.getElementById("discountValue").value = sale.Discount;
     document.getElementById("finalValue").value = sale.FinalTotal;
+
+    $("#date").attr({ "disabled": "disabled" });
+    $("#sale").attr({ "disabled": "disabled" });
+    $("#customer").attr({ "disabled": "disabled" });
+    $("#store").attr({ "disabled": "disabled" });
+    $("#totalValue").attr({ "disabled": "disabled" });
+    $("#discountValue").attr({ "disabled": "disabled" });
+    $("#finalValue").attr({ "disabled": "disabled" });
     var items = sale.Items;
 
     var itemTable = document.getElementById("itemTable");
