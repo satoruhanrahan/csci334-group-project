@@ -108,6 +108,7 @@
     <form id="form1" runat="server">
         <asp:scriptmanager runat="server">
             <Services>
+                <asp:ServiceReference Path="~/CONTROLLER/BaseController.svc" />
                 <asp:ServiceReference Path="~/CONTROLLER/DeliveryController.svc" />
                 <asp:ServiceReference Path="~/CONTROLLER/ModelController.svc" />
             </Services>

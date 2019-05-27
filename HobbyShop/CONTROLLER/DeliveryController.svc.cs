@@ -16,20 +16,12 @@ namespace HobbyShop.CONTROLLER
 {
     [ServiceContract(Namespace = "")]
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
-    public class DeliveryController
+    public class DeliveryController : BaseController<Delivery>
     {
         //string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString.ToString();
 
-
         [OperationContract]
-        public string GetDeliveryRecords(string keyword)
-        {
-            Delivery delivery = new Delivery();
-            ArrayList deliveryList = delivery.GetDeliveryRecords(keyword);
-
-            string json = new JavaScriptSerializer().Serialize(deliveryList);
-            return json;
-        }
+        public override string GetRecords(string search) => base.GetRecords(search);
 
         [OperationContract]
         public string AddDeliveryRecord(string date, int storeID, int supplierID, double totalValue, string itemList)
