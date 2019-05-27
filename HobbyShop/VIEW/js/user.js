@@ -10,22 +10,25 @@ function loginToAccount() {
 function onReturnUser(result) {
     console.log(result);
     var theUser = JSON.parse(result);
-   
+    console.log("Type: " + theUser.UserType);
     if (theUser==null) {
         document.getElementById("noti").innerHTML = "Wrong UserName or Password";
     }
     else {
         document.getElementById("noti").innerHTML = "Correct";
         if (theUser.UserType == "admin") {
-            window.location.href = 'MasterContent.aspx';
+            window.location = "MasterContent.aspx";
+            console.log("Type: " + theUser.UserType);
+            //window.location.href = "MasterContent.aspx";
             
         }
         else {
-            window.location.href = 'MasterPageStaff.aspx';
-            
+            //window.location.href = "MasterPageStaff.aspx";
+            console.log("Type: " + theUser.UserType);
+            window.location = "MasterPageStaff.aspx";
         }
         
-    }
+    }/**/
 }
 
 $(document).ready(function () {

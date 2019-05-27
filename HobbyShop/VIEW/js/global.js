@@ -22,9 +22,9 @@
     $("#Stores")[0].addEventListener("click", function () {
         loadPage("Stores", "");
     });
-    /*$("#Users")[0].addEventListener("click", function () {
+    /**/$("#Users")[0].addEventListener("click", function () {
         loadPage("Users", "");
-    });*/
+    });
     $("#Settings")[0].addEventListener("click", function () {
         loadPage("Settings", "");
     });
